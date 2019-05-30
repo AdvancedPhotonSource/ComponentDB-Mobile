@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Copyright (c) UChicago Argonne, LLC. All rights reserved.
+See LICENSE file.
+-->
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"              
+             x:Class="Component.DB.Views.ItemGalleryPage" 
+             Title="{Binding Title}">
+    <ContentPage.Content>
+       <StackLayout>
+            <Label Text="Test"/> 
+            <Image Source="{Binding Image}" /> 
+       </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

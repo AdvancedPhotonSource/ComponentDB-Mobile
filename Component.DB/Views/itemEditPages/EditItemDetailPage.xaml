@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Copyright (c) UChicago Argonne, LLC. All rights reserved.
+See LICENSE file.
+-->
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Component.DB.Views.itemEditPages.EditItemDetailPage"
+             Title="{Binding Title}">
+    <ContentPage.Content>    
+        <ScrollView>
+            <StackLayout>
+                <StackLayout Spacing="10" Padding="10" x:Name="EditItemsStackLayout">
+                    <Label Text="Name:" FontSize="Medium" />
+                    <Entry Text="{Binding Item.Name}" FontSize="Small" />
+                    
+                    <Label Text="Description:" FontSize="Medium" />
+                    <Entry Text="{Binding Item.Description}" FontSize="Small" />     
+                </StackLayout>
+                <StackLayout Spacing="10" Padding="10" >    
+                    <Button Text="Save" Clicked="HandleSaveClicked" />
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

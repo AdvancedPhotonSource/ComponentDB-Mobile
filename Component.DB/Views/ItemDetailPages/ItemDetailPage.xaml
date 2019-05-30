@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Copyright (c) UChicago Argonne, LLC. All rights reserved.
+See LICENSE file.
+-->
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Component.DB.Views.ItemDetailPage" Title="{Binding Title}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Edit"
+                     Clicked="HandleEditItemClicked"/>
+    </ContentPage.ToolbarItems>
+    <ScrollView>
+        <StackLayout x:Name="MainStackLayout">
+            <Image Source="{Binding PrimaryImageUrlScaled}"
+                   Aspect="AspectFit"
+                   x:Name="itemImage">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="HandleItemImageTap" />
+                </Image.GestureRecognizers>
+            </Image>
+            
+            <StackLayout Spacing="10" Padding="10" x:Name="DetailsStackLayout">
+                <Label Text="Name:" FontSize="Medium" x:Name="ItemNameLabel" />
+                <Label Text="{Binding Item.Name}" FontSize="Small" />
+                <Label Text="Description:" FontSize="Medium" />
+                <Label Text="{Binding Item.Description}" FontSize="Small" />
+            </StackLayout>
+            
+        
+            <StackLayout Spacing="10" Padding="10">
+                <Button Text="View Properties"
+                        Clicked="HandleShowPropertiesClicked"/>
+                
+                <Button Text="View Logbook"
+                        Clicked="HandleShowLogsClicked"/>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
