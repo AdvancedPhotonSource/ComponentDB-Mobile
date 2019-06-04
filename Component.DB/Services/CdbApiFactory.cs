@@ -5,9 +5,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using Gov.ANL.APS.CDB.Api;
 using Gov.ANL.APS.CDB.Client;
+using Gov.ANL.APS.CDB.Model;
+using Newtonsoft.Json;
 using Xamarin.Essentials;
 
 namespace Component.DB.Services
@@ -155,6 +158,57 @@ namespace Component.DB.Services
             {
                 return usersApiInstace;
             }
+        }
+
+        public static String ConvertStreamDataToBase64(Stream stream)
+        {
+            // Now read s into a byte buffer with a little padding.
+            byte[] bytes = new byte[stream.Length + 10];
+            int numBytesToRead = (int)stream.Length;
+            int numBytesRead = 0;
+            do
+            {
+                // Read may return anything from 0 to 10.
+                int n = stream.Read(bytes, numBytesRead, 10);
+                numBytesRead += n;
+                numBytesToRead -= n;
+            } while (numBytesToRead > 0);
+            stream.Close();
+
+            return Convert.ToBase64String(bytes);
+        }
+
+        public static ApiExceptionMessage ParseApiException(Exception exception) 
+        {
+            ApiExceptionMessage exceptionMessage = null;
+
+            if (exception.GetType() == typeof(ApiException))
+            {
+                ApiException apiException = (Gov.ANL.APS.CDB.Client.ApiException)exception;
+                if (apiException.ErrorCode == 0)
+                {
+                    exceptionMessage = new ApiExceptionMessage
+                    {
+                        SimpleName = "Connection Error",
+                        Message = exception.Message
+                    };
+                } else
+                {
+                    var json = apiException.ErrorContent;
+                    exceptionMessage = JsonConvert.DeserializeObject<ApiExceptionMessage>(json);
+                }
+            } 
+
+            if (exceptionMessage == null)
+            {
+                exceptionMessage = new ApiExceptionMessage
+                {
+                    SimpleName = "Unknown Error",
+                    Message = exception.Message 
+                };
+            }
+
+            return exceptionMessage;
         }
     }
 }
