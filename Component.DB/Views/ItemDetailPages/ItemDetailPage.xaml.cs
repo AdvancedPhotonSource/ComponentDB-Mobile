@@ -6,7 +6,6 @@ using System;
 using System.ComponentModel;
 
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 using Component.DB.ViewModels;
 using Stormlion.PhotoBrowser;
@@ -15,13 +14,18 @@ using Gov.ANL.APS.CDB.Model;
 using Component.DB.Services;
 using Component.DB.Views.PreferencePages;
 using Component.DB.Views.itemEditPages;
+using System.IO;
+using System.Text;
+using Plugin.Media.Abstractions;
+using Plugin.Media;
+using System.Diagnostics;
 
 namespace Component.DB.Views
 {
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(true)]
-    public partial class ItemDetailPage : ContentPage
+    public partial class ItemDetailPage : CdbBasePage
     {
         ItemDetailViewModel viewModel;
 
@@ -93,7 +97,16 @@ namespace Component.DB.Views
 
         async void HandleItemImageTap(object sender, System.EventArgs e)
         {
-            List<Photo> photos = await viewModel.GetPhotosForItem();
+            List<Photo> photos;
+            try
+            {
+                photos = await viewModel.GetPhotosForItem();
+            } catch (Exception ex)
+            {
+                HandleException(ex);
+                return;
+            }
+
 
             if (photos != null)
             {
@@ -103,7 +116,9 @@ namespace Component.DB.Views
             }
             else
             {
-                // TODO: popup error
+                var message = "An error occured when loading list of images.";
+                Debug.WriteLine(message);
+                await DisplayAlert("Error", message, "OK");
             }
         }
 
@@ -117,26 +132,49 @@ namespace Component.DB.Views
             await Navigation.PushAsync(new ItemLogsPage(viewModel.Item));
         }
 
+        async void HandleUploadImageClicked(object sender, System.EventArgs e)
+        {
+            if (await VerifyPrivilagesOrPropmtToLogInAsync(viewModel.Item))
+            {
+                var config = new StoreCameraMediaOptions()
+                {
+                    DefaultCamera = CameraDevice.Rear
+                };
+
+                var photo = await CrossMedia.Current.TakePhotoAsync(config);
+
+                if (photo != null)
+                {
+                    var s = photo.GetStream();
+                    var data = CdbApiFactory.ConvertStreamDataToBase64(s);
+                    var file = new FileUploadObject
+                    {
+                        FileName = "Mobile-Image.jpg",
+                        Base64Binary = data
+                    };
+
+                    //var stream = new MemoryStream(bytes); 
+                    var itemApi = CdbApiFactory.Instance.itemApi;
+                    try
+                    {
+                        var itemId = viewModel.Item.Id;
+                        await itemApi.UploadImageForItemAsync(itemId, file);
+                        var newItem = itemApi.GetItemById(itemId);
+                        updateItem(newItem);
+                    }
+                    catch (Exception ex)
+                    {
+                        HandleException(ex);
+                    }
+                }
+            }
+        }
+
         async void HandleEditItemClicked(object sender, System.EventArgs e)
         {
-            var factory = CdbApiFactory.Instance;
-            var authenticated = await factory.verifyUserAuthenticated();
-            if (authenticated == null || (bool)!authenticated)
+            if (await VerifyPrivilagesOrPropmtToLogInAsync(viewModel.Item))
             {
-                await DisplayAlert("Login Needed", "Login is required for this feature", "OK");
-                await Navigation.PushAsync(new LoginPage());
-            } else
-            {
-                var result = factory.itemApi.VerifyUserPermissionForItemAsync(viewModel.Item.Id);
-                if (result != null && (bool)await result)
-                {
-                    await Navigation.PushAsync(new EditItemDetailPage(viewModel.Item, this));
-                }
-                else
-                {
-                    await DisplayAlert("Error", "You don't have sufficient privilages to edit the item", result.ToString());
-                }
-
+                await Navigation.PushAsync(new EditItemDetailPage(viewModel.Item, this));
             }
         }
 

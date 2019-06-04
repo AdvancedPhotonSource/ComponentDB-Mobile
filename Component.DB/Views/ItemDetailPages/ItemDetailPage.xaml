@@ -3,7 +3,7 @@
 Copyright (c) UChicago Argonne, LLC. All rights reserved.
 See LICENSE file.
 -->
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Component.DB.Views.ItemDetailPage" Title="{Binding Title}">
+<d:CdbBasePage xmlns:d="clr-namespace:Component.DB.Views;assembly=Component.DB.Views" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Component.DB.Views.ItemDetailPage" Title="{Binding Title}">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Edit"
                      Clicked="HandleEditItemClicked"/>
@@ -32,7 +32,10 @@ See LICENSE file.
                 
                 <Button Text="View Logbook"
                         Clicked="HandleShowLogsClicked"/>
+                
+                <Button Text="Upload Image"
+                        Clicked="HandleUploadImageClicked"/>
             </StackLayout>
         </StackLayout>
     </ScrollView>
-</ContentPage>
+</d:CdbBasePage>
