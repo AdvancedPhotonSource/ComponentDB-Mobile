@@ -3,10 +3,9 @@
 Copyright (c) UChicago Argonne, LLC. All rights reserved.
 See LICENSE file.
 -->
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Component.DB.Views.PreferencePages.LoginPage">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Component.DB.Views.PreferencePages.LoginPage" Title="Login">
     <ContentPage.Content>
-         <StackLayout Spacing="20" Padding="15">
-            <Label Text="Login" FontSize="Large" />
+         <StackLayout Spacing="20" Padding="15">            
             <Label Text="Username" FontSize="Medium" />
             <Entry Text="{Binding username}" FontSize="Small" />
             <Label Text="Password" FontSize="Medium" />
