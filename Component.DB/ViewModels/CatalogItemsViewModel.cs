@@ -17,7 +17,7 @@ namespace Component.DB.ViewModels
 {
     public class CatalogItemsViewModel : ItemsViewModel
     {       
-        public CatalogItemsViewModel()
+        public CatalogItemsViewModel(ItemsPage itemsPage) : base(itemsPage)
         {
         }
 
@@ -25,7 +25,6 @@ namespace Component.DB.ViewModels
         {
             List<ItemDomainCatalog> itemCatalogList = await itemApi.GetCatalogItemsAsync();
             List<Item> itemList = itemCatalogList.ConvertAll(x => (Item)x); 
-
 
             return itemList; 
             //return await cdbRestApi.getCatalogItems(); 

@@ -14,7 +14,7 @@ namespace Component.DB.Views
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(true)]
-    public partial class ItemsPage : ContentPage
+    public partial class ItemsPage : CdbBasePage
     {       
 
         ItemsViewModel viewModel;
@@ -37,12 +37,12 @@ namespace Component.DB.Views
             Boolean isInventory = false; 
             if (itemType == MenuItemType.BrowseCatalog)
             {
-                BindingContext = viewModel = new CatalogItemsViewModel();
+                BindingContext = viewModel = new CatalogItemsViewModel(this);
             }
             else
             {
                 isInventory = true; 
-                BindingContext = viewModel = new InventoryItemsViewModel();
+                BindingContext = viewModel = new InventoryItemsViewModel(this);
             }
 
 
@@ -119,12 +119,18 @@ namespace Component.DB.Views
             base.OnAppearing();
 
             if (viewModel.Items.Count == 0)
+            {
                 viewModel.LoadItemsCommand.Execute(null);
+            }
+        }
 
-            Label CatalogLabel = new Label();
-            CatalogLabel.Text = "Catalog: ";
-            Console.Write(ItemsListView.Id);
-
+        public void onLoadItemsCommandExceptionChanged()
+        {
+            if (viewModel.LoadItemCommandException != null)
+            {
+                HandleException(viewModel.LoadItemCommandException);
+                viewModel.LoadItemCommandException = null;
+            }
         }
 
         public void HandleSearchTextChanged(Object sender, TextChangedEventArgs args) 

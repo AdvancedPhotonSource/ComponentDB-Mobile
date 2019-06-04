@@ -24,13 +24,17 @@ namespace Component.DB.ViewModels
         public Command LoadItemsCommand { get; set; }
         public Command FilterItemsCommand { get; }
 
-        public ItemsViewModel()
+        private Exception _LoadItemCommandException;
+        private ItemsPage ItemsPage;
+
+        public ItemsViewModel(ItemsPage itemsPage)
         {
             Title = getTitle();
             Items = new ObservableCollection<ItemDetailViewModel>();
             AllItems = new ObservableCollection<ItemDetailViewModel>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
             FilterItemsCommand = new Command((filterString) => Filter(filterString));
+            ItemsPage = itemsPage; 
 
             //MessagingCenter.Subscribe<NewItemPage, Domain>(this, "AddItem", (obj, item) =>
             //{
@@ -46,6 +50,7 @@ namespace Component.DB.ViewModels
                 return;
 
             IsBusy = true;
+            LoadItemCommandException = null;
 
             try
             {
@@ -63,6 +68,7 @@ namespace Component.DB.ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
+                LoadItemCommandException = ex; 
             }
             finally
             {
@@ -86,6 +92,18 @@ namespace Component.DB.ViewModels
                 if (item.Name.ToLower().Contains(filterString)) {
                     Items.Add(itemViewModel); 
                 }
+            }
+        }
+
+        public Exception LoadItemCommandException
+        {
+            get
+            {
+                return _LoadItemCommandException; 
+            } set
+            {
+                _LoadItemCommandException = value;
+                ItemsPage.onLoadItemsCommandExceptionChanged();
             }
         }
     }
