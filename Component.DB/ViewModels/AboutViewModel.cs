@@ -16,8 +16,10 @@ namespace Component.DB.ViewModels
             Title = "About";
 
             OpenWebCommand = new Command(() => Device.OpenUri(new Uri("https://xamarin.com/platform")));
+            OpenLicenseCommand = new Command(() => Device.OpenUri(new Uri("https://raw.githubusercontent.com/AdvancedPhotonSource/ComponentDB-Mobile/master/LICENSE")));
         }
 
         public ICommand OpenWebCommand { get; }
+        public ICommand OpenLicenseCommand { get; }
     }
 }
