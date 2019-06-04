@@ -13,7 +13,7 @@ using Xamarin.Forms;
 namespace Component.DB.Views.itemEditPages
 {
     [System.ComponentModel.DesignTimeVisible(true)]
-    public partial class EditItemDetailPage : ContentPage
+    public partial class EditItemDetailPage : CdbBasePage
     {
         ItemDetailEditViewModel viewModel;
         ItemDetailPage detailPage;
@@ -93,7 +93,7 @@ namespace Component.DB.Views.itemEditPages
                 resultItem = await viewModel.UpdateItem();
             } catch (Exception ex)
             {
-                await DisplayAlert("Error", ex.Message, "OK");
+                HandleException(ex);
                 return;
             }
 
@@ -113,7 +113,7 @@ namespace Component.DB.Views.itemEditPages
                         }
                         catch (Exception ex)
                         {
-                            await DisplayAlert("Error", ex.Message, "OK");
+                            HandleException(ex);
                             return; 
                         }
                     }
