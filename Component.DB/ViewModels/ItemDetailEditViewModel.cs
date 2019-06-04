@@ -34,7 +34,7 @@ namespace Component.DB.ViewModels
             } catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-                throw new Exception("Error Updating Item", ex); 
+                throw ex;
             }
         }
 
@@ -74,7 +74,7 @@ namespace Component.DB.ViewModels
             } catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-                throw new Exception("Error Updating Item Status", ex);
+                throw ex;
             }
         }
 
