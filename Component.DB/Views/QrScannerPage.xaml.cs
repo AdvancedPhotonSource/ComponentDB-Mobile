@@ -12,7 +12,7 @@ using ZXing;
 
 namespace Component.DB.Views
 {
-    public partial class QrScannerPage : ContentPage
+    public partial class QrScannerPage : CdbBasePage
     {
         ItemApi itemApi; 
 
@@ -40,14 +40,19 @@ namespace Component.DB.Views
                 {
                     qrIdStartIdx += 5;
                     string qrIdStr = scanContents.Substring(qrIdStartIdx);
-                    int qrId = Int16.Parse(qrIdStr); 
 
-
-                    // TODO handle new item with no results found
-                    Item item = await itemApi.GetItemByQrIdAsync(qrId);
-
-                    NavigateToScannedItem(item);
-
+                    try
+                    {
+                        int qrId = Int32.Parse(qrIdStr);
+                        Item item = await itemApi.GetItemByQrIdAsync(qrId);
+                        NavigateToScannedItem(item);
+                    } catch (Exception ex)
+                    {
+                        Device.BeginInvokeOnMainThread(async () =>
+                        { 
+                            HandleException(ex);
+                        }); 
+                    }
                 }
             }
         }
