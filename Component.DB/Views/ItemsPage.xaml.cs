@@ -8,6 +8,8 @@ using System.ComponentModel;
 using Xamarin.Forms;
 
 using Component.DB.ViewModels;
+using System.Collections.Generic;
+using Gov.ANL.APS.CDB.Model;
 
 namespace Component.DB.Views
 {
@@ -29,7 +31,12 @@ namespace Component.DB.Views
             setupView(itemType);
         }
 
-        private void setupView(MenuItemType itemType)
+        public ItemsPage(MenuItemType itemType, int parentItemId = -1)
+        {
+            setupView(itemType, parentItemId);
+        }
+
+        private void setupView(MenuItemType itemType, int parentItemId = -1)
         {
             InitializeComponent();
 
@@ -37,12 +44,12 @@ namespace Component.DB.Views
             Boolean isInventory = false; 
             if (itemType == MenuItemType.BrowseCatalog)
             {
-                BindingContext = viewModel = new CatalogItemsViewModel(this);
+                BindingContext = viewModel = new CatalogItemsViewModel(this, parentItemId);
             }
             else
             {
                 isInventory = true; 
-                BindingContext = viewModel = new InventoryItemsViewModel(this);
+                BindingContext = viewModel = new InventoryItemsViewModel(this, parentItemId);
             }
 
 
