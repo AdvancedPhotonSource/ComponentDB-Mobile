@@ -29,6 +29,7 @@ namespace Component.DB.Services
         private ItemApi itemApiInstance;
         private PropertyApi propertyApiInstance;
         private UsersApi usersApiInstace;
+        private TestApi testApiInstance; 
 
         public static CdbApiFactory Instance
         {
@@ -54,12 +55,19 @@ namespace Component.DB.Services
             authApiInstance = new AuthenticationApi(host);
             propertyApiInstance = new PropertyApi(host);
             usersApiInstace = new UsersApi(host);
+            testApiInstance = new TestApi(host);
 
             if (auth != null)
             {
                 var token = auth.AuthToken;
                 applyAuthToken(token); 
             }
+        }
+
+        public void LogoutActiveUser()
+        {
+            authApiInstance.LogOut();
+            mobileAppStorage.clearActiveAuth();
         }
 
         public async Task<bool> authenticateUserAsync(string username, string password)
@@ -106,6 +114,7 @@ namespace Component.DB.Services
             authApiInstance.Configuration.AddDefaultHeader(TOKEN_KEY, token);
             propertyApiInstance.Configuration.AddDefaultHeader(TOKEN_KEY, token);
             usersApi.Configuration.AddDefaultHeader(TOKEN_KEY, token);
+            testApiInstance.Configuration.AddDefaultHeader(TOKEN_KEY, token);
         }
 
         public async Task<bool?> verifyUserAuthenticated()
@@ -160,6 +169,14 @@ namespace Component.DB.Services
             }
         }
 
+        public TestApi testApi
+        {
+            get
+            {
+                return testApiInstance; 
+            }
+        }
+
         public static String ConvertStreamDataToBase64(Stream stream)
         {
             // Now read s into a byte buffer with a little padding.
@@ -195,7 +212,13 @@ namespace Component.DB.Services
                 } else
                 {
                     var json = apiException.ErrorContent;
-                    exceptionMessage = JsonConvert.DeserializeObject<ApiExceptionMessage>(json);
+                    try
+                    {
+                        exceptionMessage = JsonConvert.DeserializeObject<ApiExceptionMessage>(json);
+                    } catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex);
+                    }
                 }
             } 
 
