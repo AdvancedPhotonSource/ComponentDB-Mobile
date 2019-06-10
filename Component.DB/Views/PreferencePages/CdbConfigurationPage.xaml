@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<d:CdbBasePage xmlns:d="clr-namespace:Component.DB.Views;assembly=Component.DB.Views" 
+               xmlns="http://xamarin.com/schemas/2014/forms" 
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+               x:Class="Component.DB.Views.PreferencePages.CdbConfigurationPage"
+               Title="{Binding Title}">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <StackLayout Spacing="10" Padding="10" x:Name="EditItemsStackLayout">
+                    <Label Text="Active Host:" FontSize="Medium" />
+                    <Picker x:Name="ActiveHostPicker" 
+                            FontSize="Small" 
+                            ItemsSource="{Binding ActiveHosts}"
+                            SelectedItem="{Binding ActiveHost}" />
+                    
+                    <Label Text="Active User:" FontSize="Medium" />
+                    <Label Text="{Binding ActiveAuthUser}" FontSize="Small" />
+                </StackLayout>
+                <StackLayout Spacing="10" Padding="10" >    
+                    <Button Text="Test Connection" Clicked="HandleTestConnectionClicked" />
+                    <Button Text="Test Authentication" Clicked="HandleTestAuthClicked"
+                            IsEnabled="{Binding IsAuthenticated}"/>
+                    <Button Text="Login"
+                            IsEnabled="{Binding IsNotAuthenticated}"
+                            Clicked="HandleLoginClicked"/>
+                    <Button Text="Logout"
+                            Clicked="HandleLogoutClicked"
+                            IsEnabled="{Binding IsAuthenticated}"/>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</d:CdbBasePage>
