@@ -91,6 +91,17 @@ namespace Component.DB.Services
             return ActiveConfiguration;
         }
 
+        public void clearActiveAuth()
+        {
+            var activeAuth = getActiveAuth();
+            connection.Delete(activeAuth);
+
+            var config = getActiveConfiguration();
+            config.ActiveAuthId = -1;
+
+            connection.Update(config);
+        }
+
         public String CdbHostAddress
         {
             get
