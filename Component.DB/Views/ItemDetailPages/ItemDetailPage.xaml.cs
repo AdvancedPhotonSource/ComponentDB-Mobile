@@ -45,7 +45,8 @@ namespace Component.DB.Views
                 addBindingToDetailsStackLayout(domain.ItemIdentifier2Label, "Item.ItemIdentifier2");
             }
 
-            if (item.Domain.Name.Equals(Constants.inventoryDomainName))
+            var domainName = item.Domain.Name;
+            if (domainName.Equals(Constants.inventoryDomainName))
             {
                 ItemNameLabel.Text = "Tag:";
                 // Show catalog item information 
@@ -55,6 +56,18 @@ namespace Component.DB.Views
                 // Show status
                 viewModel.loadItemStatus();
                 addBindingToDetailsStackLayout("Status", "ItemStatusString"); 
+            }
+            else if (domainName.Equals(Constants.catalogDomainName))
+            {
+                var inventoryButton = new Button
+                {
+                    Text = "View Inventory",
+                };
+
+                inventoryButton.Clicked += HandleShowInventoryClicked; 
+
+
+                ItemDetailsButtonStackLayout.Children.Insert(0, inventoryButton);
             }
         }
 
@@ -120,6 +133,15 @@ namespace Component.DB.Views
                 Debug.WriteLine(message);
                 await DisplayAlert("Error", message, "OK");
             }
+        }
+
+        async void HandleShowInventoryClicked(object sender, System.EventArgs e)
+        {
+            var itemId = viewModel.Item.Id;
+
+            ItemsPage itemsPage = new ItemsPage(MenuItemType.BrowseInventory, (int)itemId);
+
+            await Navigation.PushAsync(itemsPage); 
         }
 
         async void HandleShowPropertiesClicked(object sender, System.EventArgs e)

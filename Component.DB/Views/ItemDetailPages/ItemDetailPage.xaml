@@ -26,7 +26,8 @@ See LICENSE file.
             </StackLayout>
             
         
-            <StackLayout Spacing="10" Padding="10">
+            <StackLayout Spacing="10" Padding="10"
+                         x:Name="ItemDetailsButtonStackLayout">
                 <Button Text="View Properties"
                         Clicked="HandleShowPropertiesClicked"/>
                 
