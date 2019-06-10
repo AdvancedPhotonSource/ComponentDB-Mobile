@@ -27,14 +27,18 @@ namespace Component.DB.ViewModels
         private Exception _LoadItemCommandException;
         private ItemsPage ItemsPage;
 
-        public ItemsViewModel(ItemsPage itemsPage)
+        private int parentItemId; 
+
+        public ItemsViewModel(ItemsPage itemsPage, int parentItemId = -1)
         {
             Title = getTitle();
             Items = new ObservableCollection<ItemDetailViewModel>();
             AllItems = new ObservableCollection<ItemDetailViewModel>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
             FilterItemsCommand = new Command((filterString) => Filter(filterString));
-            ItemsPage = itemsPage; 
+            ItemsPage = itemsPage;
+
+            this.parentItemId = parentItemId;
 
             //MessagingCenter.Subscribe<NewItemPage, Domain>(this, "AddItem", (obj, item) =>
             //{
@@ -56,7 +60,14 @@ namespace Component.DB.ViewModels
             {
                 Items.Clear();
                 AllItems.Clear();
-                var items = await getItems(); 
+
+                if (parentItemId == -1)
+                {
+                    items = await getItems();
+                } else
+                {
+                    items = await itemApi.GetItemsDerivedFromItemByItemIdAsync(parentItemId);
+                }
                                
                 foreach (var itemObj in items)
                 {

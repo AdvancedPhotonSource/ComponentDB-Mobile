@@ -17,7 +17,7 @@ namespace Component.DB.ViewModels
 {
     public class CatalogItemsViewModel : ItemsViewModel
     {       
-        public CatalogItemsViewModel(ItemsPage itemsPage) : base(itemsPage)
+        public CatalogItemsViewModel(ItemsPage itemsPage, int parentItemId = -1) : base(itemsPage, parentItemId)
         {
         }
 

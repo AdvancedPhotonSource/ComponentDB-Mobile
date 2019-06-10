@@ -18,7 +18,7 @@ namespace Component.DB.ViewModels
 {
     public class InventoryItemsViewModel : ItemsViewModel
     {       
-        public InventoryItemsViewModel(ItemsPage itemsPage) : base(itemsPage)
+        public InventoryItemsViewModel(ItemsPage itemsPage, int parentItemId = -1) : base(itemsPage, parentItemId)
         {
         }
 
