@@ -17,6 +17,8 @@ Global
 		Release|iPhoneSimulator = Release|iPhoneSimulator
 		Debug|iPhone = Debug|iPhone
 		Release|iPhone = Release|iPhone
+		Debug Zebra|Any CPU = Debug Zebra|Any CPU
+		Release Zebra|Any CPU = Release Zebra|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{EC843627-1DF0-464D-AABF-5C12132ECB63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{EC843627-1DF0-464D-AABF-5C12132ECB63}.Debug|iPhone.Build.0 = Debug|Any CPU
 		{EC843627-1DF0-464D-AABF-5C12132ECB63}.Release|iPhone.ActiveCfg = Release|Any CPU
 		{EC843627-1DF0-464D-AABF-5C12132ECB63}.Release|iPhone.Build.0 = Release|Any CPU
+		{EC843627-1DF0-464D-AABF-5C12132ECB63}.Debug Zebra|Any CPU.ActiveCfg = Debug Zebra|Any CPU
+		{EC843627-1DF0-464D-AABF-5C12132ECB63}.Debug Zebra|Any CPU.Build.0 = Debug Zebra|Any CPU
+		{EC843627-1DF0-464D-AABF-5C12132ECB63}.Release Zebra|Any CPU.ActiveCfg = Release Zebra|Any CPU
+		{EC843627-1DF0-464D-AABF-5C12132ECB63}.Release Zebra|Any CPU.Build.0 = Release Zebra|Any CPU
 		{197388E0-4F2A-4142-895F-73C492CD23BF}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
 		{197388E0-4F2A-4142-895F-73C492CD23BF}.Debug|Any CPU.Build.0 = Debug|iPhoneSimulator
 		{197388E0-4F2A-4142-895F-73C492CD23BF}.Release|Any CPU.ActiveCfg = Release|iPhoneSimulator
@@ -43,6 +49,10 @@ Global
 		{197388E0-4F2A-4142-895F-73C492CD23BF}.Debug|iPhone.Build.0 = Debug|iPhone
 		{197388E0-4F2A-4142-895F-73C492CD23BF}.Release|iPhone.ActiveCfg = Release|iPhone
 		{197388E0-4F2A-4142-895F-73C492CD23BF}.Release|iPhone.Build.0 = Release|iPhone
+		{197388E0-4F2A-4142-895F-73C492CD23BF}.Debug Zebra|Any CPU.ActiveCfg = Debug|iPhoneSimulator
+		{197388E0-4F2A-4142-895F-73C492CD23BF}.Debug Zebra|Any CPU.Build.0 = Debug|iPhoneSimulator
+		{197388E0-4F2A-4142-895F-73C492CD23BF}.Release Zebra|Any CPU.ActiveCfg = Release|iPhoneSimulator
+		{197388E0-4F2A-4142-895F-73C492CD23BF}.Release Zebra|Any CPU.Build.0 = Release|iPhoneSimulator
 		{50CC8A67-2EE5-41AB-81FD-77AF091EC90A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{50CC8A67-2EE5-41AB-81FD-77AF091EC90A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50CC8A67-2EE5-41AB-81FD-77AF091EC90A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -55,6 +65,10 @@ Global
 		{50CC8A67-2EE5-41AB-81FD-77AF091EC90A}.Debug|iPhone.Build.0 = Debug|Any CPU
 		{50CC8A67-2EE5-41AB-81FD-77AF091EC90A}.Release|iPhone.ActiveCfg = Release|Any CPU
 		{50CC8A67-2EE5-41AB-81FD-77AF091EC90A}.Release|iPhone.Build.0 = Release|Any CPU
+		{50CC8A67-2EE5-41AB-81FD-77AF091EC90A}.Debug Zebra|Any CPU.ActiveCfg = Debug|Any CPU
+		{50CC8A67-2EE5-41AB-81FD-77AF091EC90A}.Debug Zebra|Any CPU.Build.0 = Debug|Any CPU
+		{50CC8A67-2EE5-41AB-81FD-77AF091EC90A}.Release Zebra|Any CPU.ActiveCfg = Release|Any CPU
+		{50CC8A67-2EE5-41AB-81FD-77AF091EC90A}.Release Zebra|Any CPU.Build.0 = Release|Any CPU
 		{D9AB1A18-1EBC-4649-96E3-22913DC84234}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D9AB1A18-1EBC-4649-96E3-22913DC84234}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9AB1A18-1EBC-4649-96E3-22913DC84234}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -67,5 +81,9 @@ Global
 		{D9AB1A18-1EBC-4649-96E3-22913DC84234}.Debug|iPhone.Build.0 = Debug|Any CPU
 		{D9AB1A18-1EBC-4649-96E3-22913DC84234}.Release|iPhone.ActiveCfg = Release|Any CPU
 		{D9AB1A18-1EBC-4649-96E3-22913DC84234}.Release|iPhone.Build.0 = Release|Any CPU
+		{D9AB1A18-1EBC-4649-96E3-22913DC84234}.Debug Zebra|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9AB1A18-1EBC-4649-96E3-22913DC84234}.Debug Zebra|Any CPU.Build.0 = Debug|Any CPU
+		{D9AB1A18-1EBC-4649-96E3-22913DC84234}.Release Zebra|Any CPU.ActiveCfg = Release|Any CPU
+		{D9AB1A18-1EBC-4649-96E3-22913DC84234}.Release Zebra|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,3 +1,6 @@
+# Generated during prebuild based on build configuration
+Component.DB.Android/Properties/AndroidManifest.xml
+
 # globs
 Makefile.in
 *.userprefs
