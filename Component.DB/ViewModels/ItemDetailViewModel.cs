@@ -25,6 +25,12 @@ namespace Component.DB.ViewModels
             updateTitle();
         }
 
+        public void loadFromQrId(int qrId)
+        {
+            this.Item = itemApi.GetItemByQrId(qrId);
+            updateTitle(); 
+        }
+
         public void updateTitle()
         {
             if (Item != null) 
