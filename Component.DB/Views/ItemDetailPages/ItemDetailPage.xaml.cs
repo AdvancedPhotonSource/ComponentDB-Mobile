@@ -56,7 +56,10 @@ namespace Component.DB.Views
                 addBindingToDetailsStackLayout("QR Id", "FormattedQrId", 0);
 
                 // Show status
-                viewModel.loadItemStatus();
+                viewModel.LoadItemStatus();
+                viewModel.LoadItemLocationInformation();
+
+                addBindingToDetailsStackLayout("Location", "ItemLocationInformation.LocationString");
                 addBindingToDetailsStackLayout("Status", "ItemStatusString"); 
             }
             else if (domainName.Equals(Constants.catalogDomainName))
@@ -205,7 +208,8 @@ namespace Component.DB.Views
         public void updateItem(Item item)
         {
             var detailViewModel = new ItemDetailViewModel(item);
-            detailViewModel.loadItemStatus();
+            detailViewModel.LoadItemStatus();
+            detailViewModel.LoadItemLocationInformation();
             BindingContext = this.viewModel = detailViewModel;
         }
     }

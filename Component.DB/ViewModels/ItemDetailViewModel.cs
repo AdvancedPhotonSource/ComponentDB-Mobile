@@ -16,7 +16,8 @@ namespace Component.DB.ViewModels
     public class ItemDetailViewModel : BaseViewModel
     {
         private Item _Item;
-        private PropertyValue _ItemStatus; 
+        private PropertyValue _ItemStatus;
+        private ItemLocationInformation _ItemLocationInformation;
 
         public ItemDetailViewModel(Item item = null)
         {
@@ -78,9 +79,14 @@ namespace Component.DB.ViewModels
             }
         }
 
-        public PropertyValue loadItemStatus()
+        private Boolean verifyItemIsInventory()
         {
-            if (!Item.Domain.Name.Equals(Constants.inventoryDomainName))
+            return Item.Domain.Name.Equals(Constants.inventoryDomainName); 
+        }
+
+        public PropertyValue LoadItemStatus()
+        {
+            if (!verifyItemIsInventory())
             {
                 return null; 
             }
@@ -97,6 +103,27 @@ namespace Component.DB.ViewModels
             }
 
             return _ItemStatus;
+        }
+
+        public ItemLocationInformation LoadItemLocationInformation()
+        {
+            if (!verifyItemIsInventory())
+            {
+                return null;
+            }
+            if (_ItemLocationInformation == null)
+            {
+                try
+                {
+                    _ItemLocationInformation = itemApi.GetItemLocation(Item.Id);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+            }
+
+            return _ItemLocationInformation; 
         }
 
         public string PrimaryImageUrlScaled
@@ -138,6 +165,14 @@ namespace Component.DB.ViewModels
             set
             {
                 this._Item = value;
+            }
+        }
+
+        public ItemLocationInformation ItemLocationInformation
+        {
+            get
+            {
+                return _ItemLocationInformation; 
             }
         }
     }
