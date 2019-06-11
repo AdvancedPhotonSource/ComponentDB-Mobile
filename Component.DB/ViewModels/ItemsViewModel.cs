@@ -61,6 +61,7 @@ namespace Component.DB.ViewModels
                 Items.Clear();
                 AllItems.Clear();
 
+                List<Item> items; 
                 if (parentItemId == -1)
                 {
                     items = await getItems();
