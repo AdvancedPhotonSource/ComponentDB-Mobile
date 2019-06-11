@@ -113,6 +113,22 @@ namespace Component.DB.ViewModels
             }
         }
 
+        public string FormattedQrId
+        {
+            get
+            {
+                var qrId = Item.QrId;
+                if (qrId == null)
+                {
+                    return "";
+                }
+                else
+                {
+                    return String.Format("{0:000 000 000}", qrId);
+                }
+            }
+        }
+
         public Item Item
         {
             get

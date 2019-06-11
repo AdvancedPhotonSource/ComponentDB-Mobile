@@ -53,6 +53,8 @@ namespace Component.DB.Views
                 // TODO use catalog item attriibute 
                 addBindingToDetailsStackLayout("Catalog Item", "Item.DerivedFromItem.Name", 0);
 
+                addBindingToDetailsStackLayout("QR Id", "FormattedQrId", 0);
+
                 // Show status
                 viewModel.loadItemStatus();
                 addBindingToDetailsStackLayout("Status", "ItemStatusString"); 
