@@ -19,6 +19,7 @@ using System.Text;
 using Plugin.Media.Abstractions;
 using Plugin.Media;
 using System.Diagnostics;
+using Component.DB.Services.CdbEventArgs;
 
 namespace Component.DB.Views
 {
@@ -60,6 +61,8 @@ namespace Component.DB.Views
                 viewModel.LoadItemLocationInformation();
 
                 addBindingToDetailsStackLayout("Location", "ItemLocationInformation.LocationString");
+                addBindingToDetailsStackLayout("Location Details ", "ItemLocationInformation.LocationDetails");
+
                 addBindingToDetailsStackLayout("Status", "ItemStatusString"); 
             }
             else if (domainName.Equals(Constants.catalogDomainName))
@@ -69,9 +72,7 @@ namespace Component.DB.Views
                     Text = "View Inventory",
                 };
 
-                inventoryButton.Clicked += HandleShowInventoryClicked; 
-
-
+                inventoryButton.Clicked += HandleShowInventoryClicked;
                 ItemDetailsButtonStackLayout.Children.Insert(0, inventoryButton);
             }
         }
