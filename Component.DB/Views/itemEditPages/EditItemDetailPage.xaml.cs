@@ -19,14 +19,14 @@ namespace Component.DB.Views.itemEditPages
         ItemDetailEditViewModel viewModel;
         ItemDetailPage detailPage;
 
-        Picker statusPicker; 
+        Picker statusPicker;
 
         public EditItemDetailPage(Item item, ItemDetailPage detailPage)
         {
             InitializeComponent();
 
             this.viewModel = new ItemDetailEditViewModel(item);
-            this.detailPage = detailPage; 
+            this.detailPage = detailPage;
             BindingContext = this.viewModel;
 
             var domain = item.Domain;
@@ -38,7 +38,7 @@ namespace Component.DB.Views.itemEditPages
                 addEditBindingToEditItemsStackLayout(domain.ItemIdentifier2Label, "Item.ItemIdentifier2");
             }
 
-            if (item.Domain.Name.Equals(Constants.inventoryDomainName)) 
+            if (item.Domain.Name.Equals(Constants.inventoryDomainName))
             {
                 viewModel.LoadItemStatus();
                 viewModel.LoadItemLocationInformation();
@@ -46,7 +46,7 @@ namespace Component.DB.Views.itemEditPages
                 var propertyApi = CdbApiFactory.Instance.propertyApi;
                 var type = propertyApi.GetInventoryStatusPropertyType();
 
-                statusPicker = new Picker 
+                statusPicker = new Picker
                 {
                     Title = "Item Status",
                 };
@@ -56,11 +56,12 @@ namespace Component.DB.Views.itemEditPages
                 }
 
                 var statusString = viewModel.ItemStatusString;
-                if (statusPicker.Items.Contains(statusString)) 
+                if (statusPicker.Items.Contains(statusString))
                 {
-                    statusPicker.SelectedItem = statusString; 
+                    statusPicker.SelectedItem = statusString;
                 }
 
+                addEditBindingToEditItemsStackLayout("QR Id", "QrIdEntry", null, Keyboard.Numeric);
                 addEditBindingToEditItemsStackLayout("Status", null, statusPicker);
 
                 // Add Location 
@@ -70,20 +71,24 @@ namespace Component.DB.Views.itemEditPages
                 var buttonChangeLocation = new Button { Text = "Change Location" };
                 var buttonClearLocation = new Button { Text = "Clear Location" };
                 buttonChangeLocation.Clicked += ChangeLocationEventHandler;
-                buttonClearLocation.Clicked += ClearLocationEventHandler; 
+                buttonClearLocation.Clicked += ClearLocationEventHandler;
 
                 addEditBindingToEditItemsStackLayout("Location", null, itemValueLabel);
                 EditItemsStackLayout.Children.Add(buttonChangeLocation);
                 EditItemsStackLayout.Children.Add(buttonClearLocation);
                 addEditBindingToEditItemsStackLayout("Location Details ", "ItemLocationInformation.LocationDetails");
-            } 
+            }
         }
 
-        private void addEditBindingToEditItemsStackLayout(string label, String binding = null, View editObject = null)
+        private void addEditBindingToEditItemsStackLayout(string label, String binding = null, View editObject = null, Keyboard keyboard = null)
         {
+            if (keyboard == null)
+            {
+                keyboard = Keyboard.Default;
+            }
             if (binding == null && editObject == null)
             {
-                throw new Exception("A Binding or edit object must be specified."); 
+                throw new Exception("A Binding or edit object must be specified.");
             }
 
             Label nameLabel = new Label
@@ -94,8 +99,12 @@ namespace Component.DB.Views.itemEditPages
 
             if (editObject == null)
             {
-                editObject = new Entry { FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Entry)) };
-                editObject.SetBinding(Entry.TextProperty, binding); 
+                editObject = new Entry
+                {
+                    FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Entry)),
+                    Keyboard = keyboard
+                };
+                editObject.SetBinding(Entry.TextProperty, binding);
             }
 
             EditItemsStackLayout.Children.Add(nameLabel);
@@ -133,9 +142,11 @@ namespace Component.DB.Views.itemEditPages
         async void HandleSaveClicked(object sender, System.EventArgs e)
         {
             Item resultItem = null;
-            try {
+            try
+            {
                 resultItem = await viewModel.UpdateItem();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 HandleException(ex);
                 return;
@@ -158,7 +169,7 @@ namespace Component.DB.Views.itemEditPages
                         catch (Exception ex)
                         {
                             HandleException(ex);
-                            return; 
+                            return;
                         }
                     }
                 }
@@ -166,10 +177,11 @@ namespace Component.DB.Views.itemEditPages
                 try
                 {
                     await viewModel.UpdateItemLocationAsync();
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     HandleException(ex);
-                    return; 
+                    return;
                 }
             }
 

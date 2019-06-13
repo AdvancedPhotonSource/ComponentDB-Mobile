@@ -125,5 +125,28 @@ namespace Component.DB.ViewModels
             }
         }
 
+        public string QrIdEntry
+        {
+            get
+            {
+                if (Item.QrId != null)
+                {
+                    return Item.QrId.ToString();
+                }
+                return "";
+            } set
+            {
+                try
+                {
+                    var result = int.Parse(value);
+                    Item.QrId = result;
+                } catch (Exception ex)
+                {
+                    Item.QrId = null; 
+                }
+
+            }
+        }
+
     }
 }
