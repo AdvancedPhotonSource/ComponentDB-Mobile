@@ -174,6 +174,11 @@ namespace Component.DB.ViewModels
             {
                 return _ItemLocationInformation; 
             }
+            set
+            {
+                _ItemLocationInformation = value;
+                OnPropertyChanged();
+            }
         }
     }
 }
