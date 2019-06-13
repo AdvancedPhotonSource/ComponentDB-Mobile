@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Component.DB.Views.itemEditPages.ItemLocationSelectionPage" Title="{Binding Title}">
+    <ContentPage.Content>
+        <StackLayout Spacing="10" Padding="10">
+            <ListView x:Name="ItemsListView" 
+                      ItemsSource="{Binding LocationItemList}" 
+                      VerticalOptions="FillAndExpand" 
+                      HasUnevenRows="true" 
+                      CachingStrategy="RecycleElement"
+                      RefreshCommand="{Binding LoadItemsCommand}" 
+                      IsPullToRefreshEnabled="true" 
+                      IsRefreshing="{Binding IsBusy, Mode=OneWay}" 
+                      ItemSelected="OnItemSelected">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="10">
+                                <Label Text="{Binding Name}" LineBreakMode="NoWrap" Style="{DynamicResource TitleStyle}" FontSize="16" Grid.Row="0" Grid.Column="1" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <BoxView Color="Black" WidthRequest="100" HeightRequest="2"/> 
+            <Label Text="Selected Location:" FontSize="Medium" x:Name="ItemNameLabel" />
+            <Label Text="{Binding ParentItem.Name}" FontSize="Small" />
+            <Button Text="Select Current Location" 
+                    IsEnabled="{Binding IsSelectCurrentLocationEnabled}"
+                    Clicked="HandleSelectCurrentLocationAsync" /> 
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
