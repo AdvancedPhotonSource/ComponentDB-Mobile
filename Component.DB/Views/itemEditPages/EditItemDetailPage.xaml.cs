@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Component.DB.Services;
+using Component.DB.Services.CdbEventArgs;
 using Component.DB.ViewModels;
 using Gov.ANL.APS.CDB.Model;
 using Xamarin.Forms;
@@ -38,10 +39,12 @@ namespace Component.DB.Views.itemEditPages
             }
 
             if (item.Domain.Name.Equals(Constants.inventoryDomainName)) 
-            {            
+            {
+                viewModel.LoadItemStatus();
+                viewModel.LoadItemLocationInformation();
+
                 var propertyApi = CdbApiFactory.Instance.propertyApi;
                 var type = propertyApi.GetInventoryStatusPropertyType();
-                viewModel.LoadItemStatus();  
 
                 statusPicker = new Picker 
                 {
@@ -58,9 +61,22 @@ namespace Component.DB.Views.itemEditPages
                     statusPicker.SelectedItem = statusString; 
                 }
 
-                addEditBindingToEditItemsStackLayout("Status", null, statusPicker); 
-            } 
+                addEditBindingToEditItemsStackLayout("Status", null, statusPicker);
 
+                // Add Location 
+
+                Label itemValueLabel = new Label { FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)) };
+                itemValueLabel.SetBinding(Label.TextProperty, "ItemLocationInformation.LocationString");
+                var buttonChangeLocation = new Button { Text = "Change Location" };
+                var buttonClearLocation = new Button { Text = "Clear Location" };
+                buttonChangeLocation.Clicked += ChangeLocationEventHandler;
+                buttonClearLocation.Clicked += ClearLocationEventHandler; 
+
+                addEditBindingToEditItemsStackLayout("Location", null, itemValueLabel);
+                EditItemsStackLayout.Children.Add(buttonChangeLocation);
+                EditItemsStackLayout.Children.Add(buttonClearLocation);
+                addEditBindingToEditItemsStackLayout("Location Details ", "ItemLocationInformation.LocationDetails");
+            } 
         }
 
         private void addEditBindingToEditItemsStackLayout(string label, String binding = null, View editObject = null)
@@ -84,6 +100,34 @@ namespace Component.DB.Views.itemEditPages
 
             EditItemsStackLayout.Children.Add(nameLabel);
             EditItemsStackLayout.Children.Add(editObject);
+        }
+
+        void ChangeLocationEventHandler(Object sender, EventArgs args)
+        {
+
+            ItemLocationSelectionPage page = new ItemLocationSelectionPage();
+            page.LocationSelected += LocationChangedEventHandler;
+            Navigation.PushAsync(page);
+        }
+
+        void ClearLocationEventHandler(Object sender, EventArgs args)
+        {
+            updateLocationInfo(null, "");
+        }
+
+        void LocationChangedEventHandler(Object sender, LocationSelectedEventArgs args)
+        {
+            updateLocationInfo(args.SelectedLocation, args.LocationString);
+        }
+
+        void updateLocationInfo(ItemDomainLocation location, String locationString)
+        {
+            var locationInfo = viewModel.ItemLocationInformation;
+            locationInfo.LocationItem = location;
+            locationInfo.LocationString = locationString;
+
+            //Fire the value changed event. 
+            viewModel.ItemLocationInformation = locationInfo;
         }
 
         async void HandleSaveClicked(object sender, System.EventArgs e)
@@ -117,6 +161,15 @@ namespace Component.DB.Views.itemEditPages
                             return; 
                         }
                     }
+                }
+
+                try
+                {
+                    await viewModel.UpdateItemLocationAsync();
+                } catch (Exception ex)
+                {
+                    HandleException(ex);
+                    return; 
                 }
             }
 
