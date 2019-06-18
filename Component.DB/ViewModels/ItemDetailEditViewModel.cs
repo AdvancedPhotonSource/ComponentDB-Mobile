@@ -51,17 +51,25 @@ namespace Component.DB.ViewModels
                 ItemLocationInformation.LocationDetails = "";
             if (dbLocationInformation.LocationDetails == null)            
                 dbLocationInformation.LocationDetails = "";
-            if (ItemLocationInformation.LocationString == null)
-                ItemLocationInformation.LocationString = "";
-            if (dbLocationInformation.LocationString == null)
-                dbLocationInformation.LocationString = "";
+
+            // -1 means null
+            int curLocationd = -1;
+            int origLocationId = -1; 
+            if (ItemLocationInformation.LocationItem != null)
+            {
+                curLocationd = (int)ItemLocationInformation.LocationItem.Id;
+            }
+            if (dbLocationInformation.LocationItem != null)
+            {
+                origLocationId = (int)dbLocationInformation.LocationItem.Id;
+            }
 
             var updateNeeded = false;
             if (!ItemLocationInformation.LocationDetails.Equals(dbLocationInformation.LocationDetails))
             {
                 updateNeeded = true;
             }
-            else if (!ItemLocationInformation.LocationString.Equals(dbLocationInformation.LocationString))
+            else if (curLocationd != origLocationId)
             {
                 updateNeeded = true;
             }
