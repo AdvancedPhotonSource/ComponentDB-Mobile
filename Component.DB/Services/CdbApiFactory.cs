@@ -226,7 +226,7 @@ namespace Component.DB.Services
             {
                 exceptionMessage = new ApiExceptionMessage
                 {
-                    SimpleName = "Unknown Error",
+                    SimpleName = "Error",
                     Message = exception.Message 
                 };
             }
