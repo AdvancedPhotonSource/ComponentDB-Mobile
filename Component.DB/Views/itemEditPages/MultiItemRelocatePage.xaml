@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<d:CdbBasePage xmlns:d="clr-namespace:Component.DB.Views;assembly=Component.DB.Views" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Component.DB.Views.itemEditPages.MultiItemRelocatePage" Title="{Binding Title}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Scan" Clicked="HandleScanClicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>                                    
+            <Label Text="Selected Items:" FontSize="Large" />
+            <Label Text="Scan QR code to begin" />
+            <ListView x:Name="ItemsListView" ItemsSource="{Binding LocatableItemList}" 
+                      VerticalOptions="FillAndExpand" 
+                      HasUnevenRows="true" 
+                      CachingStrategy="RecycleElement">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="10">
+                                <Label Text="{Binding FormattedQrId}" LineBreakMode="NoWrap" Style="{DynamicResource TitleStyle}" FontSize="16" Grid.Row="0" Grid.Column="1" />
+                                <Label Text="{Binding Item.Name}" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Text="Clear List" Clicked="HandleClearItemsClicked" /> 
+            <BoxView Color="Black" WidthRequest="100" HeightRequest="2"/>             
+            <Label Text="Selected Location:" FontSize="Large" />
+            <Label Text="{Binding SelectedLocation.Name}"  />            
+            <Button Text="Manually Select Location" Clicked="HandleSelectLocationManually" /> 
+            <BoxView Color="Black" WidthRequest="100" HeightRequest="2"/> 
+            <Button Text="Relocate Items" Clicked="HandleRelocateItemsClicked" />
+        </StackLayout>
+    </ContentPage.Content>
+</d:CdbBasePage>
