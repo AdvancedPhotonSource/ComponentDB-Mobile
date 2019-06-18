@@ -16,6 +16,13 @@
                     
                     <Label Text="Active User:" FontSize="Medium" />
                     <Label Text="{Binding ActiveAuthUser}" FontSize="Small" />
+                    
+                    <Label Text="Active Scanning Action:" FontSize="Medium" />
+                    <Picker x:Name="scanningActionPicker" 
+                            ItemsSource="{Binding ScanningActions}" 
+                            ItemDisplayBinding="{Binding DisplayText}"
+                            SelectedItem="{Binding ActiveScanningActionItem}"
+                            FontSize="Small" />
                 </StackLayout>
                 <StackLayout Spacing="10" Padding="10" >    
                     <Button Text="Test Connection" Clicked="HandleTestConnectionClicked" />

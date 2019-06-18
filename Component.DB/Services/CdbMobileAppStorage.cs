@@ -3,6 +3,7 @@
  * See LICENSE file.
  */
 using System;
+using System.ComponentModel;
 using System.IO;
 using Component.DB.Services.CdbMobileAppStoreModel;
 using SQLite;
@@ -17,6 +18,14 @@ namespace Component.DB.Services
 
         private const string SQLITE_DB_PATH = "localstore.db";
         private const string ACTIVE_CONFIGURATION_ID_KEY = "ActiveConfiguration";
+
+        public enum ScanningAction
+        {
+            DetailsPage,
+            RelocateItem
+        }
+        private const string DEFAULT_SCANNING_ACTION_KEY = "DefaultScanningAction";
+
 
         private SQLiteConnection connection;
         private ConnectionConfiguration ActiveConfiguration;
@@ -33,6 +42,17 @@ namespace Component.DB.Services
         {
             string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), SQLITE_DB_PATH);
             connection = new SQLiteConnection(dbPath);
+        }
+
+        public void UpdateScanningAction(ScanningAction action)
+        {
+            Preferences.Set(DEFAULT_SCANNING_ACTION_KEY, (int)action);
+        }
+
+        public ScanningAction GetScanningAction()
+        {
+            var result = Preferences.Get(DEFAULT_SCANNING_ACTION_KEY, (int)ScanningAction.DetailsPage); 
+            return (ScanningAction)result; 
         }
 
         public void addConnection(string hostPath)
