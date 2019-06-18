@@ -15,6 +15,7 @@ namespace Component.DB
         public static string ImageExtensionScaled = ".scaled";
 
         public static string inventoryDomainName = "Inventory";
-        public static string catalogDomainName = "Catalog";  
+        public static string catalogDomainName = "Catalog";
+        public static string locationDomainName = "Location";
     }
 }
