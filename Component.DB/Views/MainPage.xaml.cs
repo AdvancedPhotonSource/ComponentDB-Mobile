@@ -8,9 +8,12 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Component.DB.Services;
+using Component.DB.Services.CdbEventArgs;
 using Component.DB.ViewModels;
+using Component.DB.Views.itemEditPages;
 using Component.DB.Views.PreferencePages;
 using Xamarin.Forms;
+using static Component.DB.Services.CdbMobileAppStorage;
 
 namespace Component.DB.Views
 {
@@ -20,6 +23,10 @@ namespace Component.DB.Views
     public partial class MainPage : MasterDetailPage
     {
         Dictionary<int, NavigationPage> MenuPages = new Dictionary<int, NavigationPage>();
+        public event EventHandler<NewRootPageNavigationEventArgs> NewMenuNavigation;
+        private MenuItemType _ActiveMenuItemPage;
+        private CdbMobileAppStorage appStorage; 
+
         public MainPage()
         {
             InitializeComponent();
@@ -28,6 +35,7 @@ namespace Component.DB.Views
             MenuPages.Add((int)MenuItemType.BrowseCatalog, (NavigationPage)Detail);
 
             MessagingCenter.Subscribe<QrMessage>(this, QrMessage.MESSAGE_SCANNED_TOPIC, ItemScannedAction);
+            appStorage = CdbMobileAppStorage.Instance;
         }
 
         public async Task NavigateFromMenu(int id)
@@ -41,6 +49,9 @@ namespace Component.DB.Views
                         break;
                     case (int)MenuItemType.BrowseCatalog:
                         MenuPages.Add(id, new NavigationPage(new ItemsPage(MenuItemType.BrowseCatalog)));
+                        break;
+                    case (int)MenuItemType.RelocateItems:
+                        MenuPages.Add(id, new NavigationPage(new MultiItemRelocatePage()));
                         break;
                     case (int)MenuItemType.BrowseInventory:
                         MenuPages.Add(id, new NavigationPage(new ItemsPage(MenuItemType.BrowseInventory)));
@@ -57,6 +68,11 @@ namespace Component.DB.Views
                 }
             }
 
+            MenuItemType menuItemType = (MenuItemType)id;
+            _ActiveMenuItemPage = menuItemType;
+            var args = new NewRootPageNavigationEventArgs(menuItemType);
+            NewMenuNavigation(this, args);
+
             NavigationPage newPage = MenuPages[id];
             await NavigateToNewPage(newPage);
         }
@@ -66,6 +82,33 @@ namespace Component.DB.Views
             try
             {
                 var qrId = message.ParseQrCode();
+
+                var activeScanningMethod = appStorage.GetScanningAction(); 
+
+                if (activeScanningMethod == ScanningAction.RelocateItem)
+                {
+                    Boolean done = false;
+                    Device.BeginInvokeOnMainThread(async () =>
+                    {
+                        await NavigateFromMenu((int)MenuItemType.RelocateItems);
+                        done = true;
+                    });
+                    while (!done)
+                    {
+                        // Wait for the navigate to complete. 
+                    }
+                }
+                if (Detail.GetType() == typeof(NavigationPage)) 
+                {
+                    var root = ((NavigationPage)Detail).RootPage; 
+                    if (root.GetType() == typeof(MultiItemRelocatePage))
+                    {
+                        ((MultiItemRelocatePage)root).addQrId(qrId);
+                        return;
+                    }
+                }
+
+
                 var detailsModel = new ItemDetailViewModel();
                 detailsModel.loadFromQrId(qrId);
                 var detailsPage = new ItemDetailPage(detailsModel);
@@ -91,6 +134,7 @@ namespace Component.DB.Views
         public async Task NavigateToNewPageFromApp(NavigationPage newPage)
         {
             MenuPageObj.ClearSelection();
+            _ActiveMenuItemPage = MenuItemType.NoSelection; 
             await NavigateToNewPage(newPage);
         }
 
@@ -104,6 +148,14 @@ namespace Component.DB.Views
                     await Task.Delay(100);
 
                 IsPresented = false;
+            }
+        }
+
+        public MenuItemType ActiveMenuItemPage
+        {
+            get
+            {
+                return _ActiveMenuItemPage;
             }
         }
     }
