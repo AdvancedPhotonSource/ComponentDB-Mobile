@@ -4,6 +4,7 @@
  */
 using System.Collections.Generic;
 using System.ComponentModel;
+using Component.DB.Services.CdbEventArgs;
 using Component.DB.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -24,6 +25,7 @@ namespace Component.DB.Views
             menuItems = new List<HomeMenuItem>
             {
                 new HomeMenuItem {Id = MenuItemType.ScanQRCode, Title="Scan QR Code" },
+                new HomeMenuItem {Id = MenuItemType.RelocateItems, Title="Relocate Items" },
                 new HomeMenuItem {Id = MenuItemType.BrowseCatalog, Title="Browse Catalog" },
                 new HomeMenuItem {Id = MenuItemType.BrowseInventory, Title="Browse Inventory" },
                 new HomeMenuItem {Id = MenuItemType.Settings, Title="Configuration" },
@@ -33,14 +35,36 @@ namespace Component.DB.Views
             ListViewMenu.ItemsSource = menuItems;
 
             ListViewMenu.SelectedItem = menuItems[(int)MenuItemType.BrowseCatalog];
-            ListViewMenu.ItemSelected += async (sender, e) =>
-            {
-                if (e.SelectedItem == null)
-                    return;
+        }
 
-                var id = (int)((HomeMenuItem)e.SelectedItem).Id;
-                await RootPage.NavigateFromMenu(id);
-            };
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            ListViewMenu.ItemSelected += MenuItemNavigationItemSelected;
+            RootPage.NewMenuNavigation += NewMenuNavigationFromApp;
+        }
+
+        public void NewMenuNavigationFromApp(object sender, NewRootPageNavigationEventArgs e)
+        {
+            var curPage = e.CurrentPageMenuItem;
+            ListViewMenu.SelectedItem = menuItems[(int)curPage];
+        }
+
+        public async void MenuItemNavigationItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem == null)
+                return;
+
+            var activePage = (int)RootPage.ActiveMenuItemPage; 
+            var reqPage = (int)((HomeMenuItem)e.SelectedItem).Id;
+
+            if (activePage == reqPage)
+            {
+                return; 
+            }
+
+            await RootPage.NavigateFromMenu(reqPage);
         }
 
         public void ClearSelection()

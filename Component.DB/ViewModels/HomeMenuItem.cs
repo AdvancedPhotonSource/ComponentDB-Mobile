@@ -11,13 +11,17 @@ namespace Component.DB.ViewModels
     public enum MenuItemType
     {
         ScanQRCode,
+        RelocateItems, 
         BrowseCatalog,
         BrowseInventory,
         Settings,
         About,
 
         // Subpages randered as mainpage
-        ItemDetails
+        ItemDetails,
+
+        //Keep last
+        NoSelection
     }
     public class HomeMenuItem
     {
