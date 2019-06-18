@@ -56,6 +56,7 @@
     <Folder Include="Services\CdbMobileAppStoreModel\" />
     <Folder Include="Views\itemEditPages\" />
     <Folder Include="Services\CdbEventArgs\" />
+    <Folder Include="Services\PlatformDependency\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Views\MyPage.xaml" />
