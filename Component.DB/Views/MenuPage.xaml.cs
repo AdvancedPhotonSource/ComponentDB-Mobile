@@ -24,12 +24,12 @@ namespace Component.DB.Views
 
             menuItems = new List<HomeMenuItem>
             {
-                new HomeMenuItem {Id = MenuItemType.ScanQRCode, Title="Scan QR Code" },
-                new HomeMenuItem {Id = MenuItemType.RelocateItems, Title="Relocate Items" },
-                new HomeMenuItem {Id = MenuItemType.BrowseCatalog, Title="Browse Catalog" },
-                new HomeMenuItem {Id = MenuItemType.BrowseInventory, Title="Browse Inventory" },
-                new HomeMenuItem {Id = MenuItemType.Settings, Title="Configuration" },
-                new HomeMenuItem {Id = MenuItemType.About, Title="About" }
+                new HomeMenuItem {Id = MenuItemType.ScanQRCode, Title="Scan QR Code", Icon=Constants.fontIconCamera },
+                new HomeMenuItem {Id = MenuItemType.RelocateItems, Title="Relocate Items", Icon=Constants.fontIconLocation },
+                new HomeMenuItem {Id = MenuItemType.BrowseCatalog, Title="Browse Catalog", Icon=Constants.fontIconBook },
+                new HomeMenuItem {Id = MenuItemType.BrowseInventory, Title="Browse Inventory", Icon=Constants.fontIconBook },
+                new HomeMenuItem {Id = MenuItemType.Settings, Title="Configuration", Icon=Constants.fontIconConfig },
+                new HomeMenuItem {Id = MenuItemType.About, Title="About", Icon=Constants.fontIconQuestion }
             };
 
             ListViewMenu.ItemsSource = menuItems;
