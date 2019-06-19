@@ -76,6 +76,8 @@ namespace Component.DB.Droid
                 else
                 {
                     Console.WriteLine("Status: EMDKManager object creation succeeded ...");
+                    Toast.MakeText(Android.App.Application.Context, "Scan a cdb qrid at any time using the built in scanner.", ToastLength.Long).Show();
+                    Toast.MakeText(Android.App.Application.Context, "Scan a cdb qrid at any time using the built in scanner.", ToastLength.Long).Show();
                 }
             } catch (Exception e)
             {
