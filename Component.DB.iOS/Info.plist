@@ -36,5 +36,9 @@
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Please allow access to the camera to QR Codes</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>appicons.ttf</string>
+	</array>
 </dict>
 </plist>
