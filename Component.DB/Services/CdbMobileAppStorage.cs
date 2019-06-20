@@ -5,6 +5,7 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using Component.DB.Services.CdbEventArgs;
 using Component.DB.Services.CdbMobileAppStoreModel;
 using SQLite;
 using Xamarin.Essentials;
@@ -24,8 +25,17 @@ namespace Component.DB.Services
             DetailsPage,
             RelocateItem
         }
-        private const string DEFAULT_SCANNING_ACTION_KEY = "DefaultScanningAction";
 
+        public enum BrowseMode
+        {
+            All,
+            Favorites
+        }
+
+        private const string DEFAULT_SCANNING_ACTION_KEY = "DefaultScanningAction";
+        private const string BROWSE_CATALOG_MODE_KEY = "BrowseCatalogMode";
+
+        public event EventHandler<BrowseModeChangeEventArgs> CatalogBrowseModeChangedEvent;
 
         private SQLiteConnection connection;
         private ConnectionConfiguration ActiveConfiguration;
@@ -42,6 +52,23 @@ namespace Component.DB.Services
         {
             string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), SQLITE_DB_PATH);
             connection = new SQLiteConnection(dbPath);
+        }
+
+        public void UpdateCatalogBrowseMode(BrowseMode browseMode)
+        {
+            Preferences.Set(BROWSE_CATALOG_MODE_KEY, (int)browseMode);
+
+            if (CatalogBrowseModeChangedEvent != null)
+            {
+                var args = new BrowseModeChangeEventArgs(browseMode);
+                CatalogBrowseModeChangedEvent(this, args);
+            }
+        }
+
+        public BrowseMode GetCatalogBrowseMode()
+        {
+            var result = Preferences.Get(BROWSE_CATALOG_MODE_KEY, (int)BrowseMode.All);
+            return (BrowseMode)result;
         }
 
         public void UpdateScanningAction(ScanningAction action)
