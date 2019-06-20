@@ -12,14 +12,24 @@ namespace Component.DB.ViewModels
         public String DisplayText { get; set; }
     }
 
+    public class BrowseModeItem
+    {
+        public BrowseMode BrowseMode  { get; set; }
+        public String DisplayText { get; set; }
+    }
+
     public class CdbConfigurationViewModel : BaseViewModel
     {
         private String _ActiveAuthUser;
         private Boolean _IsAuthenticated;
 
         public ObservableCollection<String> ActiveHosts { get; set; }
-        public List<ScanningActionItem> ScanningActions { get; } 
+        public List<ScanningActionItem> ScanningActions { get; }
         private ScanningActionItem _ActiveScanningActionItem { get; set; }
+        public List<BrowseModeItem> CatalogBrowseModes { get; }
+        private BrowseModeItem _SelectedCatalogBrowseMode { get; set; }
+
+
         private String _ActiveHost;
 
         CdbMobileAppStorage AppStorage;
@@ -34,10 +44,43 @@ namespace Component.DB.ViewModels
                 new ScanningActionItem{ ScanningAction = ScanningAction.RelocateItem, DisplayText = "Start Relocate Item"}
             };
 
+            CatalogBrowseModes = new List<BrowseModeItem>
+            {
+                new BrowseModeItem {BrowseMode = BrowseMode.All, DisplayText = "Show All"} ,
+                new BrowseModeItem {BrowseMode = BrowseMode.Favorites, DisplayText = "Show Favorites" }
+            };
+                
             AppStorage = CdbMobileAppStorage.Instance;
 
             var activeScanningAction = AppStorage.GetScanningAction();
-            _ActiveScanningActionItem = ScanningActions[(int)activeScanningAction]; 
+            _ActiveScanningActionItem = ScanningActions[(int)activeScanningAction];
+            // Browse modes is generic and can contain different options per domain. 
+            var selectedCatalogBrowseMode = AppStorage.GetCatalogBrowseMode(); 
+            foreach (var browseItem in CatalogBrowseModes)
+            {
+                if (browseItem.BrowseMode == selectedCatalogBrowseMode)
+                {
+                    _SelectedCatalogBrowseMode = browseItem;
+                    break;
+                }
+            }
+
+        }
+
+        public BrowseModeItem SelectedCatalogBrowseMode
+        {
+            get
+            {
+                return _SelectedCatalogBrowseMode;
+            } set
+            {
+                if (_SelectedCatalogBrowseMode.BrowseMode != value.BrowseMode)
+                {
+                    AppStorage.UpdateCatalogBrowseMode(value.BrowseMode);
+                }
+                _SelectedCatalogBrowseMode = value; 
+                OnPropertyChanged();
+            }
         }
 
         public ScanningActionItem ActiveScanningActionItem

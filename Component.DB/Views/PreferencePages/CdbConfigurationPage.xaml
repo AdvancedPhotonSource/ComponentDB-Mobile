@@ -23,6 +23,13 @@
                             ItemDisplayBinding="{Binding DisplayText}"
                             SelectedItem="{Binding ActiveScanningActionItem}"
                             FontSize="Small" />
+                    
+                    <Label Text="Catalog Browsing Mode:" FontSize="Medium" />
+                    <Picker x:Name="catalogBrowsingModePicker" 
+                            ItemsSource="{Binding CatalogBrowseModes}" 
+                            ItemDisplayBinding="{Binding DisplayText}"
+                            SelectedItem="{Binding SelectedCatalogBrowseMode}"
+                            FontSize="Small" />
                 </StackLayout>
                 <StackLayout Spacing="10" Padding="10" >    
                     <Button Text="Test Connection" Clicked="HandleTestConnectionClicked" />
