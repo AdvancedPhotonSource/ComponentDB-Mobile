@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 using Component.DB.Services;
+using Component.DB.Services.CdbEventArgs;
 using Gov.ANL.APS.CDB.Api;
 
 namespace Component.DB.ViewModels
@@ -16,8 +17,9 @@ namespace Component.DB.ViewModels
     {
 
         public ItemApi itemApi => CdbApiFactory.Instance.itemApi;
-        public PropertyApi PropertyApi = CdbApiFactory.Instance.propertyApi; 
+        public PropertyApi PropertyApi = CdbApiFactory.Instance.propertyApi;
 
+        public event EventHandler<ViewModelMessageEventArgs> ViewModelMessageEvent; 
 
         bool isBusy = false;
         public bool IsBusy
@@ -45,6 +47,15 @@ namespace Component.DB.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
+
+        protected void FireViewModelMessageEvent(String message)
+        {
+            if (ViewModelMessageEvent != null)
+            {
+                var args = new ViewModelMessageEventArgs(message);
+                ViewModelMessageEvent(this, args); 
+            }
+         } 
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
