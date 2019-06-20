@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Gov.ANL.APS.CDB.Model;
 using Gov.ANL.APS.CDB.Api;
 using Gov.ANL.APS.CDB.Client;
+using Component.DB.Services;
 
 namespace Component.DB.ViewModels
 {
@@ -23,6 +24,8 @@ namespace Component.DB.ViewModels
         public ObservableCollection<ItemDetailViewModel> AllItems { get; set; }
         public Command LoadItemsCommand { get; set; }
         public Command FilterItemsCommand { get; }
+
+        protected CdbMobileAppStorage AppStorage; 
 
         private Exception _LoadItemCommandException;
         private ItemsPage ItemsPage;
@@ -38,6 +41,8 @@ namespace Component.DB.ViewModels
             FilterItemsCommand = new Command((filterString) => Filter(filterString));
             ItemsPage = itemsPage;
 
+            AppStorage = CdbMobileAppStorage.Instance; 
+
             this.parentItemId = parentItemId;
 
             //MessagingCenter.Subscribe<NewItemPage, Domain>(this, "AddItem", (obj, item) =>
@@ -46,6 +51,12 @@ namespace Component.DB.ViewModels
             //    Items.Add(newItem);
             //    //await DataStore.AddItemAsync(newItem);
             //});
+        }
+
+        public void ClearItems()
+        {
+            AllItems.Clear();
+            Items.Clear(); 
         }
 
         async Task ExecuteLoadItemsCommand()
@@ -58,8 +69,7 @@ namespace Component.DB.ViewModels
 
             try
             {
-                Items.Clear();
-                AllItems.Clear();
+                ClearItems();
 
                 List<Item> items; 
                 if (parentItemId == -1)
@@ -107,6 +117,7 @@ namespace Component.DB.ViewModels
             }
         }
 
+        // TODO change to event based
         public Exception LoadItemCommandException
         {
             get
