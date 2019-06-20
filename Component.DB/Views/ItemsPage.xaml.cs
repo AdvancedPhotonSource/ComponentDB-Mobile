@@ -10,6 +10,9 @@ using Xamarin.Forms;
 using Component.DB.ViewModels;
 using System.Collections.Generic;
 using Gov.ANL.APS.CDB.Model;
+using Component.DB.Services.CdbEventArgs;
+using Component.DB.Services;
+using Component.DB.Services.PlatformDependency;
 
 namespace Component.DB.Views
 {
@@ -20,31 +23,33 @@ namespace Component.DB.Views
     {       
 
         ItemsViewModel viewModel;
+        INotificationPopup NotificationPopup;
 
         public ItemsPage()
         {
-            setupView(MenuItemType.BrowseCatalog);
+            SetupView(MenuItemType.BrowseCatalog);
         }
 
         public ItemsPage(MenuItemType itemType)
         {
-            setupView(itemType);
+            SetupView(itemType);
         }
 
         public ItemsPage(MenuItemType itemType, int parentItemId = -1)
         {
-            setupView(itemType, parentItemId);
+            SetupView(itemType, parentItemId);
         }
 
-        private void setupView(MenuItemType itemType, int parentItemId = -1)
+        private void SetupView(MenuItemType itemType, int parentItemId = -1)
         {
             InitializeComponent();
-
+            NotificationPopup = DependencyService.Get<INotificationPopup>();
 
             Boolean isInventory = false; 
             if (itemType == MenuItemType.BrowseCatalog)
             {
                 BindingContext = viewModel = new CatalogItemsViewModel(this, parentItemId);
+                CdbMobileAppStorage.Instance.CatalogBrowseModeChangedEvent += OnBrowseModeChanged;
             }
             else
             {
@@ -52,6 +57,7 @@ namespace Component.DB.Views
                 BindingContext = viewModel = new InventoryItemsViewModel(this, parentItemId);
             }
 
+            viewModel.ViewModelMessageEvent += OnViewModelMessage; 
 
             // Set up list view template
             var itemDataTemplate = new DataTemplate(() =>
@@ -119,6 +125,16 @@ namespace Component.DB.Views
         async void AddItem_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushModalAsync(new NavigationPage(new NewItemPage()));
+        }
+
+        private void OnBrowseModeChanged(object sender, BrowseModeChangeEventArgs args)
+        {
+            viewModel.ClearItems(); 
+        }
+
+        private void OnViewModelMessage(object sender, ViewModelMessageEventArgs args)
+        {
+            NotificationPopup.longPopup(args.Message); 
         }
 
         protected override void OnAppearing()
