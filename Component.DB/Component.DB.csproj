@@ -22,7 +22,8 @@
     <NoWarn>1701;1702</NoWarn>
     <NoStdLib>true</NoStdLib>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Zebra|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseZebra|AnyCPU' ">
     <IntermediateOutputPath>obj\Release\netstandard2.0</IntermediateOutputPath>
     <Optimize>true</Optimize>
     <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>

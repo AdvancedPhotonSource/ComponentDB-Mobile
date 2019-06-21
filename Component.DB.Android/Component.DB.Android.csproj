@@ -84,29 +84,27 @@
   </CustomCommands>
 </CustomCommands>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Zebra|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseZebra|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release Zebra</OutputPath>
+    <OutputPath>bin\ReleaseZebra</OutputPath>
     <DefineConstants>EMDK;</DefineConstants>
-    <WarningLevel>4</WarningLevel>
-    <DebugSymbols>true</DebugSymbols>
     <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
-    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
-    <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
-    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
-    <AndroidDexTool>dx</AndroidDexTool>
-<CustomCommands>
-  <CustomCommands>
-    <Command>
-      <type>BeforeBuild</type>
-      <command>cp Properties/AndroidManifest.zebra.xml Properties/AndroidManifest.xml</command>
-      <workingdir>${ProjectDir}</workingdir>
-    </Command>
-  </CustomCommands>
-</CustomCommands>
+    <CustomCommands>
+      <CustomCommands>
+        <Command>
+          <type>BeforeBuild</type>
+          <command>cp Properties/AndroidManifest.zebra.xml Properties/AndroidManifest.xml</command>
+          <workingdir>${ProjectDir}</workingdir>
+        </Command>
+      </CustomCommands>
+    </CustomCommands>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <AndroidSupportedAbis>armeabi-v7a</AndroidSupportedAbis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />

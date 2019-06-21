@@ -74,9 +74,9 @@
     <MtouchEnableSGenConc>false</MtouchEnableSGenConc>
     <MtouchLink></MtouchLink>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Zebra|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseZebra|AnyCPU' ">
     <Optimize>false</Optimize>
-    <OutputPath>bin\Release Zebra</OutputPath>
+    <OutputPath>bin\ReleaseZebra</OutputPath>
     <DefineConstants></DefineConstants>
     <WarningLevel>4</WarningLevel>
     <CodesignKey>iPhone Developer</CodesignKey>
