@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <d:CdbBasePage xmlns:d="clr-namespace:Component.DB.Views;assembly=Component.DB.Views" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Component.DB.Views.itemEditPages.MultiItemRelocatePage" Title="{Binding Title}">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Scan" Clicked="HandleScanClicked"/>
@@ -26,8 +26,11 @@
             <BoxView Color="Black" WidthRequest="100" HeightRequest="2"/>             
             <Label Text="Selected Location:" FontSize="Large" />
             <Label Text="{Binding SelectedLocation.Name}"  />            
+            <Label Text="Location Details:" FontSize="Large" />
+            <Entry Text="{Binding LocationDetails}" FontSize="Small" />            
             <Button Text="Manually Select Location" Clicked="HandleSelectLocationManually" /> 
             <BoxView Color="Black" WidthRequest="100" HeightRequest="2"/> 
+                        
             <Button Text="Relocate Items" Clicked="HandleRelocateItemsClicked" />
         </StackLayout>
     </ContentPage.Content>

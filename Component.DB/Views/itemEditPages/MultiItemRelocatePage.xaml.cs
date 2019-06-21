@@ -85,6 +85,7 @@ namespace Component.DB.Views.itemEditPages
                     }
 
                     locInfo.LocationItem = locationItem;
+                    locInfo.LocationDetails = viewModel.LocationDetails; 
                     await item.UpdateItemLocationAsync();
                 }
                 catch (Exception ex)
@@ -96,6 +97,7 @@ namespace Component.DB.Views.itemEditPages
 
             viewModel.ClearItems();
             viewModel.SelectedLocation = null;
+            viewModel.LocationDetails = ""; 
             await DisplayAlert("Update Complete", "Locations have been updated", "OK");
         }
 

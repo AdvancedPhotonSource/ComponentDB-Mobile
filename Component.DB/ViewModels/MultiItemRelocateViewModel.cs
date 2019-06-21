@@ -8,12 +8,14 @@ namespace Component.DB.ViewModels
     {
 
         private Item _SelectedLocation;
+        private String _LocationDetails { get; set; }
         public ObservableCollection<ItemDetailEditViewModel> LocatableItemList { get; set; }
 
         public MultiItemRelocateViewModel()
         {
             Title = "Relocate Items";
-            LocatableItemList = new ObservableCollection<ItemDetailEditViewModel>(); 
+            LocatableItemList = new ObservableCollection<ItemDetailEditViewModel>();
+            LocationDetails = ""; 
         }
 
         public String addItemByQrId(int qrId)
@@ -59,6 +61,19 @@ namespace Component.DB.ViewModels
             } set
             {
                 _SelectedLocation = value;
+                OnPropertyChanged(); 
+            }
+        }
+
+        public String LocationDetails
+        {
+            get
+            {
+                return _LocationDetails;
+            }
+            set
+            {
+                _LocationDetails = value;
                 OnPropertyChanged(); 
             }
         }
