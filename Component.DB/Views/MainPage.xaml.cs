@@ -103,7 +103,7 @@ namespace Component.DB.Views
                     var root = ((NavigationPage)Detail).RootPage; 
                     if (root.GetType() == typeof(MultiItemRelocatePage))
                     {
-                        ((MultiItemRelocatePage)root).addQrId(qrId);
+                        ((MultiItemRelocatePage)root).addQrIdAsync(qrId);
                         return;
                     }
                 }

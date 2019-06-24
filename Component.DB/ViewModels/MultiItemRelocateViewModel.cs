@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Gov.ANL.APS.CDB.Model;
 
 namespace Component.DB.ViewModels
@@ -18,13 +19,13 @@ namespace Component.DB.ViewModels
             LocationDetails = ""; 
         }
 
-        public String addItemByQrId(int qrId)
+        public async Task<string> AddItemByQrIdAsync(int qrId)
         {
-            var result = itemApi.GetItemByQrId(qrId);
+            var itemByQrId = itemApi.GetItemByQrId(qrId);
 
-            if (result.Domain.Name.Equals(Constants.locationDomainName))
+            if (itemByQrId.Domain.Name.Equals(Constants.locationDomainName))
             {
-                this.SelectedLocation = result; 
+                this.SelectedLocation = itemByQrId; 
                 return "Changed location by QrId: " + qrId; 
             }
 
@@ -33,19 +34,25 @@ namespace Component.DB.ViewModels
             foreach (var item in LocatableItemList)
             {
                 var id = item.Item.Id; 
-                if (result.Id == id)
+                if (itemByQrId.Id == id)
                 {
                     return "The item with QrId " + qrId + " has already been scanned."; 
 
                 }
             }
             
-            // TODO Verify permission
+            var hasPemission = await itemApi.VerifyUserPermissionForItemAsync(itemByQrId.Id);
 
-            //Add
-            var editDetailModel = new ItemDetailEditViewModel(result);
-            LocatableItemList.Add(editDetailModel);
-            return "Added item with QrId: " + qrId;
+            if (hasPemission != null && (bool)hasPemission) 
+            {
+                //Add
+                var editDetailModel = new ItemDetailEditViewModel(itemByQrId);
+                LocatableItemList.Add(editDetailModel);
+                return "Added item with QrId: " + qrId;
+            } else
+            {
+                return "The user does not have sufficient privilages to relocate scanned item. QrId: " + qrId; 
+            }
         }
 
         public void ClearItems()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Component.DB.Services;
 using Component.DB.Services.CdbEventArgs;
 using Component.DB.Services.PlatformDependency;
@@ -28,11 +29,11 @@ namespace Component.DB.Views.itemEditPages
             loginChecked = false;
         }
 
-        public void addQrId(int qrId)
+        public async Task addQrIdAsync(int qrId)
         {           
             try
             {
-                var result = viewModel.addItemByQrId(qrId);
+                var result = await viewModel.AddItemByQrIdAsync(qrId);
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     NotificationPopup.shortPopup(result);
