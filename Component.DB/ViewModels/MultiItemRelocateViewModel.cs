@@ -19,14 +19,16 @@ namespace Component.DB.ViewModels
             LocationDetails = ""; 
         }
 
-        public async Task<string> AddItemByQrIdAsync(int qrId)
+        public async Task AddItemByQrIdAsync(int qrId)
         {
             var itemByQrId = itemApi.GetItemByQrId(qrId);
 
             if (itemByQrId.Domain.Name.Equals(Constants.locationDomainName))
             {
                 this.SelectedLocation = itemByQrId; 
-                return "Changed location by QrId: " + qrId; 
+                var message = "Changed location by QrId: " + qrId;
+                FireViewModelMessageEvent(message);
+                return; 
             }
 
 
@@ -36,7 +38,9 @@ namespace Component.DB.ViewModels
                 var id = item.Item.Id; 
                 if (itemByQrId.Id == id)
                 {
-                    return "The item with QrId " + qrId + " has already been scanned."; 
+                    var message = "The item with QrId " + qrId + " has already been scanned.";
+                    FireViewModelMessageEvent(message);
+                    return;
 
                 }
             }
@@ -48,10 +52,14 @@ namespace Component.DB.ViewModels
                 //Add
                 var editDetailModel = new ItemDetailEditViewModel(itemByQrId);
                 LocatableItemList.Add(editDetailModel);
-                return "Added item with QrId: " + qrId;
+                var message= "Added item with QrId: " + qrId;
+                FireViewModelMessageEvent(message);
+                return;
             } else
             {
-                return "The user does not have sufficient privilages to relocate scanned item. QrId: " + qrId; 
+                var message = "The user does not have sufficient privilages to relocate scanned item. QrId: " + qrId;
+                FireViewModelMessageEvent(message);
+                return;
             }
         }
 

@@ -15,34 +15,32 @@ namespace Component.DB.Views.itemEditPages
     {
 
         MultiItemRelocateViewModel viewModel;
-        INotificationPopup NotificationPopup;
-
-        bool loginChecked;
+        INotificationPopup NotificationPopup;        
 
         public MultiItemRelocatePage()
         {
             InitializeComponent();
 
             BindingContext = viewModel = new MultiItemRelocateViewModel();
+            viewModel.ViewModelMessageEvent += HandleViewModelMessage; 
 
-            NotificationPopup = DependencyService.Get<INotificationPopup>();
-            loginChecked = false;
+            NotificationPopup = DependencyService.Get<INotificationPopup>();            
         }
 
-        public async Task addQrIdAsync(int qrId)
-        {           
-            try
+        public void AddQrId(int qrId)
+        {
+            Device.BeginInvokeOnMainThread(async () =>
             {
-                var result = await viewModel.AddItemByQrIdAsync(qrId);
-                Device.BeginInvokeOnMainThread(() =>
+                try
                 {
-                    NotificationPopup.shortPopup(result);
-                });
-            }
-            catch (Exception ex)
-            {
-                HandleException(ex);
-            }
+                
+                    await viewModel.AddItemByQrIdAsync(qrId);
+                }
+                catch (Exception ex)
+                {
+                    HandleException(ex);
+                }
+            });
         }
 
         void HandleClearItemsClicked(object sender, System.EventArgs e)
@@ -68,6 +66,11 @@ namespace Component.DB.Views.itemEditPages
         {
             var location = args.SelectedLocation;
             viewModel.SelectedLocation = location;
+        }
+
+        void HandleViewModelMessage(object sender, ViewModelMessageEventArgs args)
+        {
+            NotificationPopup.shortPopup(args.Message);
         }
 
         async void HandleRelocateItemsClicked(object sender, System.EventArgs e)
