@@ -8,6 +8,7 @@ namespace Component.DB
     public class Constants
     {
         public static string ImageAddressPath = "/propertyValue/images/";
+        public static string ItemViewPath = "/views/item/view?id=";
 
         // Fetching images from CDB
         public static string ImageExtensionOriginal = ".original";

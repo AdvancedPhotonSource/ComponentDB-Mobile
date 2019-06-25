@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- 
 Copyright (c) UChicago Argonne, LLC. All rights reserved.
 See LICENSE file.
@@ -36,6 +36,9 @@ See LICENSE file.
                 
                 <Button Text="Upload Image"
                         Clicked="HandleUploadImageClicked"/>
+                
+                <Button Text="View in Portal"
+                        Command="{Binding ViewInPortalCommand}"/>
             </StackLayout>
         </StackLayout>
     </ScrollView>

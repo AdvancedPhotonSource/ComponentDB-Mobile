@@ -7,9 +7,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Component.DB.Services;
 using Component.DB.Utilities;
 using Gov.ANL.APS.CDB.Model;
 using Stormlion.PhotoBrowser;
+using Xamarin.Forms;
 
 namespace Component.DB.ViewModels
 {
@@ -19,11 +22,20 @@ namespace Component.DB.ViewModels
         private PropertyValue _ItemStatus;
         private ItemLocationInformation _ItemLocationInformation;
 
+        public ICommand ViewInPortalCommand { get; }
+
         public ItemDetailViewModel(Item item = null)
         {
             this.Item = item;
 
             updateTitle();
+
+            var appStorage = CdbMobileAppStorage.Instance;
+            var address = appStorage.getActiveConfiguration().CdbAddress;
+
+            var portalUrl = address + Constants.ItemViewPath + Item.Id; 
+
+            ViewInPortalCommand = new Command(() => Device.OpenUri(new Uri(portalUrl)));
         }
 
         public void loadFromQrId(int qrId)
