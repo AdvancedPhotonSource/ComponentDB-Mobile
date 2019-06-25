@@ -5,13 +5,14 @@
 using System; 
 using System.ComponentModel;
 using Component.DB.ViewModels;
+using Component.DB.Views.itemEditPages;
 using Gov.ANL.APS.CDB.Model;
 using Xamarin.Forms;
 
 namespace Component.DB.Views
 {
     [DesignTimeVisible(true)]
-    public partial class ItemLogsPage : ContentPage
+    public partial class ItemLogsPage : CdbBasePage
     {
         ItemLogsViewModel viewModel;
 
@@ -27,6 +28,16 @@ namespace Component.DB.Views
             base.OnAppearing();
 
             viewModel.LoadLogsCommand.Execute(null);
+        }
+
+        async void HandleClickedAddLog(object sender, EventArgs e)
+        {
+            var item = viewModel.Item;
+            if (await VerifyPrivilagesOrPropmtToLogInAsync(item)) {
+                int itemId = (int)item.Id;
+                var addLogPage = new AddLogEntryPage(itemId);
+                await Navigation.PushAsync(addLogPage);
+            }
         }
     }
 }

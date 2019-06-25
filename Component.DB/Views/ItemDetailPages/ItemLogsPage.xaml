@@ -1,15 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
 Copyright (c) UChicago Argonne, LLC. All rights reserved.
 See LICENSE file.
 -->
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Component.DB.Views.ItemLogsPage" Title="{Binding Title}">
+<d:CdbBasePage xmlns:d="clr-namespace:Component.DB.Views;assembly=Component.DB.Views" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Component.DB.Views.ItemLogsPage" Title="{Binding Title}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Clicked="HandleClickedAddLog"/>    
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
              <ListView x:Name="LogsListView" 
                        ItemsSource="{Binding LogList}" 
                        VerticalOptions="FillAndExpand" 
                        HasUnevenRows="true"
+                       RefreshCommand="{Binding LoadLogsCommand}" 
+                       IsPullToRefreshEnabled="true" 
+                       IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                        SelectionMode="None">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -24,4 +30,4 @@ See LICENSE file.
             </ListView>     
         </StackLayout>
     </ContentPage.Content>
-</ContentPage>
+</d:CdbBasePage>
