@@ -31,6 +31,12 @@ namespace Component.DB.ViewModels
 
         async Task ExceuteLoadLogList()
         {
+            if (IsBusy)
+                return;
+
+            IsBusy = true;
+            LogList.Clear();
+
             try
             {
                 List<Log> logs = await itemApi.GetLogsForItemAsync(Item.Id);
@@ -44,6 +50,7 @@ namespace Component.DB.ViewModels
             {
                 Debug.WriteLine(ex);
             }
+            IsBusy = false;
         }
     }
 }
