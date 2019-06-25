@@ -30,12 +30,17 @@ namespace Component.DB.ViewModels
 
             updateTitle();
 
+            ViewInPortalCommand = new Command(() => OpenViewInPortalCommand());
+        }
+
+        public void OpenViewInPortalCommand()
+        {
             var appStorage = CdbMobileAppStorage.Instance;
             var address = appStorage.getActiveConfiguration().CdbAddress;
 
-            var portalUrl = address + Constants.ItemViewPath + Item.Id; 
+            var portalUrl = address + Constants.ItemViewPath + Item.Id;
 
-            ViewInPortalCommand = new Command(() => Device.OpenUri(new Uri(portalUrl)));
+            Device.OpenUri(new Uri(portalUrl));
         }
 
         public void loadFromQrId(int qrId)
