@@ -11,6 +11,7 @@ Before you can get started with developing the Mobile App you will need to have 
   - Android device
   - Zebra TC70x (optional)
   
+**Getting the project:**
 ```
 # Navigate to desired development directory
 git clone https://github.com/AdvancedPhotonSource/ComponentDB-Mobile.git
