@@ -32,7 +32,8 @@ namespace Component.DB.Views
             InitializeComponent();
 
             MasterBehavior = MasterBehavior.Popover;
-            MenuPages.Add((int)MenuItemType.BrowseCatalog, (NavigationPage)Detail);
+            _ActiveMenuItemPage = MenuItemType.BrowseCatalog; 
+            MenuPages.Add((int)ActiveMenuItemPage, (NavigationPage)Detail);
 
             MessagingCenter.Subscribe<QrMessage>(this, QrMessage.MESSAGE_SCANNED_TOPIC, ItemScannedAction);
             appStorage = CdbMobileAppStorage.Instance;
