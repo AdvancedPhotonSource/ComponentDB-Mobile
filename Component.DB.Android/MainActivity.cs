@@ -7,7 +7,6 @@ using System;
 using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Plugin.CurrentActivity;
@@ -15,7 +14,6 @@ using Plugin.CurrentActivity;
 using Symbol.XamarinEMDK;
 using Symbol.XamarinEMDK.Barcode;
 #endif
-using System.Collections;
 using System.Collections.Generic;
 using Xamarin.Forms;
 using Component.DB.Services;
