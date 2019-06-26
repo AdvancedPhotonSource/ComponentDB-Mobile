@@ -64,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Gov.ANL.APS.CDB">
-      <HintPath>..\..\openapi-gen\c.net\bin\Gov.ANL.APS.CDB.dll</HintPath>
+      <HintPath>..\ApiClient\c.net\bin\Gov.ANL.APS.CDB.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
