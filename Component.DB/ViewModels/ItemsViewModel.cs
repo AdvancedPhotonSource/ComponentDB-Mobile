@@ -90,6 +90,8 @@ namespace Component.DB.ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
+
+                // TODO convert to event 
                 LoadItemCommandException = ex; 
             }
             finally
