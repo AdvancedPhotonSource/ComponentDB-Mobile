@@ -66,7 +66,22 @@ namespace Component.DB.Services
 
         public void LogoutActiveUser()
         {
-            authApiInstance.LogOut();
+            
+            try
+            {
+                authApiInstance.LogOut();
+            } catch (ApiException ex)
+            {                
+                if (ex.ErrorCode == 401)
+                {
+                    // Ignore unauthorized, the user must have invalid session already.
+                    Debug.WriteLine(ex);
+                } else
+                {
+                    throw ex;
+                }
+            }
+            
             mobileAppStorage.clearActiveAuth();
         }
 

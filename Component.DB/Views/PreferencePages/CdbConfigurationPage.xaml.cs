@@ -97,7 +97,14 @@ namespace Component.DB.Views.PreferencePages
 
         void HandleLogoutClicked(object sender, System.EventArgs e)
         {
-            apiFactory.LogoutActiveUser();
+            try
+            {
+                apiFactory.LogoutActiveUser();
+            } catch (Exception ex)
+            {
+                HandleException(ex);
+                return; 
+            }
 
             PopulateData();
         }
