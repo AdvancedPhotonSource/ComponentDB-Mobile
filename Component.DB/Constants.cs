@@ -7,13 +7,13 @@ namespace Component.DB
 {
     public class Constants
     {
-        public static string ImageAddressPath = "/propertyValue/images/";
+        public static string ImageAddressPath = "/api/Downloads/PropertyValue/Image/";
         public static string ItemViewPath = "/views/item/view?id=";
 
         // Fetching images from CDB
-        public static string ImageExtensionOriginal = ".original";
-        public static string ImageExtensionThumbnail = ".thumbnail";
-        public static string ImageExtensionScaled = ".scaled";
+        public static string ImageExtensionOriginal = "/original";
+        public static string ImageExtensionThumbnail = "/thumbnail";
+        public static string ImageExtensionScaled = "/scaled";
 
         public static string inventoryDomainName = "Inventory";
         public static string catalogDomainName = "Catalog";
