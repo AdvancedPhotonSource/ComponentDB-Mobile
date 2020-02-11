@@ -100,32 +100,21 @@ namespace Component.DB.ViewModels
                 // Can currently only update for inventory. 
                 return null; 
             }
-            var itemStatus = await itemApi.GetItemStatusAsync(Item.Id);
+            var itemStatus = await itemApi.GetItemStatusAsync(Item.Id);            
 
-            PropertyValue submitPropertyValue; 
-
-            if (itemStatus == null)
-            {
-                var pt = await PropertyApi.GetInventoryStatusPropertyTypeAsync();
-
-                submitPropertyValue = new PropertyValue();
-                submitPropertyValue.Value = newStatus;
-                submitPropertyValue.PropertyType = pt;
-            } else
+            if (itemStatus != null)
             {
                 if (itemStatus.Value.Equals(newStatus))
                 {
                     // Already updated 
                     return itemStatus; 
-                }
-                submitPropertyValue = itemStatus;
-                itemStatus.Value = newStatus; 
+                }                
             }
-
 
             try
             {
-                return await itemApi.UpdateItemPropertyValueAsync(Item.Id, submitPropertyValue); 
+                var statusObj = new ItemStatusBasicObject(newStatus);
+                return await itemApi.UpdateItemStatusAsync(Item.Id, statusObj); 
             } catch (Exception ex)
             {
                 Debug.WriteLine(ex);
