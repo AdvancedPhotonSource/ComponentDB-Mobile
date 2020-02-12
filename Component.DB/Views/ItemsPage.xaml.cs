@@ -120,12 +120,7 @@ namespace Component.DB.Views
 
             // Manually deselect item.
             ItemsListView.SelectedItem = null;
-        }
-
-        async void AddItem_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PushModalAsync(new NavigationPage(new NewItemPage()));
-        }
+        }        
 
         private void OnBrowseModeChanged(object sender, BrowseModeChangeEventArgs args)
         {

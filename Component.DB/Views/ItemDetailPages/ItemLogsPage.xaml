@@ -3,7 +3,7 @@
 Copyright (c) UChicago Argonne, LLC. All rights reserved.
 See LICENSE file.
 -->
-<d:CdbBasePage xmlns:d="clr-namespace:Component.DB.Views;assembly=Component.DB.Views" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Component.DB.Views.ItemLogsPage" Title="{Binding Title}">
+<d:CdbBasePage xmlns:d="clr-namespace:Component.DB.Views" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Component.DB.Views.ItemLogsPage" Title="{Binding Title}">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Clicked="HandleClickedAddLog"/>    
     </ContentPage.ToolbarItems>
