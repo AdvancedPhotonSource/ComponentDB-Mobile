@@ -13,6 +13,7 @@ using Gov.ANL.APS.CDB.Model;
 using Component.DB.Services.CdbEventArgs;
 using Component.DB.Services;
 using Component.DB.Services.PlatformDependency;
+using Gov.ANL.APS.CDB.Api;
 
 namespace Component.DB.Views
 {
@@ -20,7 +21,9 @@ namespace Component.DB.Views
     // by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(true)]
     public partial class ItemsPage : CdbBasePage
-    {       
+    {
+
+        ItemApi itemApi = CdbApiFactory.Instance.itemApi;
 
         ItemsViewModel viewModel;
         INotificationPopup NotificationPopup;
@@ -114,9 +117,13 @@ namespace Component.DB.Views
         {
             var item = args.SelectedItem as ItemDetailViewModel;
             if (item == null)
-                return;               
+                return;
 
-            await Navigation.PushAsync(new ItemDetailPage(item));
+            // Load the latest version of the item.            
+            var itemObj = itemApi.GetItemById(item.Item.Id);
+            var newItem = new ItemDetailViewModel(itemObj);
+
+            await Navigation.PushAsync(new ItemDetailPage(newItem));
 
             // Manually deselect item.
             ItemsListView.SelectedItem = null;
