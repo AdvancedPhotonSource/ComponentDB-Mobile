@@ -42,10 +42,17 @@ namespace Component.DB.Views
         }
 
         protected void HandleException(Exception ex)
-        {
+        {            
             var exMessage = CdbApiFactory.ParseApiException(ex);
             Debug.WriteLine(exMessage);
             DisplayAlert(exMessage.SimpleName, exMessage.Message, "OK");
+
+            ClearIsBusy();
+        }
+
+        protected virtual void ClearIsBusy()
+        {
+            //Override this function when needed.
         }
     }
 }

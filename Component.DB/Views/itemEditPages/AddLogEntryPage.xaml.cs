@@ -17,6 +17,13 @@ namespace Component.DB.Views.itemEditPages
 
         async void HandleSaveClickedAsync(object sender, EventArgs e)
         {
+            if (viewModel.IsBusy)
+            {
+                return;
+            }
+
+            viewModel.IsBusy = true;
+
             try
             {
                 await viewModel.AddLogEntryForItemAsync();
@@ -25,6 +32,13 @@ namespace Component.DB.Views.itemEditPages
             {
                 HandleException(ex);
             }
+
+            ClearIsBusy(); 
+        }
+
+        protected override void ClearIsBusy()
+        {
+            viewModel.IsBusy = false;
         }
     }
 }

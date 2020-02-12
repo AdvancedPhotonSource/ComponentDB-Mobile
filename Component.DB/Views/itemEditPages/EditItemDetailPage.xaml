@@ -17,6 +17,7 @@ See LICENSE file.
                 </StackLayout>
                 <StackLayout Spacing="10" Padding="10" >    
                     <Button Text="Save" Clicked="HandleSaveClicked" />
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" />
                 </StackLayout>
             </StackLayout>
         </ScrollView>

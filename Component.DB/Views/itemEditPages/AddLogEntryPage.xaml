@@ -10,6 +10,7 @@
                 <DatePicker Date="{Binding EffectiveDate}"/>                
                 
                 <Button Text="Save" Clicked="HandleSaveClickedAsync"/>
+                <ActivityIndicator IsRunning="{Binding IsBusy}" />
             </StackLayout>
         </ScrollView>        
     </ContentPage.Content>

@@ -141,6 +141,13 @@ namespace Component.DB.Views.itemEditPages
 
         async void HandleSaveClicked(object sender, System.EventArgs e)
         {
+            if (viewModel.IsBusy)
+            {
+                return;
+            }
+
+            viewModel.IsBusy = true;
+
             Item resultItem = null;
             try
             {
@@ -183,11 +190,19 @@ namespace Component.DB.Views.itemEditPages
                     HandleException(ex);
                     return;
                 }
-            }
+            }            
 
             // Pop My page
             detailPage.updateItem(resultItem);
+
+            ClearIsBusy();
+
             await Navigation.PopAsync();
+        }
+
+        protected override void ClearIsBusy()
+        {            
+            viewModel.IsBusy = false;
         }
     }
 }
