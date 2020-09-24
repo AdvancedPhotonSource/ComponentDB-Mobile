@@ -3,13 +3,9 @@
  * See LICENSE file.
  */
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Component.DB.Utilities;
 using Gov.ANL.APS.CDB.Model;
-using Stormlion.PhotoBrowser;
 
 namespace Component.DB.ViewModels
 {
@@ -38,23 +34,23 @@ namespace Component.DB.ViewModels
             }
         }
 
-        public async Task<ItemLocationInformation> UpdateItemLocationAsync()
+        public ItemLocationInformation UpdateItemLocation()
         {
             if (this.ItemLocationInformation == null)
             {
-                throw new Exception("The location was never loaded so it cannot be modified"); 
-            } 
+                throw new Exception("The location was never loaded so it cannot be modified");
+            }
 
             var dbLocationInformation = itemApi.GetItemLocation(Item.Id);
 
-            if (ItemLocationInformation.LocationDetails == null)            
+            if (ItemLocationInformation.LocationDetails == null)
                 ItemLocationInformation.LocationDetails = "";
-            if (dbLocationInformation.LocationDetails == null)            
+            if (dbLocationInformation.LocationDetails == null)
                 dbLocationInformation.LocationDetails = "";
 
             // -1 means null
             int curLocationd = -1;
-            int origLocationId = -1; 
+            int origLocationId = -1;
             if (ItemLocationInformation.LocationItem != null)
             {
                 curLocationd = (int)ItemLocationInformation.LocationItem.Id;
@@ -87,7 +83,7 @@ namespace Component.DB.ViewModels
                 var locationDetails = ItemLocationInformation.LocationDetails;
                 var args = new SimpleLocationInformation(Item.Id, locationId, locationDetails);
 
-                itemApi.UpdateItemLocation(args); 
+                itemApi.UpdateItemLocation(args);
             }
 
             return this.ItemLocationInformation;
@@ -139,6 +135,7 @@ namespace Component.DB.ViewModels
                     Item.QrId = result;
                 } catch (Exception ex)
                 {
+                    Debug.WriteLine(ex);
                     Item.QrId = null; 
                 }
 

@@ -24,7 +24,7 @@ namespace Component.DB.Views
             itemApi = CdbApiFactory.Instance.itemApi;
         }
 
-        public async void Handle_OnScanResult(Result result)
+        public void Handle_OnScanResult(Result result)
         {
             var v = CrossVibrate.Current;
             v.Vibration(TimeSpan.FromSeconds(0.5));
@@ -33,7 +33,7 @@ namespace Component.DB.Views
             var topic = QrMessage.MESSAGE_SCANNED_TOPIC;
             QrMessage message = new QrMessage(result.BarcodeFormat.ToString(), result.Text);
 
-            MessagingCenter.Send<QrMessage>(message, topic); 
+            MessagingCenter.Send<QrMessage>(message, topic);
         }
 
     }

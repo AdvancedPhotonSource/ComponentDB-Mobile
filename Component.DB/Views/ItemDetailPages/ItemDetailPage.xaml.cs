@@ -169,7 +169,15 @@ namespace Component.DB.Views
                     DefaultCamera = CameraDevice.Rear
                 };
 
-                var photo = await CrossMedia.Current.TakePhotoAsync(config);
+                MediaFile photo = null;
+                try
+                {
+                    photo = await CrossMedia.Current.TakePhotoAsync(config);
+                } catch(Exception ex)
+                {
+                    HandleException(ex); 
+                }
+                
 
                 if (photo != null)
                 {

@@ -4,7 +4,6 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -12,6 +11,7 @@ using Component.DB.Services;
 using Component.DB.Utilities;
 using Gov.ANL.APS.CDB.Model;
 using Stormlion.PhotoBrowser;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Component.DB.ViewModels
@@ -40,7 +40,7 @@ namespace Component.DB.ViewModels
 
             var portalUrl = address + Constants.ItemViewPath + Item.Id;
 
-            Device.OpenUri(new Uri(portalUrl));
+            Launcher.OpenAsync(new Uri(portalUrl));
         }
 
         public void loadFromQrId(int qrId)

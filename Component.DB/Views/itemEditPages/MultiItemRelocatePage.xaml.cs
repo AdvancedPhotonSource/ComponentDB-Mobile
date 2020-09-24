@@ -90,7 +90,7 @@ namespace Component.DB.Views.itemEditPages
 
                     locInfo.LocationItem = locationItem;
                     locInfo.LocationDetails = viewModel.LocationDetails; 
-                    await item.UpdateItemLocationAsync();
+                    item.UpdateItemLocation();
                 }
                 catch (Exception ex)
                 {

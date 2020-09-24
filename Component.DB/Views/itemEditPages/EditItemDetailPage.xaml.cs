@@ -183,7 +183,7 @@ namespace Component.DB.Views.itemEditPages
 
                 try
                 {
-                    await viewModel.UpdateItemLocationAsync();
+                    viewModel.UpdateItemLocation();
                 }
                 catch (Exception ex)
                 {
