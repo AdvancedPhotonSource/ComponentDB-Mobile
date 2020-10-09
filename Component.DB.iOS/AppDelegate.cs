@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Foundation;
+using KeyboardOverlap.Forms.Plugin.iOSUnified;
 using UIKit;
 
 namespace Component.DB.iOS
@@ -27,6 +28,8 @@ namespace Component.DB.iOS
         {
             Xamarin.Calabash.Start();
             global::Xamarin.Forms.Forms.Init();
+
+            KeyboardOverlapRenderer.Init();
 
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
             Stormlion.PhotoBrowser.iOS.Platform.Init();
