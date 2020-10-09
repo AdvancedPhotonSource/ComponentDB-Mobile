@@ -50,7 +50,9 @@ namespace Component.DB.Services
 
         private CdbMobileAppStorage()
         {
-            string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), SQLITE_DB_PATH);
+            var appPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData); 
+            string dbPath = Path.Combine(appPath, SQLITE_DB_PATH);
+            Directory.CreateDirectory(appPath); 
             connection = new SQLiteConnection(dbPath);
         }
 
