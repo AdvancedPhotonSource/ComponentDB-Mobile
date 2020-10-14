@@ -5,8 +5,12 @@ See LICENSE file.
 -->
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Component.DB.Views.PreferencePages.InitialCdbConfigurationPage">   
     <ContentPage.Content>
-        <StackLayout Spacing="20" Padding="15">
-            <Label Text="Initial CDB Configuration" FontSize="Large" />
+        <StackLayout Margin="10,35,10,10"
+                     Spacing="20"
+                     Padding="15">
+            <Label Text="Initial CDB Configuration" FontSize="Large"
+                    HorizontalOptions="Center"
+                    FontAttributes="Bold"  />
             <Label Text="Enter Host Address" FontSize="Medium" />
             <Entry Text="{Binding cdbHostConfigured}" FontSize="Small" />
             
