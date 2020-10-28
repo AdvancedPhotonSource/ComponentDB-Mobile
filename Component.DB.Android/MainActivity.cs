@@ -27,6 +27,10 @@ namespace Component.DB.Droid
         BarcodeManager barcodeManager = null;
         Scanner scanner = null;
 
+        String PreviousKeyStroke = "";
+        String Code = "";
+        String QRIDtrigger = "QRID=";
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
@@ -276,5 +280,56 @@ namespace Component.DB.Droid
                 emdkManager = null;
             }
         }
+
+        public override bool OnKeyUp([GeneratedEnum] Keycode keyCode, KeyEvent e)
+        {
+            var currentKeyChar = e.DisplayLabel;
+
+            if (char.IsLetterOrDigit(currentKeyChar)
+                || currentKeyChar.Equals('=')
+                || keyCode == Keycode.Enter)
+            {
+                var currentKey = currentKeyChar + "";
+
+                Console.WriteLine(currentKey);
+                if (QRIDtrigger.Equals(PreviousKeyStroke))
+                {
+                    if (keyCode == Keycode.Enter)
+                    {
+                        var topic = QrMessage.MESSAGE_SCANNED_TOPIC;
+                        var message = new QrMessage("HID", Code);
+
+                        MessagingCenter.Send<QrMessage>(message, topic);
+                    }
+
+                    int result = -1;
+                    if (int.TryParse(currentKey, out result))
+                    {
+                        Code += result;
+                    }
+                    else
+                    {
+                        PreviousKeyStroke = "";
+                        Code = "";
+                    }
+                }
+                else
+                {
+                    if (QRIDtrigger.StartsWith(PreviousKeyStroke))
+                    {
+                        PreviousKeyStroke += currentKey;
+                    }
+                    else
+                    {
+                        PreviousKeyStroke = currentKey;
+                        Code = "";
+                    }
+                }
+            }
+
+            //process key press
+            return base.OnKeyUp(keyCode, e);
+        }
+
     }
 }
