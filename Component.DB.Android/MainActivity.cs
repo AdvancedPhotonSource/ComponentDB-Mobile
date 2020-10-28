@@ -9,29 +9,23 @@ using Android.Content.PM;
 using Android.Runtime;
 using Android.Widget;
 using Android.OS;
-using Plugin.CurrentActivity;
-#if EMDK
 using Symbol.XamarinEMDK;
 using Symbol.XamarinEMDK.Barcode;
-#endif
 using System.Collections.Generic;
 using Xamarin.Forms;
+using Xamarin.Essentials;
 using Component.DB.Services;
+using Android.Views;
 
 namespace Component.DB.Droid
 {
     [Activity(Label = "CDB", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
-#if EMDK
-        , EMDKManager.IEMDKListener
-#endif
+    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity, EMDKManager.IEMDKListener
     {
 
-#if EMDK
         EMDKManager emdkManager = null;
         BarcodeManager barcodeManager = null;
         Scanner scanner = null;
-#endif
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -40,24 +34,20 @@ namespace Component.DB.Droid
 
             base.OnCreate(savedInstanceState);
 
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+            Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
             Stormlion.PhotoBrowser.Droid.Platform.Init(this);
-            CrossCurrentActivity.Current.Init(this, savedInstanceState);
-#if EMDK
+
             setUpZebraScanner();
-#endif
 
             LoadApplication(new App());
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-
             // For the camera image upload
-            Plugin.Permissions.PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             // For the camera QR Scanner
             global::ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -65,7 +55,6 @@ namespace Component.DB.Droid
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-#if EMDK
         private void setUpZebraScanner()
         {
             try
@@ -81,7 +70,8 @@ namespace Component.DB.Droid
                     Toast.MakeText(Android.App.Application.Context, "Scan a cdb qrid at any time using the built in scanner.", ToastLength.Long).Show();
                     Toast.MakeText(Android.App.Application.Context, "Scan a cdb qrid at any time using the built in scanner.", ToastLength.Long).Show();
                 }
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
@@ -212,7 +202,7 @@ namespace Component.DB.Droid
                     var topic = QrMessage.MESSAGE_SCANNED_TOPIC;
                     var message = new QrMessage(data.LabelType.ToString(), data.Data);
 
-                    MessagingCenter.Send<QrMessage>(message, topic); 
+                    MessagingCenter.Send<QrMessage>(message, topic);
                 }
             }
         }
@@ -230,7 +220,7 @@ namespace Component.DB.Droid
                 try
                 {
                     if (scanner.IsEnabled && !scanner.IsReadPending)
-                    {   
+                    {
                         scanner.Read();
                     }
                 }
@@ -286,6 +276,5 @@ namespace Component.DB.Droid
                 emdkManager = null;
             }
         }
-#endif
     }
 }

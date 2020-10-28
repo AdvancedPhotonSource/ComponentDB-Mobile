@@ -62,33 +62,11 @@
     <OutputPath>bin\iPhone\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <MtouchArch>ARMv7</MtouchArch>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
     <ConsolePause>false</ConsolePause>
     <CodesignKey>Apple Development: djarosz@aps.anl.gov (C7H7ZG8L44)</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <CodesignProvision>iOS Team Provisioning Profile: gov.anl.aps.cdb</CodesignProvision>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug Zebra|AnyCPU' ">
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug Zebra</OutputPath>
-    <DefineConstants></DefineConstants>
-    <WarningLevel>4</WarningLevel>
-    <CodesignKey>Apple Development: Dariusz Piotr Jarosz (3YMBHJ2HYN)</CodesignKey>
-    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
-    <MtouchVerbosity></MtouchVerbosity>
-    <MtouchEnableSGenConc>false</MtouchEnableSGenConc>
-    <MtouchLink></MtouchLink>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseZebra|AnyCPU' ">
-    <Optimize>false</Optimize>
-    <OutputPath>bin\ReleaseZebra</OutputPath>
-    <DefineConstants></DefineConstants>
-    <WarningLevel>4</WarningLevel>
-    <CodesignKey>Apple Development: Dariusz Piotr Jarosz (3YMBHJ2HYN)</CodesignKey>
-    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
-    <MtouchVerbosity></MtouchVerbosity>
-    <MtouchEnableSGenConc>false</MtouchEnableSGenConc>
-    <MtouchLink></MtouchLink>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
