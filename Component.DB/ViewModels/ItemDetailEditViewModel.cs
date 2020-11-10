@@ -14,11 +14,21 @@ namespace Component.DB.ViewModels
         public ItemDetailEditViewModel(Item item = null)
         {
             Title = "Edit " + item.Name;
-            try {
+            try
+            {
                 Item = itemApi.GetItemById(item.Id);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex);
+            }
+        }
+
+        public String ItemRelocateListingDisplayText
+        {
+            get
+            {
+                return this.FormattedQrId + " - " + this.Item.Name;
             }
         }
 
@@ -27,7 +37,8 @@ namespace Component.DB.ViewModels
             try
             {
                 return await itemApi.UpdateItemDetailsAsync(Item);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex);
                 throw ex;
@@ -89,29 +100,50 @@ namespace Component.DB.ViewModels
             return this.ItemLocationInformation;
         }
 
+        public ItemDomainLocation UpdateLocationParent(Item newParent)
+        {
+            if (Item.Domain.Name.Equals(Constants.locationDomainName)
+                && newParent.Domain.Name.Equals(Constants.locationDomainName))
+            {
+
+                ItemDomainLocation newItem = locationItemsApi.UpdateLocationParent(Item.Id, newParent.Id);
+
+                if (newItem != null)
+                {
+                    Item = newItem;
+                }
+
+                return newItem;
+            } else
+            {
+                throw new Exception("Cannot update parent for item. Both items must be of type location.");
+            }
+        }
+
         public async Task<PropertyValue> UpdateItemStatusAsync(String newStatus)
         {
             if (!Item.Domain.Name.Equals(Constants.inventoryDomainName))
             {
                 // Can currently only update for inventory. 
-                return null; 
+                return null;
             }
-            var itemStatus = await itemApi.GetItemStatusAsync(Item.Id);            
+            var itemStatus = await itemApi.GetItemStatusAsync(Item.Id);
 
             if (itemStatus != null)
             {
                 if (itemStatus.Value.Equals(newStatus))
                 {
                     // Already updated 
-                    return itemStatus; 
-                }                
+                    return itemStatus;
+                }
             }
 
             try
             {
                 var statusObj = new ItemStatusBasicObject(newStatus);
-                return await itemApi.UpdateItemStatusAsync(Item.Id, statusObj); 
-            } catch (Exception ex)
+                return await itemApi.UpdateItemStatusAsync(Item.Id, statusObj);
+            }
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex);
                 throw ex;
@@ -127,16 +159,18 @@ namespace Component.DB.ViewModels
                     return Item.QrId.ToString();
                 }
                 return "";
-            } set
+            }
+            set
             {
                 try
                 {
                     var result = int.Parse(value);
                     Item.QrId = result;
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
-                    Item.QrId = null; 
+                    Item.QrId = null;
                 }
 
             }

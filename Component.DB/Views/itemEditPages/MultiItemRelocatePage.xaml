@@ -4,33 +4,33 @@
         <ToolbarItem Text="Scan" Clicked="HandleScanClicked"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>                                    
+        <StackLayout>
             <Label Text="Selected Items:" FontSize="Large" />
             <Label Text="Scan QR code to begin" />
             <ListView x:Name="ItemsListView" ItemsSource="{Binding LocatableItemList}" 
                       VerticalOptions="FillAndExpand" 
                       HasUnevenRows="true" 
-                      CachingStrategy="RecycleElement">
+                      CachingStrategy="RecycleElement"
+                      ItemTapped="ItemsListView_ItemTapped">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <StackLayout Padding="10">
-                                <Label Text="{Binding FormattedQrId}" LineBreakMode="NoWrap" Style="{DynamicResource TitleStyle}" FontSize="16" Grid.Row="0" Grid.Column="1" />
-                                <Label Text="{Binding Item.Name}" />
+                                <Label Text="{Binding ItemRelocateListingDisplayText}" LineBreakMode="NoWrap" Style="{DynamicResource TitleStyle}" FontSize="16" Grid.Row="0" Grid.Column="1" />
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Text="Clear List" Clicked="HandleClearItemsClicked" /> 
-            <BoxView Color="Black" WidthRequest="100" HeightRequest="2"/>             
+            <Button Text="Clear List" Clicked="HandleClearItemsClicked" />
+            <BoxView Color="Black" WidthRequest="100" HeightRequest="2"/>
             <Label Text="Selected Location:" FontSize="Large" />
-            <Label Text="{Binding SelectedLocation.Name}"  />            
-            <Label Text="Location Details:" FontSize="Large" />
-            <Entry Text="{Binding LocationDetails}" FontSize="Small" />            
-            <Button Text="Manually Select Location" Clicked="HandleSelectLocationManually" /> 
-            <BoxView Color="Black" WidthRequest="100" HeightRequest="2"/> 
-                        
+            <Label Text="{Binding SelectedLocation.Name}"  />
+            <Label Text="Location Details:" FontSize="Large" IsVisible="{Binding locationDetailsShown}" />
+            <Entry Text="{Binding LocationDetails}" FontSize="Small" Placeholder="{Binding locationDetailsPlaceholderText}" IsVisible="{Binding locationDetailsShown}" />
+            <Button Text="Manually Select Location" Clicked="HandleSelectLocationManually" />
+            <BoxView Color="Black" WidthRequest="100" HeightRequest="2"/>
+
             <Button Text="Relocate Items" Clicked="HandleRelocateItemsClicked" />
         </StackLayout>
     </ContentPage.Content>

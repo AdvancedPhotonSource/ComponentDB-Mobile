@@ -7,27 +7,27 @@ namespace Component.DB
 {
     public class Constants
     {
-        public static string ImageAddressPath = "/api/Downloads/PropertyValue/Image/";
-        public static string ItemViewPath = "/views/item/view?id=";
+        public const string ImageAddressPath = "/api/Downloads/PropertyValue/Image/";
+        public const string ItemViewPath = "/views/item/view?id=";
 
         // Fetching images from CDB
-        public static string ImageExtensionOriginal = "/original";
-        public static string ImageExtensionThumbnail = "/thumbnail";
-        public static string ImageExtensionScaled = "/scaled";
+        public const string ImageExtensionOriginal = "/original";
+        public const string ImageExtensionThumbnail = "/thumbnail";
+        public const string ImageExtensionScaled = "/scaled";
 
-        public static string inventoryDomainName = "Inventory";
-        public static string catalogDomainName = "Catalog";
-        public static string locationDomainName = "Location";
+        public const string inventoryDomainName = "Inventory";
+        public const string catalogDomainName = "Catalog";
+        public const string locationDomainName = "Location";
 
-        public static string fontIconGithub = "";
-        public static string fontIconEdit = "";
-        public static string fontIconCamera = "";
-        public static string fontIconPlus = "";
-        public static string fontIconPicture = "";
-        public static string fontIconQrId = "";
-        public static string fontIconConfig = "";
-        public static string fontIconQuestion = "";
-        public static string fontIconBook = "";
-        public static string fontIconLocation = "";
+        public const string fontIconGithub = "";
+        public const string fontIconEdit = "";
+        public const string fontIconCamera = "";
+        public const string fontIconPlus = "";
+        public const string fontIconPicture = "";
+        public const string fontIconQrId = "";
+        public const string fontIconConfig = "";
+        public const string fontIconQuestion = "";
+        public const string fontIconBook = "";
+        public const string fontIconLocation = "";
     }
 }
