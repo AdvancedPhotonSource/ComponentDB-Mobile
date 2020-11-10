@@ -25,9 +25,11 @@ namespace Component.DB.Services
 
         private CdbMobileAppStorage mobileAppStorage;
 
-        private AuthenticationApi authApiInstance;
+        private AuthenticationApi authApiInstance;        
         private ItemApi itemApiInstance;
-        private PropertyApi propertyApiInstance;
+        private LocationItemsApi locationApiInstance; 
+        private PropertyValueApi propertyValueApiInstance;
+        private PropertyTypeApi propertyTypeApiInstance;  
         private UsersApi usersApiInstace;
         private TestApi testApiInstance; 
 
@@ -52,10 +54,12 @@ namespace Component.DB.Services
             var host = config.CdbAddress; 
 
             itemApiInstance = new ItemApi(host);
+            locationApiInstance = new LocationItemsApi(host);
             authApiInstance = new AuthenticationApi(host);
-            propertyApiInstance = new PropertyApi(host);
+            propertyValueApiInstance = new PropertyValueApi(host);
             usersApiInstace = new UsersApi(host);
             testApiInstance = new TestApi(host);
+            propertyTypeApiInstance = new PropertyTypeApi(host); 
 
             if (auth != null)
             {
@@ -126,8 +130,10 @@ namespace Component.DB.Services
         private void applyAuthToken(String token)
         {
             itemApiInstance.Configuration.AddDefaultHeader(TOKEN_KEY, token);
+            locationApiInstance.Configuration.AddDefaultHeader(TOKEN_KEY, token);
+            propertyTypeApi.Configuration.AddDefaultHeader(TOKEN_KEY, token);
             authApiInstance.Configuration.AddDefaultHeader(TOKEN_KEY, token);
-            propertyApiInstance.Configuration.AddDefaultHeader(TOKEN_KEY, token);
+            propertyValueApiInstance.Configuration.AddDefaultHeader(TOKEN_KEY, token);
             usersApi.Configuration.AddDefaultHeader(TOKEN_KEY, token);
             testApiInstance.Configuration.AddDefaultHeader(TOKEN_KEY, token);
         }
@@ -167,11 +173,27 @@ namespace Component.DB.Services
             }
         }
 
-        public PropertyApi propertyApi
+        public LocationItemsApi locationItemApi
         {
             get
             {
-                return propertyApiInstance;
+                return locationApiInstance; 
+            }
+        }
+
+        public PropertyValueApi propertyValueApi
+        {
+            get
+            {
+                return propertyValueApiInstance;
+            }
+        }
+
+        public PropertyTypeApi propertyTypeApi
+        {
+            get
+            {
+                return propertyTypeApiInstance; 
             }
         }
 

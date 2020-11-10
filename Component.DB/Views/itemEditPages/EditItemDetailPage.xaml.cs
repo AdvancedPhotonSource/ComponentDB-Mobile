@@ -43,7 +43,7 @@ namespace Component.DB.Views.itemEditPages
                 viewModel.LoadItemStatus();
                 viewModel.LoadItemLocationInformation();
 
-                var propertyApi = CdbApiFactory.Instance.propertyApi;
+                var propertyApi = CdbApiFactory.Instance.propertyTypeApi;
                 var type = propertyApi.GetInventoryStatusPropertyType();
 
                 statusPicker = new Picker

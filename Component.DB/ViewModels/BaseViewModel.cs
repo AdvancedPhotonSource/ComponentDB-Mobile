@@ -15,9 +15,8 @@ namespace Component.DB.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-
         public ItemApi itemApi => CdbApiFactory.Instance.itemApi;
-        public PropertyApi PropertyApi = CdbApiFactory.Instance.propertyApi;
+        public LocationItemsApi locationItemsApi => CdbApiFactory.Instance.locationItemApi; 
 
         public event EventHandler<ViewModelMessageEventArgs> ViewModelMessageEvent; 
 
