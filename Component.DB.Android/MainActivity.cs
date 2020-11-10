@@ -291,7 +291,6 @@ namespace Component.DB.Droid
             {
                 var currentKey = currentKeyChar + "";
 
-                Console.WriteLine(currentKey);
                 if (QRIDtrigger.Equals(PreviousKeyStroke))
                 {
                     if (keyCode == Keycode.Enter)
