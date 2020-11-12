@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Gov.ANL.APS.CDB.Model;
@@ -10,37 +11,69 @@ namespace Component.DB.ViewModels
 
         private Item _SelectedLocation;
         private String _LocationDetails { get; set; }
-        
+
         private Boolean _locationDetailsShown;
         private String _locationDetailsPlaceholderText;
 
+        private String _LogEntry { get; set; }
+        private String _StatusEntry { get; set; }
+
         public ObservableCollection<ItemDetailEditViewModel> LocatableItemList { get; set; }
+
+        private const String LOCATION_MODE = "Location";
+        private const String STATUS_MODE = "Status";
+        private const String LOG_ENTRY_MODE = "Log Entry";
+
+        public List<String> ModePickerList { get; set; }
+        private String _ModePickerSelected;
 
         public MultiItemRelocateViewModel()
         {
-            Title = "Relocate Items";
+            Title = "Update Items";
             LocatableItemList = new ObservableCollection<ItemDetailEditViewModel>();
             LocationDetails = "";
             _locationDetailsShown = true;
+
+            ModePickerList = new List<string>();
+            ModePickerList.Add(LOCATION_MODE);
+            ModePickerList.Add(STATUS_MODE);
+            ModePickerList.Add(LOG_ENTRY_MODE);
+
+            _ModePickerSelected = LOCATION_MODE;
         }
 
         public async Task AddItemByQrIdAsync(int qrId)
         {
             var itemByQrId = itemApi.GetItemByQrId(qrId);
 
-            if (itemByQrId.Domain.Name.Equals(Constants.locationDomainName) && this.SelectedLocation == null)
+            bool isNewItemLocation = itemByQrId.Domain.Name.Equals(Constants.locationDomainName);
+
+            if (LocationMode)
             {
-                this.SelectedLocation = itemByQrId;
-                var message = "Changed location by QrId: " + qrId;
-                FireViewModelMessageEvent(message);
-                return;
+                if (isNewItemLocation && this.SelectedLocation == null)
+                {
+                    this.SelectedLocation = itemByQrId;
+                    var message = "Changed location by QrId: " + qrId;
+                    FireViewModelMessageEvent(message);
+                    return;
+                }
+
+                if (this.SelectedLocation != null && this.SelectedLocation.Id == itemByQrId.Id)
+                {
+                    var message = "The item with QrId " + qrId + " has already been scanned. It is the active location.";
+                    FireViewModelMessageEvent(message);
+                    return;
+                }
             }
 
-            if (this.SelectedLocation != null && this.SelectedLocation.Id == itemByQrId.Id)
+            if (StatusMode)
             {
-                var message = "The item with QrId " + qrId + " has already been scanned. It is the active location.";
-                FireViewModelMessageEvent(message);
-                return;
+                if (isNewItemLocation)
+                {
+                    var message = "Status mode is only for inventory items. Location was scanned with qrid: " + qrId;
+                    FireViewModelMessageEvent(message);
+                    return; 
+                }
             }
 
             // Verify not already in list
@@ -122,8 +155,6 @@ namespace Component.DB.ViewModels
             {
                 locationDetailsShown = false;
             }
-
-            OnPropertyChanged();
         }
 
         public void ClearItems()
@@ -181,6 +212,91 @@ namespace Component.DB.ViewModels
             {
                 _locationDetailsShown = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public String LogEntry
+        {
+            get
+            {
+                return _LogEntry;
+            }
+            set
+            {
+                _LogEntry = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public String StatusEntry
+        {
+            get
+            {
+                return _StatusEntry; 
+            }
+            set
+            {
+                _StatusEntry = value;
+                OnPropertyChanged(); 
+            }
+        }
+
+        public Boolean LocationMode
+        {
+            get
+            {
+                return ModePickerSelected.Equals(LOCATION_MODE);
+            }
+        }
+
+        public Boolean StatusMode
+        {
+            get
+            {
+                return ModePickerSelected.Equals(STATUS_MODE);
+            }
+        }
+
+        public Boolean LogMode
+        {
+            get
+            {
+                return ModePickerSelected.Equals(LOG_ENTRY_MODE);
+            }
+        }
+
+        public String UpdateItemsButtonText
+        {
+            get
+            {
+                switch (ModePickerSelected)
+                {
+                    case LOCATION_MODE:
+                        return "Relocate Items";
+                    case LOG_ENTRY_MODE:
+                        return "Add Log Entries";
+                    case STATUS_MODE:
+                        return "Update Status for Items";
+                    default:
+                        return "Update Items"; 
+                }                
+            }
+        }
+
+        public String ModePickerSelected
+        {
+            get
+            {
+                return _ModePickerSelected;
+            }
+            set
+            {
+                _ModePickerSelected = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(LocationMode));
+                OnPropertyChanged(nameof(StatusMode));
+                OnPropertyChanged(nameof(LogMode));
+                OnPropertyChanged(nameof(UpdateItemsButtonText));
             }
         }
     }

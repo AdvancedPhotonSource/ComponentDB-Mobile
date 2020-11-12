@@ -24,14 +24,38 @@
             </ListView>
             <Button Text="Clear List" Clicked="HandleClearItemsClicked" />
             <BoxView Color="Black" WidthRequest="100" HeightRequest="2"/>
-            <Label Text="Selected Location:" FontSize="Large" />
-            <Label Text="{Binding SelectedLocation.Name}"  />
-            <Label Text="Location Details:" FontSize="Large" IsVisible="{Binding locationDetailsShown}" />
-            <Entry Text="{Binding LocationDetails}" FontSize="Small" Placeholder="{Binding locationDetailsPlaceholderText}" IsVisible="{Binding locationDetailsShown}" />
-            <Button Text="Manually Select Location" Clicked="HandleSelectLocationManually" />
+
+            <StackLayout Orientation="Horizontal">
+                <Label VerticalOptions="Center" Text="Mode:" />
+                <Picker VerticalOptions="Center" x:Name="modePicker" HorizontalOptions="FillAndExpand"
+                        ItemsSource="{Binding ModePickerList}"
+                        SelectedItem="{Binding ModePickerSelected}"
+                        SelectedIndexChanged="modePicker_SelectedIndexChanged"/>
+            </StackLayout>            
+
+            <StackLayout IsVisible="{Binding LocationMode}">
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Selected Location:" />
+                    <Label Text="{Binding SelectedLocation.Name}" FontAttributes="Bold"  />
+                </StackLayout>
+                <Label Text="Location Details:" IsVisible="{Binding locationDetailsShown}" />
+                <Entry Text="{Binding LocationDetails}" FontSize="Small" Placeholder="{Binding locationDetailsPlaceholderText}" IsVisible="{Binding locationDetailsShown}" />
+                <Button Text="Manually Select Location" Clicked="HandleSelectLocationManually" />
+            </StackLayout>
+
+            <StackLayout IsVisible="{Binding LogMode}">
+                <Label Text="Log Entry" />
+                <Entry Text="{Binding LogEntry}"/> 
+            </StackLayout>
+
+            <StackLayout IsVisible="{Binding StatusMode}">
+                <Label Text="Status" />
+                <Picker x:Name="statusPicker" SelectedItem="{Binding StatusEntry}"/>
+            </StackLayout>
+            
             <BoxView Color="Black" WidthRequest="100" HeightRequest="2"/>
 
-            <Button Text="Relocate Items" Clicked="HandleRelocateItemsClicked" />
+            <Button Text="{Binding UpdateItemsButtonText}" Clicked="HandleUpdateItemsClicked" />
         </StackLayout>
     </ContentPage.Content>
 </d:CdbBasePage>

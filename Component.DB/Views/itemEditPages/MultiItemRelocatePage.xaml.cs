@@ -72,31 +72,65 @@ namespace Component.DB.Views.itemEditPages
             NotificationPopup.shortPopup(args.Message);
         }
 
-        async void HandleRelocateItemsClicked(object sender, System.EventArgs e)
+        async void HandleUpdateItemsClicked(object sender, System.EventArgs e)
         {
-            var selectedLocation = viewModel.SelectedLocation; 
+            var selectedLocation = viewModel.SelectedLocation;
+            var locationMode = viewModel.LocationMode;
+            var logMode = viewModel.LogMode;
+            var statusMode = viewModel.StatusMode;
+
+            if (logMode)
+            {
+                if (String.IsNullOrEmpty(viewModel.LogEntry))
+                {
+                    DisplayMissingInputAlert("Log Entry"); 
+                    return; 
+                }
+            } else if (statusMode) {
+                if (String.IsNullOrEmpty(viewModel.StatusEntry))
+                {
+                    DisplayMissingInputAlert("Status");
+                    return;
+                }
+            }
+
             foreach (var item in viewModel.LocatableItemList)
             {
                 try
                 {
-                    if (item.Item.Domain.Name.Equals(Constants.locationDomainName))
+                    if (locationMode)
                     {
-                        item.UpdateLocationParent(selectedLocation); 
-                    }
-                    else
-                    {
-                        var locInfo = item.LoadItemLocationInformation();
-                        ItemDomainLocation locationItem = null;
-
-                        if (selectedLocation != null)
+                        if (item.Item.Domain.Name.Equals(Constants.locationDomainName))
                         {
-                            locationItem = new ItemDomainLocation { Id = selectedLocation.Id };
+                            item.UpdateLocationParent(selectedLocation);
                         }
+                        else
+                        {
+                            var locInfo = item.LoadItemLocationInformation();
+                            ItemDomainLocation locationItem = null;
 
-                        locInfo.LocationItem = locationItem;
-                        locInfo.LocationDetails = viewModel.LocationDetails;
-                        item.UpdateItemLocation();
+                            if (selectedLocation != null)
+                            {
+                                locationItem = new ItemDomainLocation { Id = selectedLocation.Id };
+                            }
+
+                            locInfo.LocationItem = locationItem;
+                            locInfo.LocationDetails = viewModel.LocationDetails;
+                            item.UpdateItemLocation();
+                        }
+                    } else if (logMode)
+                    {
+                        int itemId = (int)item.Item.Id;
+                        AddLogEntryViewModel logEntryModel = new AddLogEntryViewModel(itemId)
+                        {
+                            LogEntry = viewModel.LogEntry 
+                        };
+                        await logEntryModel.AddLogEntryForItemAsync(); 
+                    } else if (statusMode)
+                    {
+                        await item.UpdateItemStatusAsync(viewModel.StatusEntry); 
                     }
+                    
                 }
                 catch (Exception ex)
                 {
@@ -104,11 +138,19 @@ namespace Component.DB.Views.itemEditPages
                     return;
                 }
             }
-
-            viewModel.ClearItems();
+            
             viewModel.SelectedLocation = null;
-            viewModel.LocationDetails = ""; 
-            await DisplayAlert("Update Complete", "Locations have been updated", "OK");
+            viewModel.LocationDetails = "";
+            viewModel.LogEntry = "";
+            viewModel.StatusEntry = ""; 
+
+            await DisplayAlert("Update Complete", "Items have been updated", "OK");
+        }
+
+        private async void DisplayMissingInputAlert(String inputName)
+        {
+            var message = "Please fill out " + inputName + " and try again.";
+            await DisplayAlert("Missing Input", message, "OK"); 
         }
 
         protected async override void OnAppearing()
@@ -169,6 +211,67 @@ namespace Component.DB.Views.itemEditPages
             }
 
             sender.SelectedItem = null; 
+        }
+
+        async void modePicker_SelectedIndexChanged(System.Object sender, System.EventArgs e)
+        {
+            // modePicker selected to status
+            if (viewModel.StatusMode)
+            {
+                if (statusPicker.Items.Count == 0)
+                {
+                    // Prepopulate all valid status values for the drop down. 
+                    var propertyApi = CdbApiFactory.Instance.propertyTypeApi;
+                    var type = propertyApi.GetInventoryStatusPropertyType();
+
+                    foreach (var allowedValue in type.SortedAllowedPropertyValueList)
+                    {
+                        statusPicker.Items.Add(allowedValue.Value);
+                    }
+                }
+
+                // Remove location items from the list
+                var ItemsToRemove = new List<ItemDetailEditViewModel>();
+                foreach (var Item in viewModel.LocatableItemList)
+                {
+                    var dbItem = Item.Item;
+                    if (dbItem.Domain.Name.Equals(Constants.locationDomainName))
+                    {
+                        ItemsToRemove.Add(Item);
+                    }
+                }
+
+                var countLocations = ItemsToRemove.Count;
+
+                if (countLocations > 0)
+                {
+                    await DisplayAlert("Status Changed",
+                        countLocations + " Location(s) removed. Status is only for inventory items.",
+                        "OK");
+
+                    foreach (var ItemToRemove in ItemsToRemove)
+                    {
+                        viewModel.removeFromLocatableItemList(ItemToRemove); 
+                    }
+                }
+            }
+            else if (viewModel.LocationMode)
+            {
+                // Verify if the selected location is not in locatable list.
+                if (viewModel.SelectedLocation != null)
+                {
+                    var dbSelectedLocationId = viewModel.SelectedLocation.Id;
+                    foreach (var Item in viewModel.LocatableItemList)
+                    {
+                        var dbItem = Item.Item;
+                        if (dbItem.Id == dbSelectedLocationId)
+                        {
+                            viewModel.removeFromLocatableItemList(Item);
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 }
