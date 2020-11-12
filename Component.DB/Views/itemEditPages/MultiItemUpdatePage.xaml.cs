@@ -11,17 +11,17 @@ using Xamarin.Forms;
 
 namespace Component.DB.Views.itemEditPages
 {
-    public partial class MultiItemRelocatePage : CdbBasePage
+    public partial class MultiItemUpdatePage : CdbBasePage
     {
 
-        MultiItemRelocateViewModel viewModel;
+        MultiItemUpdateViewModel viewModel;
         INotificationPopup NotificationPopup;        
 
-        public MultiItemRelocatePage()
+        public MultiItemUpdatePage()
         {
             InitializeComponent();
 
-            BindingContext = viewModel = new MultiItemRelocateViewModel();
+            BindingContext = viewModel = new MultiItemUpdateViewModel();
             viewModel.ViewModelMessageEvent += HandleViewModelMessage;
 
             NotificationPopup = DependencyService.Get<INotificationPopup>();
@@ -94,7 +94,7 @@ namespace Component.DB.Views.itemEditPages
                 }
             }
 
-            foreach (var item in viewModel.LocatableItemList)
+            foreach (var item in viewModel.UpdatableItemList)
             {
                 try
                 {
@@ -186,19 +186,23 @@ namespace Component.DB.Views.itemEditPages
                 MAKE_PRIMARY_LOCATION = "Replace with Selected Location";
             }
 
-            var prompt = "Options for " + model.ItemRelocateListingDisplayText;
+            var prompt = "Options for " + model.MultiItemUpdateListingDisplayText;
 
             var action = await DisplayActionSheet(prompt, "Cancel", REMOVE_OPT, SHOW_DETAILS_OPT, MAKE_PRIMARY_LOCATION);     
 
             if (action == REMOVE_OPT || action == MAKE_PRIMARY_LOCATION)
             {
-                viewModel.removeFromLocatableItemList(model);
+                viewModel.removeFromUpdatableItemList(model);
 
                 if (action == MAKE_PRIMARY_LOCATION)
                 {
                     var selectedLocation = viewModel.SelectedLocation;
-                    var selectedLocationModel = new ItemDetailEditViewModel(selectedLocation);
-                    viewModel.addToLocatableItemList(selectedLocationModel);
+                    if (selectedLocation != null)
+                    {
+                        var selectedLocationModel = new ItemDetailEditViewModel(selectedLocation);
+                        viewModel.addToUpdatableItemList(selectedLocationModel);
+                    }
+                    
                     viewModel.SelectedLocation = model.Item; 
                 }
             } else if (action == SHOW_DETAILS_OPT)
@@ -232,7 +236,7 @@ namespace Component.DB.Views.itemEditPages
 
                 // Remove location items from the list
                 var ItemsToRemove = new List<ItemDetailEditViewModel>();
-                foreach (var Item in viewModel.LocatableItemList)
+                foreach (var Item in viewModel.UpdatableItemList)
                 {
                     var dbItem = Item.Item;
                     if (dbItem.Domain.Name.Equals(Constants.locationDomainName))
@@ -251,7 +255,7 @@ namespace Component.DB.Views.itemEditPages
 
                     foreach (var ItemToRemove in ItemsToRemove)
                     {
-                        viewModel.removeFromLocatableItemList(ItemToRemove); 
+                        viewModel.removeFromUpdatableItemList(ItemToRemove); 
                     }
                 }
             }
@@ -261,12 +265,12 @@ namespace Component.DB.Views.itemEditPages
                 if (viewModel.SelectedLocation != null)
                 {
                     var dbSelectedLocationId = viewModel.SelectedLocation.Id;
-                    foreach (var Item in viewModel.LocatableItemList)
+                    foreach (var Item in viewModel.UpdatableItemList)
                     {
                         var dbItem = Item.Item;
                         if (dbItem.Id == dbSelectedLocationId)
                         {
-                            viewModel.removeFromLocatableItemList(Item);
+                            viewModel.removeFromUpdatableItemList(Item);
                             break;
                         }
                     }

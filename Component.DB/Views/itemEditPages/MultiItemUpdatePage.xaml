@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<d:CdbBasePage xmlns:d="clr-namespace:Component.DB.Views" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Component.DB.Views.itemEditPages.MultiItemRelocatePage" Title="{Binding Title}">
+<d:CdbBasePage xmlns:d="clr-namespace:Component.DB.Views" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Component.DB.Views.itemEditPages.MultiItemUpdatePage" Title="{Binding Title}">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Scan" Clicked="HandleScanClicked"/>
     </ContentPage.ToolbarItems>
@@ -7,7 +7,7 @@
         <StackLayout>
             <Label Text="Selected Items:" FontSize="Large" />
             <Label Text="Scan QR code to begin" />
-            <ListView x:Name="ItemsListView" ItemsSource="{Binding LocatableItemList}" 
+            <ListView x:Name="ItemsListView" ItemsSource="{Binding UpdatableItemList}" 
                       VerticalOptions="FillAndExpand" 
                       HasUnevenRows="true" 
                       CachingStrategy="RecycleElement"
@@ -16,7 +16,7 @@
                     <DataTemplate>
                         <ViewCell>
                             <StackLayout Padding="10">
-                                <Label Text="{Binding ItemRelocateListingDisplayText}" LineBreakMode="NoWrap" Style="{DynamicResource TitleStyle}" FontSize="16" Grid.Row="0" Grid.Column="1" />
+                                <Label Text="{Binding MultiItemUpdateListingDisplayText}" LineBreakMode="NoWrap" Style="{DynamicResource TitleStyle}" FontSize="16" Grid.Row="0" Grid.Column="1" />
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>

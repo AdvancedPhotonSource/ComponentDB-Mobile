@@ -52,7 +52,7 @@ namespace Component.DB.Views
                         MenuPages.Add(id, new NavigationPage(new ItemsPage(MenuItemType.BrowseCatalog)));
                         break;
                     case (int)MenuItemType.RelocateItems:
-                        MenuPages.Add(id, new NavigationPage(new MultiItemRelocatePage()));
+                        MenuPages.Add(id, new NavigationPage(new MultiItemUpdatePage()));
                         break;
                     case (int)MenuItemType.BrowseInventory:
                         MenuPages.Add(id, new NavigationPage(new ItemsPage(MenuItemType.BrowseInventory)));
@@ -102,9 +102,9 @@ namespace Component.DB.Views
                 if (Detail.GetType() == typeof(NavigationPage)) 
                 {
                     var root = ((NavigationPage)Detail).RootPage; 
-                    if (root.GetType() == typeof(MultiItemRelocatePage))
+                    if (root.GetType() == typeof(MultiItemUpdatePage))
                     {
-                        ((MultiItemRelocatePage)root).AddQrId(qrId);
+                        ((MultiItemUpdatePage)root).AddQrId(qrId);
                         return;
                     }
                 }

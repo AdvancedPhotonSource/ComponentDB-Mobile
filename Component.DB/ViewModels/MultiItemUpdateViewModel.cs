@@ -6,7 +6,7 @@ using Gov.ANL.APS.CDB.Model;
 
 namespace Component.DB.ViewModels
 {
-    public class MultiItemRelocateViewModel : BaseViewModel
+    public class MultiItemUpdateViewModel : BaseViewModel
     {
 
         private Item _SelectedLocation;
@@ -18,7 +18,7 @@ namespace Component.DB.ViewModels
         private String _LogEntry { get; set; }
         private String _StatusEntry { get; set; }
 
-        public ObservableCollection<ItemDetailEditViewModel> LocatableItemList { get; set; }
+        public ObservableCollection<ItemDetailEditViewModel> UpdatableItemList { get; set; }
 
         private const String LOCATION_MODE = "Location";
         private const String STATUS_MODE = "Status";
@@ -27,10 +27,10 @@ namespace Component.DB.ViewModels
         public List<String> ModePickerList { get; set; }
         private String _ModePickerSelected;
 
-        public MultiItemRelocateViewModel()
+        public MultiItemUpdateViewModel()
         {
             Title = "Update Items";
-            LocatableItemList = new ObservableCollection<ItemDetailEditViewModel>();
+            UpdatableItemList = new ObservableCollection<ItemDetailEditViewModel>();
             LocationDetails = "";
             _locationDetailsShown = true;
 
@@ -77,7 +77,7 @@ namespace Component.DB.ViewModels
             }
 
             // Verify not already in list
-            foreach (var item in LocatableItemList)
+            foreach (var item in UpdatableItemList)
             {
                 var id = item.Item.Id;
                 if (itemByQrId.Id == id)
@@ -95,28 +95,28 @@ namespace Component.DB.ViewModels
             {
                 //Add
                 var editDetailModel = new ItemDetailEditViewModel(itemByQrId);
-                addToLocatableItemList(editDetailModel);
+                addToUpdatableItemList(editDetailModel);
                 var message = "Added item with QrId: " + qrId;
                 FireViewModelMessageEvent(message);
                 return;
             }
             else
             {
-                var message = "The user does not have sufficient privilages to relocate scanned item. QrId: " + qrId;
+                var message = "The user does not have sufficient privilages to update scanned item. QrId: " + qrId;
                 FireViewModelMessageEvent(message);
                 return;
             }
         }
 
-        public void addToLocatableItemList(ItemDetailEditViewModel itemDetailModel)
+        public void addToUpdatableItemList(ItemDetailEditViewModel itemDetailModel)
         {
-            LocatableItemList.Add(itemDetailModel);
+            UpdatableItemList.Add(itemDetailModel);
             updateLocationDetailsShownVariables();
         }
 
-        public void removeFromLocatableItemList(ItemDetailEditViewModel itemDetailModel)
+        public void removeFromUpdatableItemList(ItemDetailEditViewModel itemDetailModel)
         {
-            LocatableItemList.Remove(itemDetailModel);
+            UpdatableItemList.Remove(itemDetailModel);
             updateLocationDetailsShownVariables();
         }
 
@@ -124,7 +124,7 @@ namespace Component.DB.ViewModels
         {
             var containsInventory = false;
             var containsLocation = false;
-            foreach (var model in this.LocatableItemList)
+            foreach (var model in this.UpdatableItemList)
             {
                 var item = model.Item;
                 var domainName = item.Domain.Name;
@@ -159,7 +159,7 @@ namespace Component.DB.ViewModels
 
         public void ClearItems()
         {
-            LocatableItemList.Clear();
+            UpdatableItemList.Clear();
             updateLocationDetailsShownVariables();
         }
 

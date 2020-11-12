@@ -25,7 +25,7 @@ namespace Component.DB.Views
             menuItems = new List<HomeMenuItem>
             {
                 new HomeMenuItem {Id = MenuItemType.ScanQRCode, Title="Scan QR Code", Icon=Constants.fontIconCamera },
-                new HomeMenuItem {Id = MenuItemType.RelocateItems, Title="Relocate Items", Icon=Constants.fontIconLocation },
+                new HomeMenuItem {Id = MenuItemType.RelocateItems, Title="Update Items", Icon=Constants.fontIconLocation },
                 new HomeMenuItem {Id = MenuItemType.BrowseCatalog, Title="Browse Catalog", Icon=Constants.fontIconBook },
                 new HomeMenuItem {Id = MenuItemType.BrowseInventory, Title="Browse Inventory", Icon=Constants.fontIconBook },
                 new HomeMenuItem {Id = MenuItemType.Settings, Title="Configuration", Icon=Constants.fontIconConfig },

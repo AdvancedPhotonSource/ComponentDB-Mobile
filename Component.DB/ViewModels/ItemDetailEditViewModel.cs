@@ -24,7 +24,7 @@ namespace Component.DB.ViewModels
             }
         }
 
-        public String ItemRelocateListingDisplayText
+        public String MultiItemUpdateListingDisplayText
         {
             get
             {
