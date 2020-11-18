@@ -10,6 +10,7 @@
                 <DatePicker Date="{Binding EffectiveDate}"/>                
                 
                 <Button Text="{Binding SaveButtonText}" Clicked="HandleSaveClickedAsync"/>
+                <Label FontSize="Micro" Text="{Binding ConnectedToMessage}" /> 
                 <ActivityIndicator IsRunning="{Binding IsBusy}" />
             </StackLayout>
         </ScrollView>        

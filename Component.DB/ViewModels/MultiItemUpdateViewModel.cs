@@ -286,7 +286,14 @@ namespace Component.DB.ViewModels
                         buttonText="Update Items";
                         break;                    
                 }
-                return buttonText + " (As " + this.ActiveUsername + ")"; 
+
+                var username = this.ActiveUsername;
+
+                if (username != null)
+                {
+                    return buttonText + " (as user: " + username + ")";
+                }
+                return buttonText; 
             }
         }
 

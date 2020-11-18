@@ -17,6 +17,7 @@ See LICENSE file.
                 </StackLayout>
                 <StackLayout Spacing="10" Padding="10" >    
                     <Button Text="{Binding SaveButtonText}" Clicked="HandleSaveClicked" />
+                    <Label FontSize="Micro" Text="{Binding ConnectedToMessage}" /> 
                     <ActivityIndicator IsRunning="{Binding IsBusy}" />
                 </StackLayout>
             </StackLayout>

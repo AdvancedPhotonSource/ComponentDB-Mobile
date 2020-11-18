@@ -41,7 +41,28 @@ namespace Component.DB.ViewModels
             get
             {
                 var auth = appStore.getActiveAuth();
-                return auth.Username;
+                if (auth != null)
+                {
+                    return auth.Username;
+                }
+                return null;                 
+            }
+        }
+
+        protected String ActiveHostUrl
+        {
+            get
+            {
+                var config = appStore.getActiveConfiguration();
+                return config.CdbAddress; 
+            }
+        }
+
+        public String ConnectedToMessage
+        {
+            get
+            {
+                return "Connected to " + this.ActiveHostUrl; 
             }
         }
 
@@ -49,7 +70,12 @@ namespace Component.DB.ViewModels
         {
             get
             {
-                return "Save (as " + this.ActiveUsername + ")";
+                var userName = this.ActiveUsername;
+                if (userName != null)
+                {
+                    return "Save (as user: " + this.ActiveUsername + ")";
+                }
+                return "Save";                 
             }
         }
 
