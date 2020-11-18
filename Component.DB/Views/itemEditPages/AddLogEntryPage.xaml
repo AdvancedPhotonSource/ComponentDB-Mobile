@@ -9,7 +9,7 @@
                 <Label Text="Effective Date:" FontSize="Medium" />
                 <DatePicker Date="{Binding EffectiveDate}"/>                
                 
-                <Button Text="Save" Clicked="HandleSaveClickedAsync"/>
+                <Button Text="{Binding SaveButtonText}" Clicked="HandleSaveClickedAsync"/>
                 <ActivityIndicator IsRunning="{Binding IsBusy}" />
             </StackLayout>
         </ScrollView>        

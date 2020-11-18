@@ -269,17 +269,24 @@ namespace Component.DB.ViewModels
         {
             get
             {
+                String buttonText = "";
+
                 switch (ModePickerSelected)
                 {
                     case LOCATION_MODE:
-                        return "Relocate Items";
+                        buttonText="Relocate Items";
+                        break;
                     case LOG_ENTRY_MODE:
-                        return "Add Log Entries";
+                        buttonText="Add Log Entries";
+                        break;
                     case STATUS_MODE:
-                        return "Update Status for Items";
+                        buttonText="Update Status for Items";
+                        break;
                     default:
-                        return "Update Items"; 
-                }                
+                        buttonText="Update Items";
+                        break;                    
+                }
+                return buttonText + " (As " + this.ActiveUsername + ")"; 
             }
         }
 

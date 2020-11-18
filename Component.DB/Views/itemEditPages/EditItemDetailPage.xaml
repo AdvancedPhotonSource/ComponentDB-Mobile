@@ -16,7 +16,7 @@ See LICENSE file.
                     <Entry Text="{Binding Item.Description}" FontSize="Small" />     
                 </StackLayout>
                 <StackLayout Spacing="10" Padding="10" >    
-                    <Button Text="Save" Clicked="HandleSaveClicked" />
+                    <Button Text="{Binding SaveButtonText}" Clicked="HandleSaveClicked" />
                     <ActivityIndicator IsRunning="{Binding IsBusy}" />
                 </StackLayout>
             </StackLayout>

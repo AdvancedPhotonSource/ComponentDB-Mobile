@@ -18,7 +18,9 @@ namespace Component.DB.ViewModels
         public ItemApi itemApi => CdbApiFactory.Instance.itemApi;
         public LocationItemsApi locationItemsApi => CdbApiFactory.Instance.locationItemApi; 
 
-        public event EventHandler<ViewModelMessageEventArgs> ViewModelMessageEvent; 
+        public event EventHandler<ViewModelMessageEventArgs> ViewModelMessageEvent;
+
+        protected CdbMobileAppStorage appStore = CdbMobileAppStorage.Instance;        
 
         bool isBusy = false;
         public bool IsBusy
@@ -32,6 +34,23 @@ namespace Component.DB.ViewModels
         {
             get { return title; }
             set { SetProperty(ref title, value); }
+        }
+
+        protected String ActiveUsername
+        {
+            get
+            {
+                var auth = appStore.getActiveAuth();
+                return auth.Username;
+            }
+        }
+
+        public String SaveButtonText
+        {
+            get
+            {
+                return "Save (as " + this.ActiveUsername + ")";
+            }
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
