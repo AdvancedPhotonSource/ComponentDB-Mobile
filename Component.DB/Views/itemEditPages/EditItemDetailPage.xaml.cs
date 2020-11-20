@@ -33,7 +33,7 @@ namespace Component.DB.Views.itemEditPages
 
             addEditBindingToEditItemsStackLayout(domain.ItemIdentifier1Label, "Item.ItemIdentifier1");
 
-            if (domain.ItemIdentifier2Label != null)
+            if (domain.ItemIdentifier2Label != null && !domain.Name.Equals(Constants.machineDesignDomainName))
             {
                 addEditBindingToEditItemsStackLayout(domain.ItemIdentifier2Label, "Item.ItemIdentifier2");
             }
