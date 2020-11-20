@@ -18,7 +18,7 @@ namespace Component.DB.ViewModels
 {
     public class ItemDetailViewModel : BaseViewModel
     {
-        private Item _Item;
+        protected Item _Item;
         private PropertyValue _ItemStatus;
         private ItemLocationInformation _ItemLocationInformation;
 
@@ -157,19 +157,21 @@ namespace Component.DB.ViewModels
             }
         }
 
+        protected string formatQrId(int? qrId)
+        {
+            if (qrId == null)
+            {
+                return "";
+            }
+            return String.Format("{0:000 000 000}", qrId);            
+        }
+
         public string FormattedQrId
         {
             get
             {
-                var qrId = Item.QrId;
-                if (qrId == null)
-                {
-                    return "";
-                }
-                else
-                {
-                    return String.Format("{0:000 000 000}", qrId);
-                }
+                var qrId = Item.QrId;                
+                return formatQrId(qrId);                 
             }
         }
 
