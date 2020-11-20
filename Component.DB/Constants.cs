@@ -18,6 +18,7 @@ namespace Component.DB
         public const string inventoryDomainName = "Inventory";
         public const string catalogDomainName = "Catalog";
         public const string locationDomainName = "Location";
+        public const string machineDesignDomainName = "Machine Design"; 
 
         public const string fontIconGithub = "";
         public const string fontIconEdit = "";
