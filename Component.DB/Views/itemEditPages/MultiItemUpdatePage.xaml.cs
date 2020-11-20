@@ -178,7 +178,8 @@ namespace Component.DB.Views.itemEditPages
             ItemDetailEditViewModel model = (ItemDetailEditViewModel) sender.SelectedItem;
 
             var REMOVE_OPT = "Remove";
-            var SHOW_DETAILS_OPT = "View Details"; 
+            var SHOW_DETAILS_OPT = "View Details";
+            string SWAP_WITH_PARENT_OPT = null; 
             string MAKE_PRIMARY_LOCATION = null;
 
             if (model.Item.Domain.Name.Equals(Constants.locationDomainName))
@@ -186,9 +187,17 @@ namespace Component.DB.Views.itemEditPages
                 MAKE_PRIMARY_LOCATION = "Replace with Selected Location";
             }
 
+            if (model.ItemLocationInformation != null)
+            {
+                if (model.ItemLocationInformation.LocationItem != null)
+                {
+                    SWAP_WITH_PARENT_OPT = "Swap with Parent";
+                }                
+            }
+
             var prompt = "Options for " + model.MultiItemUpdateListingDisplayText;
 
-            var action = await DisplayActionSheet(prompt, "Cancel", REMOVE_OPT, SHOW_DETAILS_OPT, MAKE_PRIMARY_LOCATION);     
+            var action = await DisplayActionSheet(prompt, "Cancel", REMOVE_OPT, SHOW_DETAILS_OPT, MAKE_PRIMARY_LOCATION, SWAP_WITH_PARENT_OPT);
 
             if (action == REMOVE_OPT || action == MAKE_PRIMARY_LOCATION)
             {
@@ -212,6 +221,31 @@ namespace Component.DB.Views.itemEditPages
                 var detailsPage = ItemDetailPage.CreateItemDetailPage(viewModel); 
 
                 await Navigation.PushAsync(detailsPage);
+            } else if (action == SWAP_WITH_PARENT_OPT)
+            {
+                var locInfo = model.ItemLocationInformation;
+                var parent = locInfo.LocationItem;
+
+                var domainName = parent.Domain.Name;
+
+                var proceed = true; 
+
+                if (viewModel.StatusMode)
+                {
+                    if (!domainName.Equals(Constants.inventoryDomainName))
+                    {
+                        await DisplayAlert("Cannot Swap","Only inventory items have status.", "OK");
+                        proceed = false; 
+                    }
+                }
+
+                if (proceed)
+                {
+                    viewModel.removeFromUpdatableItemList(model);
+
+                    var newModel = new ItemDetailEditViewModel(parent);
+                    viewModel.addToUpdatableItemList(newModel);
+                }                
             }
 
             sender.SelectedItem = null; 
@@ -239,7 +273,7 @@ namespace Component.DB.Views.itemEditPages
                 foreach (var Item in viewModel.UpdatableItemList)
                 {
                     var dbItem = Item.Item;
-                    if (dbItem.Domain.Name.Equals(Constants.locationDomainName))
+                    if (!dbItem.Domain.Name.Equals(Constants.inventoryDomainName))
                     {
                         ItemsToRemove.Add(Item);
                     }
@@ -250,7 +284,7 @@ namespace Component.DB.Views.itemEditPages
                 if (countLocations > 0)
                 {
                     await DisplayAlert("Status Changed",
-                        countLocations + " Location(s) removed. Status is only for inventory items.",
+                        countLocations + " Item(s) removed. Status is only for inventory items.",
                         "OK");
 
                     foreach (var ItemToRemove in ItemsToRemove)

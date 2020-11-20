@@ -32,6 +32,46 @@ namespace Component.DB.ViewModels
             }
         }
 
+        public String MultiItemUpdateListDisplayUseParentText
+        {
+            get
+            {
+                if (ItemLocationInformation == null)
+                {
+                    LoadItemLocationInformation();
+                }                
+
+                if (ItemLocationInformation != null)
+                {
+                    var locationItem = ItemLocationInformation.LocationItem;
+
+                    String locationNameString = null;
+
+                    if (locationItem != null)
+                    {
+                        var domainName = locationItem.Domain.Name;
+                        if (domainName.Equals(Constants.inventoryDomainName))
+                        {
+                            var cat = locationItem.DerivedFromItem;
+                            locationNameString = cat.Name + " - " + locationItem.Name;
+                        }
+                        else
+                        {
+                            locationNameString = locationItem.Name;
+                        }
+                    }
+
+                    if (locationNameString != null)
+                    {
+                        return "Tap to swap with parent: " + locationNameString;
+                    }
+                }
+
+                return ""; 
+                
+            }
+        }
+
         public async Task<Item> UpdateItem()
         {
             try

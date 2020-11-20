@@ -15,8 +15,9 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout Padding="10">
+                            <StackLayout>
                                 <Label Text="{Binding MultiItemUpdateListingDisplayText}" LineBreakMode="NoWrap" Style="{DynamicResource TitleStyle}" FontSize="16" Grid.Row="0" Grid.Column="1" />
+                                <Label Text="{Binding MultiItemUpdateListDisplayUseParentText}" FontSize="Micro" TextColor="Red"/> 
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>

@@ -94,7 +94,7 @@ namespace Component.DB.ViewModels
             if (hasPemission != null && (bool)hasPemission)
             {
                 //Add
-                var editDetailModel = new ItemDetailEditViewModel(itemByQrId);
+                var editDetailModel = new ItemDetailEditViewModel(itemByQrId);                
                 addToUpdatableItemList(editDetailModel);
                 var message = "Added item with QrId: " + qrId;
                 FireViewModelMessageEvent(message);
@@ -110,8 +110,21 @@ namespace Component.DB.ViewModels
 
         public void addToUpdatableItemList(ItemDetailEditViewModel itemDetailModel)
         {
+            foreach (var idm in UpdatableItemList)
+            {
+                var item = idm.Item;
+                var current = itemDetailModel.Item;
+
+                if (item.Id == current.Id)
+                {
+                    // No need to add. Item is already in list. 
+                    return;
+                }
+            }
+            
             UpdatableItemList.Add(itemDetailModel);
             updateLocationDetailsShownVariables();
+            
         }
 
         public void removeFromUpdatableItemList(ItemDetailEditViewModel itemDetailModel)
