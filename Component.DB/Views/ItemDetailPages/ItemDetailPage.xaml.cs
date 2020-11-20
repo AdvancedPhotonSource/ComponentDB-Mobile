@@ -20,6 +20,7 @@ using Plugin.Media.Abstractions;
 using Plugin.Media;
 using System.Diagnostics;
 using Component.DB.Services.CdbEventArgs;
+using Component.DB.Views.ItemDetailPages;
 
 namespace Component.DB.Views
 {
@@ -28,57 +29,90 @@ namespace Component.DB.Views
     [DesignTimeVisible(true)]
     public partial class ItemDetailPage : CdbBasePage
     {
-        ItemDetailViewModel viewModel;
+        protected ItemDetailViewModel viewModel;
 
-        public ItemDetailPage(ItemDetailViewModel viewModel)
+        private String CurrentDomainName = null;
+
+        protected ItemDetailPage(ItemDetailViewModel viewModel, Boolean addIdentifiers = true)
         {
             InitializeComponent();
 
             BindingContext = this.viewModel = viewModel;
 
-            Item item = viewModel.Item;
-            var domain = item.Domain; 
-
-            addBindingToDetailsStackLayout(domain.ItemIdentifier1Label, "Item.ItemIdentifier1");                   
-
-            if (domain.ItemIdentifier2Label != null)
+            if (addIdentifiers)
             {
-                addBindingToDetailsStackLayout(domain.ItemIdentifier2Label, "Item.ItemIdentifier2");
-            }
+                CurrentDomainName = viewModel.Item.Domain.Name;
 
-            var domainName = item.Domain.Name;
-            if (domainName.Equals(Constants.inventoryDomainName))
-            {
-                ItemNameLabel.Text = "Tag:";
-                // Show catalog item information 
-                // TODO use catalog item attriibute 
-                addBindingToDetailsStackLayout("Catalog Item", "Item.DerivedFromItem.Name", 0);
+                Item item = viewModel.Item;
+                var domain = item.Domain;
 
-                addBindingToDetailsStackLayout("QR Id", "FormattedQrId", 0);
+                addBindingToDetailsStackLayout(domain.ItemIdentifier1Label, "Item.ItemIdentifier1");
 
-                // Show status
-                viewModel.LoadItemStatus();
-                viewModel.LoadItemLocationInformation();
-
-                addBindingToDetailsStackLayout("Location", "ItemLocationInformation.LocationString");
-                addBindingToDetailsStackLayout("Location Details ", "ItemLocationInformation.LocationDetails");
-
-                addBindingToDetailsStackLayout("Status", "ItemStatusString"); 
-            }
-            else if (domainName.Equals(Constants.catalogDomainName))
-            {
-                var inventoryButton = new Button
+                if (domain.ItemIdentifier2Label != null)
                 {
-                    Text = "View Inventory",
-                };
-
-                inventoryButton.Clicked += HandleShowInventoryClicked;
-                ItemDetailsButtonStackLayout.Children.Insert(0, inventoryButton);
+                    addBindingToDetailsStackLayout(domain.ItemIdentifier2Label, "Item.ItemIdentifier2");
+                }
             }
         }
 
-        private void addBindingToDetailsStackLayout(String label, String bindingValue, int index = -1)
+        public static ItemDetailPage CreateItemDetailPage(ItemDetailViewModel viewModel)
         {
+            var CurrentDomainName = viewModel.Item.Domain.Name;
+
+            if (CurrentDomainName.Equals(Constants.catalogDomainName))
+            {
+                return new ItemDomainCatalogDetailPage(viewModel);
+            } else if (CurrentDomainName.Equals(Constants.inventoryDomainName))
+            {
+                return new ItemDomainInventoryDetailPage(viewModel);
+            } else if (CurrentDomainName.Equals(Constants.machineDesignDomainName))
+            {
+                return ItemDomainMachineDesignDetailPage.CreateInstance(viewModel); 
+            }
+
+            return new ItemDetailPage(viewModel); 
+        }
+
+        protected StackLayout ButtonsStackLayout
+        {
+            get
+            {
+                return ItemDetailsButtonStackLayout; 
+            }
+        }
+
+        protected StackLayout DetailsStackLayout
+        {
+            get
+            {
+                return _DetailsStackLayout; 
+            }
+        }
+
+        protected StackLayout MainStackLayout
+        {
+            get
+            {
+                return _MainStackLayout; 
+            }
+        }
+
+        protected Label ItemNameLabel
+        {
+            get
+            {
+                return _ItemNameLabel; 
+            }
+        }
+
+
+
+        protected void addBindingToDetailsStackLayout(String label, String bindingValue, int index = -1, StackLayout Stack = null)
+        {
+            if (Stack == null)
+            {
+                Stack = DetailsStackLayout; 
+            }
             Label itemLabel = new Label
             {
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
@@ -89,15 +123,13 @@ namespace Component.DB.Views
 
             if (index == -1)
             {
-                DetailsStackLayout.Children.Add(itemLabel);
-                DetailsStackLayout.Children.Add(itemValueLabel);
+                Stack.Children.Add(itemLabel);
+                Stack.Children.Add(itemValueLabel);
             } else
             {
-                DetailsStackLayout.Children.Insert(index, itemValueLabel);
-                DetailsStackLayout.Children.Insert(index, itemLabel);
+                Stack.Children.Insert(index, itemValueLabel);
+                Stack.Children.Insert(index, itemLabel);
             }
-
-
         }
 
         public ItemDetailPage()
@@ -139,16 +171,7 @@ namespace Component.DB.Views
                 Debug.WriteLine(message);
                 await DisplayAlert("Error", message, "OK");
             }
-        }
-
-        async void HandleShowInventoryClicked(object sender, System.EventArgs e)
-        {
-            var itemId = viewModel.Item.Id;
-
-            ItemsPage itemsPage = new ItemsPage(MenuItemType.BrowseInventory, (int)itemId);
-
-            await Navigation.PushAsync(itemsPage); 
-        }
+        }        
 
         async void HandleShowPropertiesClicked(object sender, System.EventArgs e)
         {

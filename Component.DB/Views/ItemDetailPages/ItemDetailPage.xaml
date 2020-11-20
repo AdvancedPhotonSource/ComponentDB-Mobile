@@ -9,7 +9,7 @@ See LICENSE file.
                      Clicked="HandleEditItemClicked"/>
     </ContentPage.ToolbarItems>
     <ScrollView>
-        <StackLayout x:Name="MainStackLayout">
+        <StackLayout x:Name="_MainStackLayout">
             <Image Source="{Binding PrimaryImageUrlScaled}"
                    Aspect="AspectFit"
                    x:Name="itemImage">
@@ -18,8 +18,8 @@ See LICENSE file.
                 </Image.GestureRecognizers>
             </Image>
             
-            <StackLayout Spacing="10" Padding="10" x:Name="DetailsStackLayout">
-                <Label Text="Name:" FontSize="Medium" x:Name="ItemNameLabel" />
+            <StackLayout Spacing="10" Padding="10" x:Name="_DetailsStackLayout">
+                <Label Text="Name:" FontSize="Medium" x:Name="_ItemNameLabel" />
                 <Label Text="{Binding Item.Name}" FontSize="Small" />
                 <Label Text="Description:" FontSize="Medium" />
                 <Label Text="{Binding Item.Description}" FontSize="Small" />
