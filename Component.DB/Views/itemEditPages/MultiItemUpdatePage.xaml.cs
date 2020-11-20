@@ -209,7 +209,7 @@ namespace Component.DB.Views.itemEditPages
             {
                 var item = model.Item;
                 var viewModel = new ItemDetailViewModel(item);
-                var detailsPage = new ItemDetailPage(viewModel);
+                var detailsPage = ItemDetailPage.CreateItemDetailPage(viewModel); 
 
                 await Navigation.PushAsync(detailsPage);
             }
