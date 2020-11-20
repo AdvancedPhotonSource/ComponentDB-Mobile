@@ -101,21 +101,28 @@ namespace Component.DB.Views
                 }
                 if (Detail.GetType() == typeof(NavigationPage)) 
                 {
+                    var currentPage = ((NavigationPage)Detail).CurrentPage;
+                    if (currentPage.GetType() == typeof(UpdateMdAssignedItemPage))
+                    {
+                        ((UpdateMdAssignedItemPage)currentPage).UpdatedScannedItem(qrId);
+                        return;
+                    }
+
                     var root = ((NavigationPage)Detail).RootPage; 
                     if (root.GetType() == typeof(MultiItemUpdatePage))
                     {
                         ((MultiItemUpdatePage)root).AddQrId(qrId);
                         return;
-                    }
+                    }                    
                 }
 
 
                 var detailsModel = new ItemDetailViewModel();
                 detailsModel.loadFromQrId(qrId);
-                var detailsPage = new ItemDetailPage(detailsModel);
+                var detailsPage = ItemDetailPage.CreateItemDetailPage(detailsModel); 
                 var newPage = new NavigationPage(detailsPage);
                 Device.BeginInvokeOnMainThread(async () =>
-                {
+                {                    
                     await NavigateToNewPageFromApp(newPage);
                 });
             }

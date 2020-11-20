@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Copyright (c) UChicago Argonne, LLC. All rights reserved.
+See LICENSE file.
+-->
+<d:CdbBasePage xmlns:d="clr-namespace:Component.DB.Views" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Component.DB.Views.itemEditPages.UpdateMdAssignedItemPage"
+             Title="{Binding Title}">
+    <ContentPage.Content>        
+        <StackLayout Spacing="10" Padding="10">
+            <Label Text="{Binding PromptText}" FontSize="Large" />
+
+
+            <ListView x:Name="ItemsListView"
+                        ItemsSource="{Binding InventoryItems}"
+                        SelectedItem="{Binding SelectedInventoryItem, Mode=TwoWay}"
+                        VerticalOptions="FillAndExpand"
+                        IsVisible="{Binding IsVisibleInventoryList}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout>
+                                <Label Text="{Binding Item.Name}"  />
+                                <Label Text="{Binding FormattedQrId}" FontSize="Micro" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Button Text="Update Assigned Item"
+                    Clicked="HandleUpdateAssignedItemClicked"
+                    IsVisible="{Binding IsVisibleInventoryList}"/>
+        </StackLayout>   
+    </ContentPage.Content>
+</d:CdbBasePage>
