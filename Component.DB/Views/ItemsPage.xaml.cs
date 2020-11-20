@@ -119,11 +119,13 @@ namespace Component.DB.Views
             if (item == null)
                 return;
 
-            // Load the latest version of the item.            
-            var itemObj = itemApi.GetItemById(item.Item.Id);
+            // Load the latest version of the item.
+            int? itemId = item.Item.Id; 
+            var itemObj = itemApi.GetItemById(itemId);
             var newItem = new ItemDetailViewModel(itemObj);
 
-            await Navigation.PushAsync(new ItemDetailPage(newItem));
+            var detailPage = ItemDetailPage.CreateItemDetailPage(newItem); 
+            await Navigation.PushAsync(detailPage);
 
             // Manually deselect item.
             ItemsListView.SelectedItem = null;
