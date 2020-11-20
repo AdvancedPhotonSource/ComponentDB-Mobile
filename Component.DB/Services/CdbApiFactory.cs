@@ -27,6 +27,7 @@ namespace Component.DB.Services
 
         private AuthenticationApi authApiInstance;        
         private ItemApi itemApiInstance;
+        private MachineDesignItemsApi machineApiInstance; 
         private LocationItemsApi locationApiInstance; 
         private PropertyValueApi propertyValueApiInstance;
         private PropertyTypeApi propertyTypeApiInstance;  
@@ -54,6 +55,7 @@ namespace Component.DB.Services
             var host = config.CdbAddress; 
 
             itemApiInstance = new ItemApi(host);
+            machineApiInstance = new MachineDesignItemsApi(host); 
             locationApiInstance = new LocationItemsApi(host);
             authApiInstance = new AuthenticationApi(host);
             propertyValueApiInstance = new PropertyValueApi(host);
@@ -130,6 +132,7 @@ namespace Component.DB.Services
         private void applyAuthToken(String token)
         {
             itemApiInstance.Configuration.AddDefaultHeader(TOKEN_KEY, token);
+            machineApiInstance.Configuration.AddDefaultHeader(TOKEN_KEY, token); 
             locationApiInstance.Configuration.AddDefaultHeader(TOKEN_KEY, token);
             propertyTypeApi.Configuration.AddDefaultHeader(TOKEN_KEY, token);
             authApiInstance.Configuration.AddDefaultHeader(TOKEN_KEY, token);
@@ -170,6 +173,14 @@ namespace Component.DB.Services
             get
             {
                 return itemApiInstance;
+            }
+        }
+
+        public MachineDesignItemsApi machineApi
+        {
+            get
+            {
+                return machineApiInstance; 
             }
         }
 
