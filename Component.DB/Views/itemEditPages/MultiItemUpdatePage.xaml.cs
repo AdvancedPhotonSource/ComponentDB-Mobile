@@ -94,8 +94,11 @@ namespace Component.DB.Views.itemEditPages
                 }
             }
 
+            List<int?> idUpdatedList = new List<int?>(); 
+
             foreach (var item in viewModel.UpdatableItemList)
             {
+                idUpdatedList.Add(item.Item.Id); 
                 try
                 {
                     if (locationMode)
@@ -137,6 +140,13 @@ namespace Component.DB.Views.itemEditPages
                     HandleException(ex);
                     return;
                 }
+            }
+
+            // Reload all items
+            viewModel.ClearItems();
+            foreach (var id in idUpdatedList)
+            {
+                await viewModel.AddItemByIdAsync(id);
             }
             
             viewModel.SelectedLocation = null;

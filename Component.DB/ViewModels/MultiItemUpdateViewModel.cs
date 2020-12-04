@@ -42,23 +42,34 @@ namespace Component.DB.ViewModels
             _ModePickerSelected = LOCATION_MODE;
         }
 
+        public async Task AddItemByIdAsync(int? Id)
+        {
+            var itemById = itemApi.GetItemById(Id);
+            await AddItemByAsync(itemById); 
+        }
+
         public async Task AddItemByQrIdAsync(int qrId)
         {
             var itemByQrId = itemApi.GetItemByQrId(qrId);
+            await AddItemByAsync(itemByQrId);
+        }
 
-            bool isNewItemLocation = itemByQrId.Domain.Name.Equals(Constants.locationDomainName);
+        private async Task AddItemByAsync(Item item)
+        {
+            var qrId = item.QrId; 
+            bool isNewItemLocation = item.Domain.Name.Equals(Constants.locationDomainName);
 
             if (LocationMode)
             {
                 if (isNewItemLocation && this.SelectedLocation == null)
                 {
-                    this.SelectedLocation = itemByQrId;
+                    this.SelectedLocation = item;
                     var message = "Changed location by QrId: " + qrId;
                     FireViewModelMessageEvent(message);
                     return;
                 }
 
-                if (this.SelectedLocation != null && this.SelectedLocation.Id == itemByQrId.Id)
+                if (this.SelectedLocation != null && this.SelectedLocation.Id == item.Id)
                 {
                     var message = "The item with QrId " + qrId + " has already been scanned. It is the active location.";
                     FireViewModelMessageEvent(message);
@@ -77,10 +88,10 @@ namespace Component.DB.ViewModels
             }
 
             // Verify not already in list
-            foreach (var item in UpdatableItemList)
+            foreach (var ittrItem in UpdatableItemList)
             {
-                var id = item.Item.Id;
-                if (itemByQrId.Id == id)
+                var id = ittrItem.Item.Id;
+                if (item.Id == id)
                 {
                     var message = "The item with QrId " + qrId + " has already been scanned.";
                     FireViewModelMessageEvent(message);
@@ -89,12 +100,12 @@ namespace Component.DB.ViewModels
                 }
             }
 
-            var hasPemission = await itemApi.VerifyUserPermissionForItemAsync(itemByQrId.Id);
+            var hasPemission = await itemApi.VerifyUserPermissionForItemAsync(item.Id);
 
             if (hasPemission != null && (bool)hasPemission)
             {
                 //Add
-                var editDetailModel = new ItemDetailEditViewModel(itemByQrId);                
+                var editDetailModel = new ItemDetailEditViewModel(item);                
                 addToUpdatableItemList(editDetailModel);
                 var message = "Added item with QrId: " + qrId;
                 FireViewModelMessageEvent(message);
