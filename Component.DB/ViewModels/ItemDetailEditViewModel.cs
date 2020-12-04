@@ -63,7 +63,7 @@ namespace Component.DB.ViewModels
 
                     if (locationNameString != null)
                     {
-                        return "Tap to swap with parent: " + locationNameString;
+                        return "Tap to use parent: " + locationNameString;
                     }
                 }
 

@@ -201,7 +201,7 @@ namespace Component.DB.Views.itemEditPages
             {
                 if (model.ItemLocationInformation.LocationItem != null)
                 {
-                    SWAP_WITH_PARENT_OPT = "Swap with Parent";
+                    SWAP_WITH_PARENT_OPT = "Use Parent";
                 }                
             }
 
@@ -320,6 +320,6 @@ namespace Component.DB.Views.itemEditPages
                     }
                 }
             }
-        }
+        }       
     }
 }
