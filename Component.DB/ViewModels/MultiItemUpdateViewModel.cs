@@ -196,7 +196,25 @@ namespace Component.DB.ViewModels
             set
             {
                 _SelectedLocation = value;
+                OnPropertyChanged(nameof(SelectedLocationSpecified));
+                OnPropertyChanged(nameof(SelectedLocationUnspecified));
                 OnPropertyChanged();
+            }
+        }
+
+        public Boolean SelectedLocationSpecified
+        {
+            get
+            {
+                return SelectedLocation != null;
+            }
+        }
+
+        public Boolean SelectedLocationUnspecified
+        {
+            get
+            {
+                return SelectedLocation == null;
             }
         }
 

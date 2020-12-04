@@ -320,6 +320,11 @@ namespace Component.DB.Views.itemEditPages
                     }
                 }
             }
-        }       
+        }
+
+        void OverrideLocationButton_Clicked(System.Object sender, System.EventArgs e)
+        {
+            viewModel.SelectedLocation = null; 
+        }
     }
 }

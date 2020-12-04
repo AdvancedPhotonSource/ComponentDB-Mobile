@@ -37,11 +37,13 @@
             <StackLayout IsVisible="{Binding LocationMode}">
                 <StackLayout Orientation="Horizontal">
                     <Label Text="Selected Location:" />
-                    <Label Text="{Binding SelectedLocation.Name}" FontAttributes="Bold"  />
+                    <Label Text="Scan or Select Location" FontAttributes="Bold"  IsVisible="{Binding SelectedLocationUnspecified}"/>
+                    <Label Text="{Binding SelectedLocation.Name}" FontAttributes="Bold"  IsVisible="{Binding SelectedLocationSpecified}"/>
+                    <Button Text="Override" HeightRequest="40" IsVisible="{Binding SelectedLocationSpecified}" Clicked="OverrideLocationButton_Clicked" /> 
                 </StackLayout>
                 <Label Text="Location Details:" IsVisible="{Binding locationDetailsShown}" />
                 <Entry Text="{Binding LocationDetails}" FontSize="Small" Placeholder="{Binding locationDetailsPlaceholderText}" IsVisible="{Binding locationDetailsShown}" />
-                <Button Text="Manually Select Location" Clicked="HandleSelectLocationManually" />
+                <Button Text="Manually Select Location" HeightRequest="40" Clicked="HandleSelectLocationManually" />
             </StackLayout>
 
             <StackLayout IsVisible="{Binding LogMode}">
