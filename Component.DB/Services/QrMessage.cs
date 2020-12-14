@@ -9,6 +9,8 @@ namespace Component.DB.Services
         public static String QRCODE_CODETYPE = "QRCODE";
         public static String QRCODE_CODETYPE2 = "QR_CODE";
 
+        public static String CODE128_CODETYPE = "CODE128"; 
+
         public static String QRCODE_START_URL = "qrId=";
 
         public string CodeType { get; }
@@ -34,6 +36,14 @@ namespace Component.DB.Services
                         qrIdStartIdx += 5;
                         numString = CodeContents.Substring(qrIdStartIdx);
                     }
+                }
+            }
+            else if (CodeType.Equals(CODE128_CODETYPE))
+            {
+                var LowerCode = CodeContents.ToLower(); 
+                if (LowerCode.StartsWith(QRCODE_START_URL.ToLower()))
+                {
+                    numString = LowerCode.Substring(5); 
                 }
             }
             else

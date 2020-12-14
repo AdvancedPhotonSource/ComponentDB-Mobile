@@ -169,8 +169,8 @@ namespace Component.DB.Droid
                             config.SkipOnUnsupported = ScannerConfig.SkipOnUnSupported.None;
                             config.ScanParams.DecodeLEDFeedback = true;
                             config.ReaderParams.ReaderSpecific.ImagerSpecific.PickList = ScannerConfig.PickList.Enabled;
-                            config.DecoderParams.Code39.Enabled = true;
-                            config.DecoderParams.Code128.Enabled = false;
+                            config.DecoderParams.Code39.Enabled = false;
+                            config.DecoderParams.Code128.Enabled = true;
                             scanner.SetConfig(config);
 
                         }
