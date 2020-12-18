@@ -1,4 +1,6 @@
 ﻿using System;
+using Xamarin.Forms;
+
 namespace Component.DB.Services
 {
     public class QrMessage
@@ -6,6 +8,7 @@ namespace Component.DB.Services
 
         public static String MESSAGE_SCANNED_TOPIC = "Barcode-Scan";
 
+        public static String NUMERIC_INPUT_CODETYPE = "Numeric";
         public static String QRCODE_CODETYPE = "QRCODE";
         public static String QRCODE_CODETYPE2 = "QR_CODE";
 
@@ -61,6 +64,15 @@ namespace Component.DB.Services
             {
                 throw new Exception("Could not parse scanned qr code: " + this.CodeContents);
             }
+        }
+
+        public static void SubmitTypedQRIDResult(String typedQRId)
+        {            
+            var codeType = QrMessage.NUMERIC_INPUT_CODETYPE;
+            var topic = QrMessage.MESSAGE_SCANNED_TOPIC;
+
+            QrMessage message = new QrMessage(codeType, typedQRId);
+            MessagingCenter.Send<QrMessage>(message, topic);
         }
     }
 }

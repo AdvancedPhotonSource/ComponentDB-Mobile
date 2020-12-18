@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <d:CdbBasePage xmlns:d="clr-namespace:Component.DB.Views" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Component.DB.Views.itemEditPages.MultiItemUpdatePage" Title="{Binding Title}">
     <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Type" Clicked="TypeQR_Clicked"/>
         <ToolbarItem Text="Scan" Clicked="HandleScanClicked"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>

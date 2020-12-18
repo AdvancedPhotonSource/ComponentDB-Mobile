@@ -296,7 +296,8 @@ namespace Component.DB.Droid
                     if (keyCode == Keycode.Enter)
                     {
                         var topic = QrMessage.MESSAGE_SCANNED_TOPIC;
-                        var message = new QrMessage("HID", Code);
+                        var type = QrMessage.NUMERIC_INPUT_CODETYPE; 
+                        var message = new QrMessage(type, Code);
 
                         MessagingCenter.Send<QrMessage>(message, topic);
                     }

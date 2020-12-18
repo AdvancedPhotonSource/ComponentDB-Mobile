@@ -8,9 +8,17 @@ See LICENSE file.
                         x:Class="Component.DB.Views.QrScannerPage"
                         xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
                         Title="Scan CDB QR Code">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Type" Clicked="TypeQrId_Clicked" />
+    </ContentPage.ToolbarItems>
                         
-        <zxing:ZXingScannerView Grid.Row="1" x:Name="_scanView" OnScanResult="Handle_OnScanResult" IsScanning="true"
-                                WidthRequest="200" HeightRequest="200" />       
+    <zxing:ZXingScannerView Grid.Row="1"
+                            x:Name="_scanView"
+                            OnScanResult="Handle_OnScanResult"
+                            IsScanning="true"
+                            WidthRequest="200"
+                            HeightRequest="200" />
     
 </d:CdbBasePage>
    

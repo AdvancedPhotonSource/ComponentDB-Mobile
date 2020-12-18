@@ -326,5 +326,11 @@ namespace Component.DB.Views.itemEditPages
         {
             viewModel.SelectedLocation = null; 
         }
+
+        async void TypeQR_Clicked(System.Object sender, System.EventArgs e)
+        {
+            string result = await DisplayPromptAsync("Type QRID", "Enter Component QR Code:", initialValue: "", maxLength: 9, keyboard: Keyboard.Numeric);
+            QrMessage.SubmitTypedQRIDResult(result);
+        }
     }
 }

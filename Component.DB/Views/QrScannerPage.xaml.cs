@@ -36,5 +36,10 @@ namespace Component.DB.Views
             MessagingCenter.Send<QrMessage>(message, topic);
         }
 
+        async void TypeQrId_Clicked(System.Object sender, System.EventArgs e)
+        {
+            string result = await DisplayPromptAsync("Type QRID", "Enter Component QR Code:", initialValue: "", maxLength: 9, keyboard: Keyboard.Numeric);
+            QrMessage.SubmitTypedQRIDResult(result); 
+        }
     }
 }
