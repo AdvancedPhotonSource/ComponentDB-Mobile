@@ -67,12 +67,15 @@ namespace Component.DB.Services
         }
 
         public static void SubmitTypedQRIDResult(String typedQRId)
-        {            
-            var codeType = QrMessage.NUMERIC_INPUT_CODETYPE;
-            var topic = QrMessage.MESSAGE_SCANNED_TOPIC;
+        {
+            if (typedQRId != null)
+            {
+                var codeType = QrMessage.NUMERIC_INPUT_CODETYPE;
+                var topic = QrMessage.MESSAGE_SCANNED_TOPIC;
 
-            QrMessage message = new QrMessage(codeType, typedQRId);
-            MessagingCenter.Send<QrMessage>(message, topic);
+                QrMessage message = new QrMessage(codeType, typedQRId);
+                MessagingCenter.Send<QrMessage>(message, topic);
+            }
         }
     }
 }
