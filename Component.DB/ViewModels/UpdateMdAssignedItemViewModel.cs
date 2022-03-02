@@ -75,7 +75,12 @@ namespace Component.DB.ViewModels
             {
                 var mdItemId = mdItem.Id;
                 var assignedItemId = SelectedInventoryItem.Item.Id;
-                return await machineApi.UpdateAssignedItemAsync(mdItemId, assignedItemId); 
+                UpdateMachineAssignedItemInformation info = new UpdateMachineAssignedItemInformation
+                {
+                    AssignedItemId = assignedItemId,
+                    MdItemId = mdItemId
+                }; 
+                return await machineApi.UpdateAssignedItemAsync(info); 
             }
             catch (Exception ex)
             {
