@@ -7,7 +7,6 @@ using System.ComponentModel;
 using Component.DB.Services.CdbEventArgs;
 using Component.DB.ViewModels;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace Component.DB.Views
 {
@@ -27,6 +26,7 @@ namespace Component.DB.Views
                 new HomeMenuItem {Id = MenuItemType.ScanQRCode, Title="Scan QR Code", Icon=Constants.fontIconCamera },
                 new HomeMenuItem {Id = MenuItemType.RelocateItems, Title="Update Items", Icon=Constants.fontIconLocation },
                 new HomeMenuItem {Id = MenuItemType.BrowseCatalog, Title="Browse Catalog", Icon=Constants.fontIconBook },
+                new HomeMenuItem {Id = MenuItemType.BrowseCableCatalog, Title="Browse Cable Catalog", Icon=Constants.fontIconBook },
                 new HomeMenuItem {Id = MenuItemType.BrowseInventory, Title="Browse Inventory", Icon=Constants.fontIconBook },
                 new HomeMenuItem {Id = MenuItemType.Settings, Title="Configuration", Icon=Constants.fontIconConfig },
                 new HomeMenuItem {Id = MenuItemType.About, Title="About", Icon=Constants.fontIconQuestion }

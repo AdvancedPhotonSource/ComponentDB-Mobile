@@ -49,13 +49,17 @@ namespace Component.DB.Views
             Boolean isInventory = false; 
             if (itemType == MenuItemType.BrowseCatalog)
             {
-                BindingContext = viewModel = new CatalogItemsViewModel(this, parentItemId);
+                BindingContext = viewModel = new CatalogItemsViewModel(this);
                 CdbMobileAppStorage.Instance.CatalogBrowseModeChangedEvent += OnBrowseModeChanged;
-            }
-            else
+            } 
+            else if (itemType == MenuItemType.BrowseInventory)
             {
                 isInventory = true; 
                 BindingContext = viewModel = new InventoryItemsViewModel(this, parentItemId);
+            } else
+            {
+                // Cable Catalog
+                BindingContext = viewModel = new CableCatalogItemsViewModel(this); 
             }
 
             viewModel.ViewModelMessageEvent += OnViewModelMessage; 

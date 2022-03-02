@@ -13,6 +13,7 @@ namespace Component.DB.ViewModels
         ScanQRCode,
         RelocateItems, 
         BrowseCatalog,
+        BrowseCableCatalog,
         BrowseInventory,
         Settings,
         About,
