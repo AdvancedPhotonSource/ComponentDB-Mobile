@@ -67,7 +67,10 @@ namespace Component.DB.Views
                 return new ItemDomainInventoryDetailPage(viewModel);
             } else if (CurrentDomainName.Equals(Constants.machineDesignDomainName))
             {
-                return ItemDomainMachineDesignDetailPage.CreateInstance(viewModel); 
+                return ItemDomainMachineDesignDetailPage.CreateInstance(viewModel);
+            } else if (CurrentDomainName.Equals(Constants.cableCatalogDomainName))
+            {
+                return new ItemDomainCableCatalogDetailPage(viewModel); 
             }
 
             return new ItemDetailPage(viewModel); 
