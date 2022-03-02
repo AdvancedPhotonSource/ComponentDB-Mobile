@@ -8,8 +8,6 @@ namespace Component.DB.ViewModels
 {
     public class CableCatalogItemsViewModel : ItemsViewModel
     {
-        private const String DOMAIN_NAME = "Cable Catalog";
-
         public CableCatalogItemsViewModel(ItemsPage itemsPage, int parentItemId = -1) : base(itemsPage, parentItemId)
         {
         }
@@ -20,7 +18,7 @@ namespace Component.DB.ViewModels
             {
                 IncludePrimaryImageForItem = true
             };
-            return await itemApi.GetConciseItemsByDomainAsync(DOMAIN_NAME, opts);
+            return await itemApi.GetConciseItemsByDomainAsync(Constants.cableCatalogDomainName, opts);
         }
 
         public override string getTitle()
