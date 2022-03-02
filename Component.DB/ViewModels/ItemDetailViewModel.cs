@@ -19,14 +19,17 @@ namespace Component.DB.ViewModels
     public class ItemDetailViewModel : BaseViewModel
     {
         protected Item _Item;
+        protected ConciseItem _conciseItem;
         private PropertyValue _ItemStatus;
         private ItemLocationInformation _ItemLocationInformation;
 
         public ICommand ViewInPortalCommand { get; }
 
-        public ItemDetailViewModel(Item item = null)
+        public ItemDetailViewModel(Item item = null,
+            ConciseItem conciseItem = null)
         {
             this.Item = item;
+            this.ConciseItem = conciseItem; 
 
             updateTitle();
 
@@ -46,12 +49,12 @@ namespace Component.DB.ViewModels
         public void loadFromQrId(int qrId)
         {
             this.Item = itemApi.GetItemByQrId(qrId);
-            updateTitle(); 
+            updateTitle();
         }
 
         public void updateTitle()
         {
-            if (Item != null) 
+            if (Item != null)
             {
                 Title = Item.Name;
             }
@@ -80,17 +83,17 @@ namespace Component.DB.ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-                return null; 
+                return null;
             }
         }
 
         public string ItemStatusString
-        { 
+        {
             get
             {
                 if (_ItemStatus != null)
                 {
-                    return _ItemStatus.Value; 
+                    return _ItemStatus.Value;
                 }
                 return "";
             }
@@ -98,14 +101,14 @@ namespace Component.DB.ViewModels
 
         private Boolean verifyItemIsInventory()
         {
-            return Item.Domain.Name.Equals(Constants.inventoryDomainName); 
+            return Item.Domain.Name.Equals(Constants.inventoryDomainName);
         }
 
         public PropertyValue LoadItemStatus()
         {
             if (!verifyItemIsInventory())
             {
-                return null; 
+                return null;
             }
             if (_ItemStatus == null)
             {
@@ -140,14 +143,22 @@ namespace Component.DB.ViewModels
                 }
             }
 
-            return _ItemLocationInformation; 
+            return _ItemLocationInformation;
         }
 
         public string PrimaryImageUrlScaled
         {
             get
             {
-                var primaryImage = Item.PrimaryImageForItem;
+                String primaryImage = null; 
+                if (Item != null)
+                {
+                    primaryImage = Item.PrimaryImageForItem;
+                } else if (ConciseItem != null)
+                {
+                    primaryImage = ConciseItem.PrimaryImageForItem; 
+                }
+                
                 if (primaryImage == null)
                 {
                     return "";
@@ -163,15 +174,15 @@ namespace Component.DB.ViewModels
             {
                 return "";
             }
-            return String.Format("{0:000 000 000}", qrId);            
+            return String.Format("{0:000 000 000}", qrId);
         }
 
         public string FormattedQrId
         {
             get
             {
-                var qrId = Item.QrId;                
-                return formatQrId(qrId);                 
+                var qrId = Item.QrId;
+                return formatQrId(qrId);
             }
         }
 
@@ -179,11 +190,23 @@ namespace Component.DB.ViewModels
         {
             get
             {
-                return _Item; 
+                return _Item;
             }
             set
             {
                 this._Item = value;
+            }
+        }
+
+        public ConciseItem ConciseItem
+        {
+            get
+            {
+                return _conciseItem;
+            }
+            set
+            {
+                this._conciseItem = value; 
             }
         }
 

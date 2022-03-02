@@ -22,7 +22,7 @@ namespace Component.DB.ViewModels
         {
         }
 
-        public override async Task<List<Item>> getItems()
+        public override async Task<List<ConciseItem>> getItems()
         {
             List<ItemDomainCatalog> itemCatalogList = null;
 
@@ -33,7 +33,8 @@ namespace Component.DB.ViewModels
                 Title = getTitle() + " (Favorites)";
                 try
                 {
-                    itemCatalogList = await itemApi.GetFavoriteCatalogItemsAsync();
+                    itemCatalogList = await itemApi.GetFavoriteCatalogItemsAsync();                    
+                    
 
                     if (itemCatalogList == null)
                     {
@@ -54,17 +55,20 @@ namespace Component.DB.ViewModels
                     Debug.WriteLine(ex);
                 }
             }
-
+            
             if (itemCatalogList == null)
             {
                 Title = getTitle();
-                itemCatalogList = await itemApi.GetCatalogItemsAsync(); 
+                ConciseItemOptions opts = new ConciseItemOptions
+                {
+                    IncludePrimaryImageForItem = true                    
+                };
+                return await itemApi.GetConciseCatalogItemsAsync(opts);
+            } else
+            {
+                List<Item> itemList = itemCatalogList.ConvertAll(x => (Item)x);
+                return ConvertItemsToConciseItem(itemList); 
             }
-
-            List<Item> itemList = itemCatalogList.ConvertAll(x => (Item)x); 
-
-            return itemList; 
-            //return await cdbRestApi.getCatalogItems(); 
         }
 
         public override string getTitle()

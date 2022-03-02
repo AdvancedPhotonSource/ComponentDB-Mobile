@@ -22,13 +22,15 @@ namespace Component.DB.ViewModels
         {
         }
 
-        public override async Task<List<Item>> getItems()
+        public override async Task<List<ConciseItem>> getItems()
         {
-            List<ItemDomainInventory> inventoryItems = await itemApi.GetInventoryItemsAsync();
+            ConciseItemOptions opts = new ConciseItemOptions
+            {
+                IncludePrimaryImageForItem = true,
+                IncludeDerivedFromItemInfo = true
+            };
 
-            List<Item> itemList = inventoryItems.ConvertAll(x => (Item)x);
-
-            return itemList;
+            return await itemApi.GetConciseInventoryItemsAsync(opts);            
         }
 
         public override string getTitle()

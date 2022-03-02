@@ -8,8 +8,6 @@ using System.ComponentModel;
 using Xamarin.Forms;
 
 using Component.DB.ViewModels;
-using System.Collections.Generic;
-using Gov.ANL.APS.CDB.Model;
 using Component.DB.Services.CdbEventArgs;
 using Component.DB.Services;
 using Component.DB.Services.PlatformDependency;
@@ -83,8 +81,8 @@ namespace Component.DB.Views
                 var nameLabel = new Label { FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label))};
                 var itemIdentifier1Label = new Label { FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)) };
 
-                nameLabel.SetBinding(Label.TextProperty, "Item.Name");
-                itemIdentifier1Label.SetBinding(Label.TextProperty, "Item.ItemIdentifier1");
+                nameLabel.SetBinding(Label.TextProperty, "ConciseItem.Name");
+                itemIdentifier1Label.SetBinding(Label.TextProperty, "ConciseItem.ItemIdentifier1");
 
                 grid.Children.Add(image, 0, 0);
                 Grid.SetRowSpan(image, 2);
@@ -96,10 +94,8 @@ namespace Component.DB.Views
                 {
                     grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(20) });
 
-                    var catalogLabel = new Label { FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label))};
-                    //TODO update the yaml inheritance when done to use the Catalog item. 
-                    //catalogLabel.SetBinding(Label.TextProperty, "Item.CatalogItem.Name");
-                    catalogLabel.SetBinding(Label.TextProperty, "Item.DerivedFromItem.Name");
+                    var catalogLabel = new Label { FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label))};                   
+                    catalogLabel.SetBinding(Label.TextProperty, "ConciseItem.DerivedFromItemName");
                     grid.Children.Add(catalogLabel, 0, 2);
                     Grid.SetColumnSpan(catalogLabel, 2); 
                 }
@@ -120,7 +116,7 @@ namespace Component.DB.Views
                 return;
 
             // Load the latest version of the item.
-            int? itemId = item.Item.Id; 
+            int? itemId = item.ConciseItem.Id; 
             var itemObj = itemApi.GetItemById(itemId);
             var newItem = new ItemDetailViewModel(itemObj);
 

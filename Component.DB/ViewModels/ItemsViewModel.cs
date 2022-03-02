@@ -71,18 +71,25 @@ namespace Component.DB.ViewModels
             {
                 ClearItems();
 
-                List<Item> items; 
+                List<ConciseItem> items; 
                 if (parentItemId == -1)
                 {
                     items = await getItems();
                 } else
                 {
-                    items = await itemApi.GetItemsDerivedFromItemByItemIdAsync(parentItemId);
+                    var derivedItems = await itemApi.GetItemsDerivedFromItemByItemIdAsync(parentItemId);
+                    var opts = new ConciseItemOptions
+                    {
+                        IncludeDerivedFromItemInfo = true,
+                        IncludePrimaryImageForItem = true
+                    };
+
+                    items = ConvertItemsToConciseItem(derivedItems, opts); 
                 }
                                
                 foreach (var itemObj in items)
                 {
-                    var item = new ItemDetailViewModel(itemObj);
+                    var item = new ItemDetailViewModel(null, itemObj);
                     Items.Add(item);
                     AllItems.Add(item);
                 }
@@ -100,8 +107,69 @@ namespace Component.DB.ViewModels
             }
         }
 
+        protected List<ConciseItem> ConvertItemsToConciseItem(List<Item> items, ConciseItemOptions opts = null)
+        {
+            List<ConciseItem> conciseItems = new List<ConciseItem>();
+
+            foreach (Item item in items)
+            {
+                ConciseItem newItem = new ConciseItem
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    ItemIdentifier1 = item.ItemIdentifier1,
+                    ItemIdentifier2 = item.ItemIdentifier2,
+                    PrimaryImageForItem = item.PrimaryImageForItem,
+                    QrId = item.QrId,                    
+                };
+
+                if (opts != null)
+                {
+                    if (opts.IncludeDerivedFromItemInfo == true)
+                    {
+                        if (item.DerivedFromItem != null)
+                        {
+                            newItem.DerivedFromItemId = item.DerivedFromItem.Id;
+                            newItem.DerivedFromItemName = item.DerivedFromItem.Name;
+                        }
+                    }
+
+                    if (opts.IncludeItemCategoryIdList == true)
+                    {
+                        newItem.ItemCategoryIdList = new List<int?>();
+                        foreach (ItemCategory category in item.ItemCategoryList)
+                        {
+                            newItem.ItemCategoryIdList.Add(category.Id);
+                        }
+                    }
+
+                    if (opts.IncludeItemTypeIdList == true)
+                    {
+                        newItem.ItemTypeIdList = new List<int?>();
+                        foreach (ItemType itemType in item.ItemTypeList)
+                        {
+                            newItem.ItemTypeIdList.Add(itemType.Id);
+                        }
+                    }
+
+                    if (opts.IncludeItemProjectIdList == true)
+                    {
+                        newItem.ItemProjectIdList = new List<int?>();
+                        foreach (ItemProject itemProject in item.ItemProjectList)
+                        {
+                            newItem.ItemProjectIdList.Add(itemProject.Id);
+                        }
+                    }
+                }
+
+                conciseItems.Add(newItem);
+            }
+
+            return conciseItems; 
+        }
+
         public abstract string getTitle();
-        public abstract Task<List<Item>> getItems();
+        public abstract Task<List<ConciseItem>> getItems();
 
         public void Filter(Object filterStringObj)
         {
@@ -112,7 +180,7 @@ namespace Component.DB.ViewModels
 
             foreach (var itemViewModel in AllItems)
             {
-                var item = itemViewModel.Item;
+                var item = itemViewModel.ConciseItem;
                 if (item.Name.ToLower().Contains(filterString)) {
                     Items.Add(itemViewModel); 
                 }
