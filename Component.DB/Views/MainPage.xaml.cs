@@ -56,10 +56,7 @@ namespace Component.DB.Views
                         break;
                     case (int)MenuItemType.RelocateItems:
                         MenuPages.Add(id, new NavigationPage(new MultiItemUpdatePage()));
-                        break;
-                    case (int)MenuItemType.BrowseInventory:
-                        MenuPages.Add(id, new NavigationPage(new ItemsPage(MenuItemType.BrowseInventory)));
-                        break;
+                        break;                    
                     case (int)MenuItemType.About:
                         MenuPages.Add(id, new NavigationPage(new AboutPage()));
                         break;
