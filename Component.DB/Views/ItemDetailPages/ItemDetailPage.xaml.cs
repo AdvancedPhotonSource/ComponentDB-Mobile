@@ -71,6 +71,9 @@ namespace Component.DB.Views
             } else if (CurrentDomainName.Equals(Constants.cableCatalogDomainName))
             {
                 return new ItemDomainCableCatalogDetailPage(viewModel); 
+            } else if (CurrentDomainName.Equals(Constants.cableInventoryDomainName))
+            {
+                return new ItemDomainCableInventoryDetailPage(viewModel); 
             }
 
             return new ItemDetailPage(viewModel); 

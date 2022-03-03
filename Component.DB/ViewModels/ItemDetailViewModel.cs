@@ -99,14 +99,15 @@ namespace Component.DB.ViewModels
             }
         }
 
-        private Boolean verifyItemIsInventory()
+        private Boolean VerifyItemIsInventory()
         {
-            return Item.Domain.Name.Equals(Constants.inventoryDomainName);
+            return Item.Domain.Name.Equals(Constants.inventoryDomainName)
+                || Item.Domain.Name.Equals(Constants.cableInventoryDomainName);
         }
 
         public PropertyValue LoadItemStatus()
         {
-            if (!verifyItemIsInventory())
+            if (!VerifyItemIsInventory())
             {
                 return null;
             }
@@ -127,7 +128,7 @@ namespace Component.DB.ViewModels
 
         public ItemLocationInformation LoadItemLocationInformation()
         {
-            if (!verifyItemIsInventory())
+            if (!VerifyItemIsInventory())
             {
                 return null;
             }
