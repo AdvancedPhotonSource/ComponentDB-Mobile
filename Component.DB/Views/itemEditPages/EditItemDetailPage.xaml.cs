@@ -38,31 +38,42 @@ namespace Component.DB.Views.itemEditPages
                 addEditBindingToEditItemsStackLayout(domain.ItemIdentifier2Label, "Item.ItemIdentifier2");
             }
 
-            if (item.Domain.Name.Equals(Constants.inventoryDomainName))
+            if (item.Domain.Name.Equals(Constants.inventoryDomainName) || item.Domain.Name.Equals(Constants.cableInventoryDomainName))
             {
                 viewModel.LoadItemStatus();
                 viewModel.LoadItemLocationInformation();
 
-                var propertyApi = CdbApiFactory.Instance.propertyTypeApi;
-                var type = propertyApi.GetInventoryStatusPropertyType();
-
-                statusPicker = new Picker
-                {
-                    Title = "Item Status",
-                };
-                foreach (var allowedValue in type.SortedAllowedPropertyValueList)
-                {
-                    statusPicker.Items.Add(allowedValue.Value);
-                }
-
-                var statusString = viewModel.ItemStatusString;
-                if (statusPicker.Items.Contains(statusString))
-                {
-                    statusPicker.SelectedItem = statusString;
-                }
-
                 addEditBindingToEditItemsStackLayout("QR Id", "QrIdEntry", null, Keyboard.Numeric);
-                addEditBindingToEditItemsStackLayout("Status", null, statusPicker);
+
+                var propertyApi = CdbApiFactory.Instance.propertyTypeApi;
+                PropertyType type = null;
+                if (item.Domain.Name.Equals(Constants.inventoryDomainName))
+                {
+                    type = propertyApi.GetInventoryStatusPropertyType();
+                } else if (item.Domain.Name.Equals(Constants.cableInventoryDomainName))
+                {
+                    type = propertyApi.GetCableInventoryStatusPropertyType(); 
+                }
+                
+                if (type != null)
+                {
+                    statusPicker = new Picker
+                    {
+                        Title = "Item Status",
+                    };
+                    foreach (var allowedValue in type.SortedAllowedPropertyValueList)
+                    {
+                        statusPicker.Items.Add(allowedValue.Value);
+                    }
+
+                    var statusString = viewModel.ItemStatusString;
+                    if (statusPicker.Items.Contains(statusString))
+                    {
+                        statusPicker.SelectedItem = statusString;
+                    }
+
+                    addEditBindingToEditItemsStackLayout("Status", null, statusPicker);
+                }                
 
                 // Add Location 
 
@@ -160,7 +171,7 @@ namespace Component.DB.Views.itemEditPages
             }
 
             var item = viewModel.Item;
-            if (item.Domain.Name.Equals(Constants.inventoryDomainName))
+            if (item.Domain.Name.Equals(Constants.inventoryDomainName) || item.Domain.Name.Equals(Constants.cableInventoryDomainName))
             {
                 //Check if status needs updating
                 var selectedItem = statusPicker.SelectedItem;

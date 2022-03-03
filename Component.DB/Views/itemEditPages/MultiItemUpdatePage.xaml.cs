@@ -77,7 +77,7 @@ namespace Component.DB.Views.itemEditPages
             var selectedLocation = viewModel.SelectedLocation;
             var locationMode = viewModel.LocationMode;
             var logMode = viewModel.LogMode;
-            var statusMode = viewModel.StatusMode;
+            var statusMode = viewModel.InventoryStatusMode;
 
             if (logMode)
             {
@@ -240,7 +240,7 @@ namespace Component.DB.Views.itemEditPages
 
                 var proceed = true; 
 
-                if (viewModel.StatusMode)
+                if (viewModel.InventoryStatusMode)
                 {
                     if (!domainName.Equals(Constants.inventoryDomainName))
                     {
@@ -264,7 +264,7 @@ namespace Component.DB.Views.itemEditPages
         async void modePicker_SelectedIndexChanged(System.Object sender, System.EventArgs e)
         {
             // modePicker selected to status
-            if (viewModel.StatusMode)
+            if (viewModel.InventoryStatusMode)
             {
                 if (statusPicker.Items.Count == 0)
                 {

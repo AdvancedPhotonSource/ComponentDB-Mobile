@@ -162,7 +162,7 @@ namespace Component.DB.ViewModels
 
         public async Task<PropertyValue> UpdateItemStatusAsync(String newStatus)
         {
-            if (!Item.Domain.Name.Equals(Constants.inventoryDomainName))
+            if (!(Item.Domain.Name.Equals(Constants.inventoryDomainName) || Item.Domain.Name.Equals(Constants.cableInventoryDomainName)))
             {
                 // Can currently only update for inventory. 
                 return null;
