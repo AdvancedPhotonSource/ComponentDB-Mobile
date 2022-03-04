@@ -13,13 +13,14 @@ namespace Component.DB.ViewModels
         ScanQRCode,
         RelocateItems, 
         BrowseCatalog,
-        BrowseCableCatalog,
-        BrowseInventory,
+        BrowseCableCatalog,        
         Settings,
-        About,
+        About,        
 
         // Subpages randered as mainpage
         ItemDetails,
+
+        BrowseInventory,
 
         //Keep last
         NoSelection
