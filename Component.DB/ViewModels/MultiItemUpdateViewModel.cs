@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Component.DB.Services;
+using Gov.ANL.APS.CDB.Api;
 using Gov.ANL.APS.CDB.Model;
+using Xamarin.Forms;
 
 namespace Component.DB.ViewModels
 {
     public class MultiItemUpdateViewModel : BaseViewModel
     {
+
+        private PropertyTypeApi propertyTypeApi = CdbApiFactory.Instance.propertyTypeApi; 
 
         private Item _SelectedLocation;
         private String _LocationDetails { get; set; }
@@ -19,6 +24,18 @@ namespace Component.DB.ViewModels
         private String _StatusEntry { get; set; }
 
         public ObservableCollection<ItemDetailEditViewModel> UpdatableItemList { get; set; }
+
+        private enum StatusListModeEnum
+        {
+            InventoryOnly,
+            CableInventoryOnly,
+            Combined,
+            Blank
+        }
+        private StatusListModeEnum statusListMode = StatusListModeEnum.Blank; 
+        private List<String> InventoryStatusList;
+        private List<String> CableInventoryStatusList;
+        private List<String> CombinedStatusList; 
 
         private const String LOCATION_MODE = "Location";
         private const String STATUS_MODE = "Status";
@@ -45,7 +62,7 @@ namespace Component.DB.ViewModels
         public async Task AddItemByIdAsync(int? Id)
         {
             var itemById = itemApi.GetItemById(Id);
-            await AddItemByAsync(itemById); 
+            await AddItemByAsync(itemById);
         }
 
         public async Task AddItemByQrIdAsync(int qrId)
@@ -56,7 +73,7 @@ namespace Component.DB.ViewModels
 
         private async Task AddItemByAsync(Item item)
         {
-            var qrId = item.QrId; 
+            var qrId = item.QrId;
             bool isNewItemLocation = item.Domain.Name.Equals(Constants.locationDomainName);
 
             if (LocationMode)
@@ -83,7 +100,7 @@ namespace Component.DB.ViewModels
                 {
                     var message = "Status mode is only for inventory items. Location was scanned with qrid: " + qrId;
                     FireViewModelMessageEvent(message);
-                    return; 
+                    return;
                 }
             }
 
@@ -105,7 +122,7 @@ namespace Component.DB.ViewModels
             if (hasPemission != null && (bool)hasPemission)
             {
                 //Add
-                var editDetailModel = new ItemDetailEditViewModel(item);                
+                var editDetailModel = new ItemDetailEditViewModel(item);
                 addToUpdatableItemList(editDetailModel);
                 var message = "Added item with QrId: " + qrId;
                 FireViewModelMessageEvent(message);
@@ -132,16 +149,142 @@ namespace Component.DB.ViewModels
                     return;
                 }
             }
-            
+
             UpdatableItemList.Add(itemDetailModel);
             updateLocationDetailsShownVariables();
-            
+
         }
 
         public void removeFromUpdatableItemList(ItemDetailEditViewModel itemDetailModel)
         {
             UpdatableItemList.Remove(itemDetailModel);
             updateLocationDetailsShownVariables();
+        }
+
+        public void UpdateStatusPickerAllowedValues(Picker statusPicker) {
+            if (!StatusMode)
+            {
+                // no need to process. status is not selected
+                return;
+            }
+
+            StatusListModeEnum currentStatusMode = StatusListModeEnum.Blank;
+
+            if (UpdatableItemList.Count > 0)
+            {
+                foreach (ItemDetailEditViewModel model in UpdatableItemList)
+                {
+                    if (model.Item.Domain.Name == Constants.inventoryDomainName)
+                    {
+                        if (currentStatusMode == StatusListModeEnum.CableInventoryOnly)
+                        {
+                            currentStatusMode = StatusListModeEnum.Combined;
+                            break;
+                        }
+                        currentStatusMode = StatusListModeEnum.InventoryOnly;
+                    } else if (model.Item.Domain.Name == Constants.cableInventoryDomainName)
+                    { 
+                        if (currentStatusMode == StatusListModeEnum.InventoryOnly)
+                        {
+                            currentStatusMode = StatusListModeEnum.Combined;
+                            break;
+                        }
+                        currentStatusMode = StatusListModeEnum.CableInventoryOnly;
+                    }
+                }                
+            }            
+
+            if (currentStatusMode == statusListMode)
+            {
+                 // No change 
+                return; 
+            }
+
+            statusListMode = currentStatusMode;
+            var selection = statusPicker.SelectedItem; 
+            statusPicker.Items.Clear();
+
+            List<String> statusList = null;
+
+            switch (statusListMode)
+            {
+                case StatusListModeEnum.InventoryOnly:
+                    LoadInventoryStatusListIfNeeded();
+                    statusList = InventoryStatusList;                     
+                    break;
+                case StatusListModeEnum.CableInventoryOnly:                    
+                    LoadCableInventoryStatusListIfNeeded(); 
+                    statusList = CableInventoryStatusList;                     
+                    break;
+                case StatusListModeEnum.Combined:
+                    LoadCombinedStatusListIfNeeded(); 
+                    statusList = CombinedStatusList; 
+                    break;
+                default:
+                    return;
+            }
+
+            // Prepopulate all valid status values for the drop down.
+            
+            foreach (String status in statusList)
+            {                
+                statusPicker.Items.Add(status);
+
+                if (selection != null && selection.Equals(status))
+                {
+                    selection = null; 
+                    statusPicker.SelectedItem = status;
+                }
+            }
+        }
+
+        private void PopulateAllowedValuesToStringList(List<String> stringList, PropertyType type)
+        {
+            foreach (var allowedValue in type.SortedAllowedPropertyValueList)
+            {
+                stringList.Add(allowedValue.Value); 
+            }
+        }
+
+        private void LoadInventoryStatusListIfNeeded()
+        {
+            if (InventoryStatusList == null)
+            {
+                InventoryStatusList = new List<string>();
+
+                var type = propertyTypeApi.GetInventoryStatusPropertyType();
+                PopulateAllowedValuesToStringList(InventoryStatusList, type);
+            }
+        }
+
+        private void LoadCableInventoryStatusListIfNeeded()
+        {
+            if (CableInventoryStatusList == null)
+            {
+                CableInventoryStatusList = new List<string>();
+
+                var type = propertyTypeApi.GetCableInventoryStatusPropertyType();
+                PopulateAllowedValuesToStringList(CableInventoryStatusList, type); 
+            }
+        }
+
+        private void LoadCombinedStatusListIfNeeded()
+        {
+            if (CombinedStatusList == null)
+            {
+                LoadInventoryStatusListIfNeeded();
+                LoadCableInventoryStatusListIfNeeded();
+
+                CombinedStatusList = new List<string>();
+
+                foreach (String statusVal in InventoryStatusList)
+                {
+                    if (CableInventoryStatusList.Contains(statusVal))
+                    {
+                        CombinedStatusList.Add(statusVal); 
+                    }
+                }
+            }
         }
 
         private void updateLocationDetailsShownVariables()

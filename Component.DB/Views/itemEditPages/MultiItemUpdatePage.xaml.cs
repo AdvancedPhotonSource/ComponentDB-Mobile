@@ -34,6 +34,7 @@ namespace Component.DB.Views.itemEditPages
                 try
                 {                
                     await viewModel.AddItemByQrIdAsync(qrId);
+                    viewModel.UpdateStatusPickerAllowedValues(statusPicker); 
                 }
                 catch (Exception ex)
                 {
@@ -209,9 +210,16 @@ namespace Component.DB.Views.itemEditPages
 
             var action = await DisplayActionSheet(prompt, "Cancel", REMOVE_OPT, SHOW_DETAILS_OPT, MAKE_PRIMARY_LOCATION, SWAP_WITH_PARENT_OPT);
 
+            if (action == null)
+            {
+                sender.SelectedItem = null;
+                return; 
+            }
+
             if (action == REMOVE_OPT || action == MAKE_PRIMARY_LOCATION)
             {
                 viewModel.removeFromUpdatableItemList(model);
+                viewModel.UpdateStatusPickerAllowedValues(statusPicker);
 
                 if (action == MAKE_PRIMARY_LOCATION)
                 {
@@ -252,6 +260,7 @@ namespace Component.DB.Views.itemEditPages
                 if (proceed)
                 {
                     viewModel.removeFromUpdatableItemList(model);
+                    viewModel.UpdateStatusPickerAllowedValues(statusPicker);
 
                     var newModel = new ItemDetailEditViewModel(parent);
                     viewModel.addToUpdatableItemList(newModel);
@@ -266,24 +275,14 @@ namespace Component.DB.Views.itemEditPages
             // modePicker selected to status
             if (viewModel.StatusMode)
             {
-                if (statusPicker.Items.Count == 0)
-                {
-                    // Prepopulate all valid status values for the drop down. 
-                    var propertyApi = CdbApiFactory.Instance.propertyTypeApi;
-                    var type = propertyApi.GetInventoryStatusPropertyType();
-
-                    foreach (var allowedValue in type.SortedAllowedPropertyValueList)
-                    {
-                        statusPicker.Items.Add(allowedValue.Value);
-                    }
-                }
+                viewModel.UpdateStatusPickerAllowedValues(statusPicker);                
 
                 // Remove location items from the list
                 var ItemsToRemove = new List<ItemDetailEditViewModel>();
                 foreach (var Item in viewModel.UpdatableItemList)
                 {
                     var dbItem = Item.Item;
-                    if (!dbItem.Domain.Name.Equals(Constants.inventoryDomainName))
+                    if (!(dbItem.Domain.Name.Equals(Constants.inventoryDomainName) || dbItem.Domain.Name.Equals(Constants.cableInventoryDomainName)))
                     {
                         ItemsToRemove.Add(Item);
                     }
