@@ -32,6 +32,7 @@ namespace Component.DB.Services
         private PropertyValueApi propertyValueApiInstance;
         private PropertyTypeApi propertyTypeApiInstance;  
         private UsersApi usersApiInstace;
+        private DomainApi domainApiInstance; 
         private TestApi testApiInstance; 
 
         public static CdbApiFactory Instance
@@ -61,7 +62,8 @@ namespace Component.DB.Services
             propertyValueApiInstance = new PropertyValueApi(host);
             usersApiInstace = new UsersApi(host);
             testApiInstance = new TestApi(host);
-            propertyTypeApiInstance = new PropertyTypeApi(host); 
+            propertyTypeApiInstance = new PropertyTypeApi(host);
+            domainApiInstance = new DomainApi(host); 
 
             if (auth != null)
             {
@@ -138,6 +140,7 @@ namespace Component.DB.Services
             authApiInstance.Configuration.AddDefaultHeader(TOKEN_KEY, token);
             propertyValueApiInstance.Configuration.AddDefaultHeader(TOKEN_KEY, token);
             usersApi.Configuration.AddDefaultHeader(TOKEN_KEY, token);
+            domainApiInstance.Configuration.AddDefaultHeader(TOKEN_KEY, token); 
             testApiInstance.Configuration.AddDefaultHeader(TOKEN_KEY, token);
         }
 
@@ -205,6 +208,14 @@ namespace Component.DB.Services
             get
             {
                 return propertyTypeApiInstance; 
+            }
+        }
+
+        public DomainApi domainApi
+        {
+            get
+            {
+                return domainApiInstance; 
             }
         }
 
