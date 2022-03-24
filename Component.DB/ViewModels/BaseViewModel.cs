@@ -6,17 +6,19 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
+using System.Threading.Tasks;
 using Component.DB.Services;
 using Component.DB.Services.CdbEventArgs;
 using Gov.ANL.APS.CDB.Api;
+using Gov.ANL.APS.CDB.Model;
 
 namespace Component.DB.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
         public ItemApi itemApi => CdbApiFactory.Instance.itemApi;
-        public LocationItemsApi locationItemsApi => CdbApiFactory.Instance.locationItemApi; 
+        public LocationItemsApi locationItemsApi => CdbApiFactory.Instance.locationItemApi;
+        public DomainApi domainApi => CdbApiFactory.Instance.domainApi; 
 
         public event EventHandler<ViewModelMessageEventArgs> ViewModelMessageEvent;
 
@@ -77,6 +79,16 @@ namespace Component.DB.ViewModels
                 }
                 return "Save";                 
             }
+        }
+
+        public async Task<Domain> getDomainByIdAsync(int? domainId)
+        {
+            return await domainApi.GetDomainByIdAsync(domainId);
+        }
+
+        public Domain getDomainById(int? domainId)
+        {
+            return domainApi.GetDomainById(domainId);
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
