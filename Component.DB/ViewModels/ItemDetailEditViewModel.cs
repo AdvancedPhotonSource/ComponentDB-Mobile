@@ -49,8 +49,8 @@ namespace Component.DB.ViewModels
 
                     if (locationItem != null)
                     {
-                        var domainName = locationItem.Domain.Name;
-                        if (domainName.Equals(Constants.inventoryDomainName))
+                        var domainId = locationItem.DomainId;
+                        if (domainId == Constants.inventoryDomainId)
                         {
                             var cat = locationItem.DerivedFromItem;
                             locationNameString = cat.Name + " - " + locationItem.Name;
@@ -142,8 +142,8 @@ namespace Component.DB.ViewModels
 
         public ItemDomainLocation UpdateLocationParent(Item newParent)
         {
-            if (Item.Domain.Name.Equals(Constants.locationDomainName)
-                && newParent.Domain.Name.Equals(Constants.locationDomainName))
+            if (Item.DomainId == Constants.locationDomainId
+                && newParent.DomainId == Constants.locationDomainId)
             {
 
                 ItemDomainLocation newItem = locationItemsApi.UpdateLocationParent(Item.Id, newParent.Id);
@@ -162,7 +162,7 @@ namespace Component.DB.ViewModels
 
         public async Task<PropertyValue> UpdateItemStatusAsync(String newStatus)
         {
-            if (!(Item.Domain.Name.Equals(Constants.inventoryDomainName) || Item.Domain.Name.Equals(Constants.cableInventoryDomainName)))
+            if (!(Item.DomainId == Constants.inventoryDomainId || Item.DomainId == Constants.cableInventoryDomainId))
             {
                 // Can currently only update for inventory. 
                 return null;

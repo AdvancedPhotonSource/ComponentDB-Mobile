@@ -17,7 +17,7 @@ namespace Component.DB.ViewModels
                 var assignedItem = this.Item.AssignedItem;
                 if (assignedItem != null)
                 {
-                    if (assignedItem.Domain.Name.Equals(Constants.inventoryDomainName))
+                    if (assignedItem.DomainId == Constants.inventoryDomainId)
                     {
                         var catItem = assignedItem.DerivedFromItem;
                         return catItem.Name + " - " + assignedItem.Name; 
@@ -35,7 +35,7 @@ namespace Component.DB.ViewModels
                 var assignedItem = this.Item.AssignedItem;
                 if (assignedItem != null)
                 {
-                    if (assignedItem.Domain.Name.Equals(Constants.catalogDomainName))
+                    if (assignedItem.DomainId == Constants.catalogDomainId)
                     {
                         return "No inventory specified"; 
                     }

@@ -101,8 +101,8 @@ namespace Component.DB.ViewModels
 
         private Boolean VerifyItemIsInventory()
         {
-            return Item.Domain.Name.Equals(Constants.inventoryDomainName)
-                || Item.Domain.Name.Equals(Constants.cableInventoryDomainName);
+            return Item.DomainId == Constants.inventoryDomainId
+                || Item.DomainId == Constants.cableInventoryDomainId;
         }
 
         public PropertyValue LoadItemStatus()

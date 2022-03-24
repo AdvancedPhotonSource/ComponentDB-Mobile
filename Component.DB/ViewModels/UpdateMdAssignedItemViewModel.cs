@@ -36,12 +36,12 @@ namespace Component.DB.ViewModels
         {            
             Boolean selectAssignedItemInventory = false;
 
-            if (assignedItem.Domain.Name.Equals(Constants.inventoryDomainName))
+            if (assignedItem.DomainId == Constants.inventoryDomainId)
             {
                 selectAssignedItemInventory = true;
                 CatalogItem = assignedItem.DerivedFromItem;
             }
-            else if (assignedItem.Domain.Name.Equals(Constants.catalogDomainName))
+            else if (assignedItem.DomainId == Constants.catalogDomainId)
             {
                 CatalogItem = assignedItem;
             }
@@ -97,9 +97,9 @@ namespace Component.DB.ViewModels
 
                 if (newAssignedItem != null)
                 {
-                    var newDomainName = newAssignedItem.Domain.Name;
-                    if (newDomainName.Equals(Constants.catalogDomainName) ||
-                        newDomainName.Equals(Constants.inventoryDomainName))
+                    var newDomainId = newAssignedItem.DomainId;
+                    if (newDomainId == Constants.catalogDomainId ||
+                        newDomainId == Constants.inventoryDomainId)
                     {
                         LoadItemInventoryList(newAssignedItem);
                         OnPropertyChanged(nameof(PromptText));

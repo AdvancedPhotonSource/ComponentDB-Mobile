@@ -74,7 +74,7 @@ namespace Component.DB.ViewModels
         private async Task AddItemByAsync(Item item)
         {
             var qrId = item.QrId;
-            bool isNewItemLocation = item.Domain.Name.Equals(Constants.locationDomainName);
+            bool isNewItemLocation = item.DomainId == Constants.locationDomainId;
 
             if (LocationMode)
             {
@@ -174,7 +174,7 @@ namespace Component.DB.ViewModels
             {
                 foreach (ItemDetailEditViewModel model in UpdatableItemList)
                 {
-                    if (model.Item.Domain.Name == Constants.inventoryDomainName)
+                    if (model.Item.DomainId == Constants.inventoryDomainId)
                     {
                         if (currentStatusMode == StatusListModeEnum.CableInventoryOnly)
                         {
@@ -182,7 +182,7 @@ namespace Component.DB.ViewModels
                             break;
                         }
                         currentStatusMode = StatusListModeEnum.InventoryOnly;
-                    } else if (model.Item.Domain.Name == Constants.cableInventoryDomainName)
+                    } else if (model.Item.DomainId == Constants.cableInventoryDomainId)
                     { 
                         if (currentStatusMode == StatusListModeEnum.InventoryOnly)
                         {
@@ -294,14 +294,14 @@ namespace Component.DB.ViewModels
             foreach (var model in this.UpdatableItemList)
             {
                 var item = model.Item;
-                var domainName = item.Domain.Name;
+                var domainId = item.DomainId;
 
-                switch (domainName)
+                switch (domainId)
                 {
-                    case Constants.locationDomainName:
+                    case Constants.locationDomainId:
                         containsLocation = true;
                         break;
-                    case Constants.inventoryDomainName:
+                    case Constants.inventoryDomainId:
                         containsInventory = true;
                         break;
                     default:
