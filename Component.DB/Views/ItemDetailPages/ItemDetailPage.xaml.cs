@@ -31,8 +31,6 @@ namespace Component.DB.Views
     {
         protected ItemDetailViewModel viewModel;
 
-        private String CurrentDomainName = null;
-
         protected ItemDetailPage(ItemDetailViewModel viewModel, Boolean addIdentifiers = true)
         {
             InitializeComponent();
@@ -41,10 +39,10 @@ namespace Component.DB.Views
 
             if (addIdentifiers)
             {
-                CurrentDomainName = viewModel.Item.Domain.Name;
-
                 Item item = viewModel.Item;
-                var domain = item.Domain;
+                var domainId = item.DomainId;
+                var domain = viewModel.getDomainById(domainId); 
+                
 
                 addBindingToDetailsStackLayout(domain.ItemIdentifier1Label, "Item.ItemIdentifier1");
 
@@ -57,21 +55,21 @@ namespace Component.DB.Views
 
         public static ItemDetailPage CreateItemDetailPage(ItemDetailViewModel viewModel)
         {
-            var CurrentDomainName = viewModel.Item.Domain.Name;
+            var CurrentDomainId = viewModel.Item.DomainId;
 
-            if (CurrentDomainName.Equals(Constants.catalogDomainName))
+            if (CurrentDomainId == Constants.catalogDomainId)
             {
                 return new ItemDomainCatalogDetailPage(viewModel);
-            } else if (CurrentDomainName.Equals(Constants.inventoryDomainName))
+            } else if (CurrentDomainId == Constants.inventoryDomainId)
             {
                 return new ItemDomainInventoryDetailPage(viewModel);
-            } else if (CurrentDomainName.Equals(Constants.machineDesignDomainName))
+            } else if (CurrentDomainId == Constants.machineDesignDomainId)
             {
                 return ItemDomainMachineDesignDetailPage.CreateInstance(viewModel);
-            } else if (CurrentDomainName.Equals(Constants.cableCatalogDomainName))
+            } else if (CurrentDomainId ==Constants.cableCatalogDomainId)
             {
                 return new ItemDomainCableCatalogDetailPage(viewModel); 
-            } else if (CurrentDomainName.Equals(Constants.cableInventoryDomainName))
+            } else if (CurrentDomainId == Constants.cableInventoryDomainId)
             {
                 return new ItemDomainCableInventoryDetailPage(viewModel); 
             }

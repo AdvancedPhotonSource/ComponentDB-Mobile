@@ -29,16 +29,17 @@ namespace Component.DB.Views.itemEditPages
             this.detailPage = detailPage;
             BindingContext = this.viewModel;
 
-            var domain = item.Domain;
+            var domainId = item.DomainId;
+            var domain = viewModel.getDomainById(domainId);
 
             addEditBindingToEditItemsStackLayout(domain.ItemIdentifier1Label, "Item.ItemIdentifier1");
 
-            if (domain.ItemIdentifier2Label != null && !domain.Name.Equals(Constants.machineDesignDomainName))
+            if (domain.ItemIdentifier2Label != null && !(domainId == Constants.machineDesignDomainId))
             {
                 addEditBindingToEditItemsStackLayout(domain.ItemIdentifier2Label, "Item.ItemIdentifier2");
             }
 
-            if (item.Domain.Name.Equals(Constants.inventoryDomainName) || item.Domain.Name.Equals(Constants.cableInventoryDomainName))
+            if (domainId == Constants.inventoryDomainId || domainId == Constants.cableInventoryDomainId)
             {
                 viewModel.LoadItemStatus();
                 viewModel.LoadItemLocationInformation();
@@ -47,10 +48,10 @@ namespace Component.DB.Views.itemEditPages
 
                 var propertyApi = CdbApiFactory.Instance.propertyTypeApi;
                 PropertyType type = null;
-                if (item.Domain.Name.Equals(Constants.inventoryDomainName))
+                if (domainId == Constants.inventoryDomainId)
                 {
                     type = propertyApi.GetInventoryStatusPropertyType();
-                } else if (item.Domain.Name.Equals(Constants.cableInventoryDomainName))
+                } else if (domainId == Constants.cableInventoryDomainId)
                 {
                     type = propertyApi.GetCableInventoryStatusPropertyType(); 
                 }
@@ -171,7 +172,7 @@ namespace Component.DB.Views.itemEditPages
             }
 
             var item = viewModel.Item;
-            if (item.Domain.Name.Equals(Constants.inventoryDomainName) || item.Domain.Name.Equals(Constants.cableInventoryDomainName))
+            if (item.DomainId == Constants.inventoryDomainId || item.DomainId == Constants.cableInventoryDomainId)
             {
                 //Check if status needs updating
                 var selectedItem = statusPicker.SelectedItem;

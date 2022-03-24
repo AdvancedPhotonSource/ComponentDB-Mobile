@@ -104,7 +104,7 @@ namespace Component.DB.Views.itemEditPages
                 {
                     if (locationMode)
                     {
-                        if (item.Item.Domain.Name.Equals(Constants.locationDomainName))
+                        if (item.Item.DomainId == Constants.locationDomainId)
                         {
                             item.UpdateLocationParent(selectedLocation);
                         }
@@ -193,7 +193,7 @@ namespace Component.DB.Views.itemEditPages
             string SWAP_WITH_PARENT_OPT = null; 
             string MAKE_PRIMARY_LOCATION = null;
 
-            if (model.Item.Domain.Name.Equals(Constants.locationDomainName))
+            if (model.Item.DomainId == Constants.locationDomainId)
             {
                 MAKE_PRIMARY_LOCATION = "Replace with Selected Location";
             }
@@ -244,13 +244,13 @@ namespace Component.DB.Views.itemEditPages
                 var locInfo = model.ItemLocationInformation;
                 var parent = locInfo.LocationItem;
 
-                var domainName = parent.Domain.Name;
+                var domainId = parent.DomainId;
 
                 var proceed = true; 
 
                 if (viewModel.StatusMode)
                 {
-                    if (!domainName.Equals(Constants.inventoryDomainName))
+                    if (!(domainId == Constants.inventoryDomainId))
                     {
                         await DisplayAlert("Cannot Swap","Only inventory items have status.", "OK");
                         proceed = false; 
@@ -282,7 +282,7 @@ namespace Component.DB.Views.itemEditPages
                 foreach (var Item in viewModel.UpdatableItemList)
                 {
                     var dbItem = Item.Item;
-                    if (!(dbItem.Domain.Name.Equals(Constants.inventoryDomainName) || dbItem.Domain.Name.Equals(Constants.cableInventoryDomainName)))
+                    if (!(dbItem.DomainId == Constants.inventoryDomainId || dbItem.DomainId == Constants.cableInventoryDomainId))
                     {
                         ItemsToRemove.Add(Item);
                     }

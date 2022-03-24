@@ -20,7 +20,8 @@ namespace Component.DB.Views.ItemDetailPages
         private ItemDomainMachineDesignDetailPage(ItemDomainMachineDesignDetailViewModel viewModel) : base(viewModel, addIdentifiers: false)
         {
             var mdItem = viewModel.Item;             
-            var domain = mdItem.Domain;
+            var domainId = mdItem.DomainId;
+            var domain = viewModel.getDomainById(domainId); 
 
             addBindingToDetailsStackLayout("QR Id", "FormattedQrId", 0);
             addBindingToDetailsStackLayout(domain.ItemIdentifier1Label, "Item.ItemIdentifier1");
