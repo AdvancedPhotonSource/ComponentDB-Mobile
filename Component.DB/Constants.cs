@@ -15,6 +15,15 @@ namespace Component.DB
         public const string ImageExtensionThumbnail = "/thumbnail";
         public const string ImageExtensionScaled = "/scaled";
 
+        public const int locationDomainId = 1;
+        public const int catalogDomainId = 2;
+        public const int inventoryDomainId = 3;
+        public const int maarcDomainId = 5;
+        public const int machineDesignDomainId = 6;
+        public const int cableCatalogDomainId = 7;
+        public const int cableInventoryDomainId = 8;
+        public const int cableDesignDomainId = 9;
+
         public const string inventoryDomainName = "Inventory";
         public const string catalogDomainName = "Catalog";
         public const string cableCatalogDomainName = "Cable Catalog";
