@@ -22,6 +22,7 @@ namespace Component.DB.ViewModels
         protected ConciseItem _conciseItem;
         private PropertyValue _ItemStatus;
         private ItemLocationInformation _ItemLocationInformation;
+        private List<ItemMembership> _ItemMembershipList; 
 
         public ICommand ViewInPortalCommand { get; }
 
@@ -147,6 +148,49 @@ namespace Component.DB.ViewModels
             return _ItemLocationInformation;
         }
 
+        public List<ItemMembership> LoadItemMemberships()
+        {
+            if (!VerifyItemIsInventory())
+            {
+                return null;
+            }
+
+            if (_ItemMembershipList == null)
+            {
+                try
+                {
+                    _ItemMembershipList = itemApi.GetItemMemberships(Item.Id);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+            }
+
+            return _ItemMembershipList; 
+        }
+
+        public Item HousingMachineItem
+        {
+            get
+            {                
+                var memberships = ItemMembershipList;
+
+                foreach (var membership in memberships)
+                {
+                    var memberItem = membership.PartOfItem;
+
+                    if (memberItem.DomainId == Constants.machineDesignDomainId)
+                    {
+                        return memberItem; 
+                    }
+                }
+                return null; 
+            }
+            
+
+        }
+
         public string PrimaryImageUrlScaled
         {
             get
@@ -221,6 +265,14 @@ namespace Component.DB.ViewModels
             {
                 _ItemLocationInformation = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public List<ItemMembership> ItemMembershipList
+        {
+            get
+            {
+                return _ItemMembershipList; 
             }
         }
     }

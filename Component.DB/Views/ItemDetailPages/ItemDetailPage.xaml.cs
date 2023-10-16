@@ -12,14 +12,10 @@ using Stormlion.PhotoBrowser;
 using System.Collections.Generic;
 using Gov.ANL.APS.CDB.Model;
 using Component.DB.Services;
-using Component.DB.Views.PreferencePages;
 using Component.DB.Views.itemEditPages;
-using System.IO;
-using System.Text;
 using Plugin.Media.Abstractions;
 using Plugin.Media;
 using System.Diagnostics;
-using Component.DB.Services.CdbEventArgs;
 using Component.DB.Views.ItemDetailPages;
 
 namespace Component.DB.Views
@@ -111,8 +107,14 @@ namespace Component.DB.Views
 
 
 
-        protected void addBindingToDetailsStackLayout(String label, String bindingValue, int index = -1, StackLayout Stack = null)
+        protected void addBindingToDetailsStackLayout(String label,
+            String bindingValue,
+            int index = -1,
+            NamedSize valueFontSize=NamedSize.Small,
+            FontAttributes valueFontAttributes=FontAttributes.None,
+            StackLayout Stack = null)
         {
+
             if (Stack == null)
             {
                 Stack = DetailsStackLayout; 
@@ -122,7 +124,7 @@ namespace Component.DB.Views
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                 Text = label + ":"
             };
-            Label itemValueLabel = new Label { FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)) };
+            Label itemValueLabel = new Label { FontSize = Device.GetNamedSize(valueFontSize, typeof(Label)), FontAttributes = valueFontAttributes };
             itemValueLabel.SetBinding(Label.TextProperty, bindingValue);
 
             if (index == -1)
